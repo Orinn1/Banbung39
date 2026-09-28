@@ -164,6 +164,20 @@ export const MEMBERS_DATA: Member[] = [
     role: "Member",
     facebook: "https://www.facebook.com/share/19ij3AJifU/",
   },
+  {
+    id: "0022",
+    memberId: "#0022",
+    name: "SYNTH DEARGOD",
+    role: "Member",
+    facebook: "https://www.facebook.com/SynthDeargod",
+  },
+  {
+    id: "0023",
+    memberId: "#0023",
+    name: "DEXZEE LYFESTYLE",
+    role: "Member",
+    facebook: "https://www.facebook.com/profile.php?id=61594384915415",
+  },
 ];
 
 export const CLAN_INFO = {
