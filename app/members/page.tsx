@@ -402,16 +402,9 @@ function MemberCard({
 
   return (
     <div 
-      onClick={() => {
-        if (member.facebook) {
-          window.open(member.facebook, '_blank');
-        }
-      }}
-      className={`p-[1.5px] rounded-2xl bg-gradient-to-br ${theme.borderGradient} ${theme.glow} transition-all duration-300 hover:-translate-y-0.5 ${
-        member.facebook ? 'cursor-pointer' : ''
-      }`}
+      className={`p-[1.5px] rounded-2xl bg-gradient-to-br ${theme.borderGradient} ${theme.glow} transition-all duration-300 hover:-translate-y-0.5`}
     >
-      <div className="p-4 sm:p-5 rounded-[14.5px] bg-[#0C0D12]/95 backdrop-blur-md flex items-center justify-between gap-4">
+      <div className="p-4 sm:p-5 rounded-[14.5px] bg-[#0C0D12]/95 backdrop-blur-md flex items-center justify-between gap-4 relative">
         <div className="min-w-0 flex-1">
           <span className={`text-xs font-mono block mb-1 font-bold ${theme.idColor}`}>
             {member.memberId}
@@ -427,19 +420,35 @@ function MemberCard({
         </div>
 
         {member.facebook && (
-          <a
-            href={member.facebook}
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Facebook Profile"
-            aria-label="Facebook Profile"
-            onClick={(e) => e.stopPropagation()}
-            className="w-9 h-9 rounded-xl bg-white/[0.04] border border-white/15 hover:border-white/50 text-zinc-400 hover:text-white hover:bg-white/[0.08] flex items-center justify-center transition-all duration-200 flex-shrink-0"
-          >
-            <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-            </svg>
-          </a>
+          <div className="relative group/fb flex-shrink-0">
+            <a
+              href={member.facebook}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Facebook Profile"
+              aria-label="Facebook Profile"
+              className="w-9 h-9 rounded-xl bg-white/[0.04] border border-white/15 hover:border-[#1877F2]/60 hover:bg-[#1877F2]/10 text-zinc-400 hover:text-[#1877F2] hover:scale-105 active:scale-95 flex items-center justify-center transition-all duration-200 cursor-pointer shadow-sm"
+            >
+              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+              </svg>
+            </a>
+
+            {/* Small Bouncy Popup on Hover */}
+            <div className="pointer-events-none absolute bottom-full right-0 mb-2 opacity-0 translate-y-2 scale-75 group-hover/fb:opacity-100 group-hover/fb:translate-y-0 group-hover/fb:scale-100 group-hover/fb:animate-popup-bounce transition-all duration-200 origin-bottom-right z-30 flex flex-col items-end whitespace-nowrap">
+              <div className="px-2.5 py-1 rounded-lg bg-[#0E131E] border border-[#1877F2]/40 shadow-[0_8px_20px_rgba(0,0,0,0.85),0_0_12px_rgba(24,119,242,0.25)] flex items-center gap-1.5 backdrop-blur-md">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#1877F2] animate-pulse" />
+                <span className="text-[10px] font-mono font-bold tracking-wider text-white uppercase">
+                  FACEBOOK
+                </span>
+                <span className="text-[9px] font-mono text-[#1877F2] font-semibold">
+                  &rarr;
+                </span>
+              </div>
+              {/* Pointer Arrow */}
+              <div className="w-1.5 h-1.5 bg-[#0E131E] border-r border-b border-[#1877F2]/40 rotate-45 mr-3.5 -mt-1" />
+            </div>
+          </div>
         )}
       </div>
     </div>
