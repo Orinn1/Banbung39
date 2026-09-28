@@ -31,14 +31,14 @@ export default function LandingPage() {
       {/* TOP NAVBAR (Clean Original Navbar) */}
       <header className="relative z-30 w-full px-6 sm:px-12 md:px-16 pt-7 sm:pt-9 flex items-center justify-between">
         {/* Left: Brand Name */}
-        <div className="flex flex-col">
-          <span className="text-sm sm:text-base font-mono font-bold tracking-[0.25em] text-white uppercase leading-tight">
+        <Link href="/" className="flex flex-col group cursor-pointer">
+          <span className="text-sm sm:text-base font-mono font-bold tracking-[0.25em] text-white uppercase leading-tight group-hover:text-zinc-300 transition-colors">
             BANBUNG39
           </span>
           <span className="text-[10px] font-mono tracking-widest text-zinc-400 uppercase -mt-0.5">
             BY.MIKE WINTERFELL
           </span>
-        </div>
+        </Link>
 
         {/* Right: Navigation Pill Menu */}
         <nav className="flex items-center gap-2.5">

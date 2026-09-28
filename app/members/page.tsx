@@ -75,10 +75,7 @@ export default function MembersPage() {
       <header className="relative z-30 w-full px-6 sm:px-12 md:px-16 pt-7 sm:pt-9 flex items-center justify-between">
         {/* Left: Brand Name with Link back home */}
         <Link href="/" className="flex flex-col group cursor-pointer">
-          <span 
-            style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-            className="text-lg sm:text-xl font-anton tracking-wider text-white uppercase leading-tight group-hover:text-zinc-300 transition-colors"
-          >
+          <span className="text-sm sm:text-base font-mono font-bold tracking-[0.25em] text-white uppercase leading-tight group-hover:text-zinc-300 transition-colors">
             BANBUNG39
           </span>
           <span className="text-[10px] font-mono tracking-widest text-zinc-400 uppercase -mt-0.5">

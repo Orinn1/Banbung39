@@ -38,11 +38,11 @@ export default function MusicPlayer() {
           <Music className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white transition-colors" />
         </div>
 
-        <div className="flex flex-col">
-          <span className="text-[10px] font-bold text-white font-anton leading-tight tracking-wider">
+        <div className="flex flex-col min-w-[72px]">
+          <span className="text-xs font-mono font-bold text-white tracking-wider leading-none">
             BANBUNG39
           </span>
-          <span className="text-[8px] font-mono text-zinc-400 uppercase tracking-widest">
+          <span className="text-[9px] font-mono text-zinc-400 uppercase tracking-widest mt-0.5">
             {isPlaying ? 'PLAYING' : 'PAUSED'}
           </span>
         </div>
@@ -93,10 +93,10 @@ export default function MusicPlayer() {
 
         <div className="flex items-center justify-between">
           <div>
-            <h4 className="text-xs font-bold text-white tracking-wide truncate font-anton">
+            <h4 className="text-xs font-mono font-bold text-white tracking-wider truncate">
               BANBUNG39
             </h4>
-            <p className="text-[10px] text-zinc-400 font-sans truncate -mt-0.5">
+            <p className="text-[10px] text-zinc-400 font-mono tracking-wide truncate mt-0.5">
               By.Mike Winterfell
             </p>
           </div>
