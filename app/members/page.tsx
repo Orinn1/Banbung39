@@ -272,16 +272,19 @@ export default function MembersPage() {
               </section>
             )}
 
-            {/* 4. MEMBERS SECTION (Wide Cards) */}
+            {/* 4. MEMBERS SECTION (5 Columns) */}
             {(selectedRole === 'All' || selectedRole === 'Member') && regularMemberList.length > 0 && (
               <section>
                 <SectionHeader title="MEMBERS" role="Member" />
-                <div className="flex flex-wrap justify-center gap-5 max-w-6xl mx-auto">
+                <div className="flex flex-wrap justify-center gap-3.5 sm:gap-4 max-w-[1440px] mx-auto">
                   {regularMemberList.map((m) => (
-                    <div key={m.id} className="w-full md:w-[calc(50%-10px)]">
+                    <div 
+                      key={m.id} 
+                      className="w-full sm:w-[calc(50%-0.5rem)] md:w-[calc(33.333%-0.7rem)] lg:w-[calc(25%-0.75rem)] xl:w-[calc(20%-0.8rem)]"
+                    >
                       <MemberCard 
                         member={m} 
-                        variant="wide"
+                        variant="compact"
                       />
                     </div>
                   ))}

@@ -85,6 +85,85 @@ export const MEMBERS_DATA: Member[] = [
     role: "Support",
     facebook: "https://www.facebook.com/bigbas.wtfdelta",
   },
+
+  // MEMBER
+  {
+    id: "0011",
+    memberId: "#0011",
+    name: "NIÑABABYNIS RÉALLYJAMOKINGHELLPY",
+    role: "Member",
+    facebook: "https://www.facebook.com/share/19awt42yRa/",
+  },
+  {
+    id: "0012",
+    memberId: "#0012",
+    name: "THUNDER SRYMYBAD",
+    role: "Member",
+    facebook: "https://www.facebook.com/share/1HgLYEhjxV/?mibextid=wwXIfr",
+  },
+  {
+    id: "0013",
+    memberId: "#0013",
+    name: "KARVIN KIERAN",
+    role: "Member",
+    facebook: "https://www.facebook.com/share/1E2AJ2xadF/?mibextid=wwXIfr",
+  },
+  {
+    id: "0014",
+    memberId: "#0014",
+    name: "ZETA SABUDBOB",
+    role: "Member",
+    facebook: "https://www.facebook.com/share/1C2KXS6msF/",
+  },
+  {
+    id: "0015",
+    memberId: "#0015",
+    name: "PLATHONG QUEST",
+    role: "Member",
+    facebook: "https://www.facebook.com/profile.php?id=61590894861043&locale=th_TH",
+  },
+  {
+    id: "0016",
+    memberId: "#0016",
+    name: "DA WINTERFELL FITZROY",
+    role: "Member",
+    facebook: "https://www.facebook.com/share/1KE93PPEWp/?mibextid=wwXIfr",
+  },
+  {
+    id: "0017",
+    memberId: "#0017",
+    name: "CHERCHER KAORUKAUON",
+    role: "Member",
+    facebook: "https://www.facebook.com/mebexllnaruk",
+  },
+  {
+    id: "0018",
+    memberId: "#0018",
+    name: "IAMNONGYIMWAN WELL",
+    role: "Member",
+    facebook: "https://www.facebook.com/share/19hf71mwJt/",
+  },
+  {
+    id: "0019",
+    memberId: "#0019",
+    name: "YUU DIMOTRY",
+    role: "Member",
+    facebook: "https://www.facebook.com/profile.php?id=100079614739842&locale=th_TH",
+  },
+  {
+    id: "0020",
+    memberId: "#0020",
+    name: "NXNGPALMMY HEISENBERG",
+    role: "Member",
+    facebook: "https://www.facebook.com/profile.php?id=61592886476738&mibextid=wwXIfr&mibextid=wwXIfr",
+  },
+  {
+    id: "0021",
+    memberId: "#0021",
+    name: "IAMNONGPEPER ONNUTNERVERDIE THANGTANGRADUP",
+    role: "Member",
+    facebook: "https://www.facebook.com/share/19ij3AJifU/",
+  },
 ];
 
 export const CLAN_INFO = {
