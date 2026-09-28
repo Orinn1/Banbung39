@@ -53,6 +53,8 @@ export default function BackofficePage() {
   const [formMemberId, setFormMemberId] = useState<string>('');
   const [formFacebook, setFormFacebook] = useState<string>('');
   const [formAvatar, setFormAvatar] = useState<string>('');
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string>('');
   const [formError, setFormError] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -70,6 +72,7 @@ export default function BackofficePage() {
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const avatarInputRef = useRef<HTMLInputElement | null>(null);
 
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
     setToast({ message, type });
@@ -153,6 +156,20 @@ export default function BackofficePage() {
     return `#${String(nextNum).padStart(4, '0')}`;
   };
 
+  // Handle Avatar file selection from computer
+  const handleAvatarFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        setFormError('กรุณาเลือกไฟล์รูปภาพ (.png, .jpg, .jpeg, .webp)');
+        return;
+      }
+      setAvatarFile(file);
+      setAvatarPreview(URL.createObjectURL(file));
+      setFormError('');
+    }
+  };
+
   // Open modal for Adding Member
   const openAddModal = () => {
     setEditingMember(null);
@@ -162,7 +179,9 @@ export default function BackofficePage() {
     const nextId = getNextSequentialId();
     setFormMemberId(nextId);
     setFormFacebook('');
-    setFormAvatar('');
+    setFormAvatar(DEFAULT_AVATAR);
+    setAvatarFile(null);
+    setAvatarPreview(DEFAULT_AVATAR);
     setFormError('');
     setIsModalOpen(true);
   };
@@ -174,7 +193,9 @@ export default function BackofficePage() {
     setFormRole(member.role);
     setFormMemberId(member.memberId || `#${member.id}`);
     setFormFacebook(member.facebook || '');
-    setFormAvatar(member.avatar || '');
+    setFormAvatar(member.avatar || DEFAULT_AVATAR);
+    setAvatarFile(null);
+    setAvatarPreview(member.avatar || DEFAULT_AVATAR);
     setFormError('');
     setIsModalOpen(true);
   };
@@ -191,6 +212,32 @@ export default function BackofficePage() {
     setFormError('');
 
     try {
+      // 1. Upload avatar image if new file was selected from computer
+      let finalAvatarUrl = formAvatar.trim() || DEFAULT_AVATAR;
+
+      if (avatarFile) {
+        try {
+          const uploadData = new FormData();
+          uploadData.append('file', avatarFile);
+          const uploadRes = await fetch('/api/upload', {
+            method: 'POST',
+            body: uploadData,
+          });
+          const uploadResult = await uploadRes.json();
+          if (uploadResult.success && uploadResult.url) {
+            finalAvatarUrl = uploadResult.url;
+          } else {
+            setFormError(uploadResult.error || 'Failed to upload avatar image');
+            setIsSubmitting(false);
+            return;
+          }
+        } catch {
+          setFormError('เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ');
+          setIsSubmitting(false);
+          return;
+        }
+      }
+
       if (editingMember) {
         // Edit existing
         const res = await fetch('/api/members', {
@@ -202,7 +249,7 @@ export default function BackofficePage() {
             role: formRole,
             memberId: formMemberId.trim(),
             facebook: formFacebook.trim() || undefined,
-            avatar: formAvatar.trim() || undefined,
+            avatar: finalAvatarUrl,
           }),
         });
         const data = await res.json();
@@ -223,7 +270,7 @@ export default function BackofficePage() {
             role: formRole,
             memberId: formMemberId.trim() || getNextSequentialId(),
             facebook: formFacebook.trim() || undefined,
-            avatar: formAvatar.trim() || undefined,
+            avatar: finalAvatarUrl,
           }),
         });
         const data = await res.json();
@@ -899,26 +946,64 @@ export default function BackofficePage() {
                 />
               </div>
 
-              {/* Avatar Image URL (Optional) */}
+              {/* Avatar Upload from Computer */}
               <div>
-                <label className="block text-[11px] font-mono text-zinc-400 uppercase tracking-wider mb-1.5">
-                  รูปโปรไฟล์ / AVATAR URL (เว้นว่างไว้จะใช้โลโก้ BB39)
+                <label className="block text-[11px] font-mono text-zinc-400 uppercase tracking-wider mb-2">
+                  รูปโปรไฟล์สมาชิก (เลือกรูปจากเครื่องคอมพิวเตอร์)
                 </label>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={formAvatar}
-                    onChange={(e) => setFormAvatar(e.target.value)}
-                    placeholder="https://... หรือเว้นว่าง"
-                    className="flex-1 px-4 py-2.5 bg-[#161924] border border-white/15 focus:border-white/40 rounded-xl text-xs font-mono text-white placeholder-zinc-500 focus:outline-none transition-colors"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setFormAvatar(DEFAULT_AVATAR)}
-                    className="px-3 py-2.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-[11px] font-mono text-zinc-300 hover:text-white uppercase transition-colors"
-                  >
-                    DEFAULT
-                  </button>
+
+                {/* Hidden File Input */}
+                <input
+                  type="file"
+                  ref={avatarInputRef}
+                  accept="image/png,image/jpeg,image/jpg,image/webp"
+                  onChange={handleAvatarFileSelect}
+                  className="hidden"
+                />
+
+                <div className="flex items-center gap-3.5 p-3.5 bg-[#141723] border border-white/10 rounded-2xl">
+                  {/* Avatar Preview */}
+                  <div className="w-16 h-16 rounded-xl overflow-hidden bg-black border-2 border-white/20 flex-shrink-0 flex items-center justify-center relative shadow-md">
+                    <img
+                      src={avatarPreview || formAvatar || DEFAULT_AVATAR}
+                      alt="Avatar Preview"
+                      onError={(e) => { e.currentTarget.src = DEFAULT_AVATAR; }}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex-1 min-w-0 flex flex-col gap-1.5">
+                    <p className="text-xs font-mono font-bold text-white truncate">
+                      {avatarFile
+                        ? avatarFile.name
+                        : formAvatar && formAvatar !== DEFAULT_AVATAR
+                        ? 'รูปภาพปัจจุบัน'
+                        : 'โลโก้เริ่มต้น BB39'}
+                    </p>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => avatarInputRef.current?.click()}
+                        className="px-3 py-1.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.18] border border-white/15 text-[11px] font-mono font-semibold text-white uppercase transition-colors flex items-center gap-1.5 active:scale-95"
+                      >
+                        <Upload className="w-3 h-3 text-emerald-400" />
+                        <span>เลือกรูปจากเครื่อง</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setAvatarFile(null);
+                          setAvatarPreview(DEFAULT_AVATAR);
+                          setFormAvatar(DEFAULT_AVATAR);
+                        }}
+                        className="px-3 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.1] border border-white/10 text-[11px] font-mono text-zinc-400 hover:text-white uppercase transition-colors"
+                      >
+                        ใช้โลโก้ BB39
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
 
