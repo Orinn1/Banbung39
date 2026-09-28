@@ -2,20 +2,44 @@ import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
 import { Member, MemberRole, MEMBERS_DATA } from '@/data/members';
+import { db } from '@/lib/firebase';
+import { collection, getDocs, doc, setDoc, deleteDoc } from 'firebase/firestore';
 
 const DATA_FILE_PATH = path.join(process.cwd(), 'data', 'members.json');
 
-async function readMembersFromFile(): Promise<Member[]> {
+// Read members: primary from Firebase Firestore, fallback to local JSON file
+async function readMembers(): Promise<Member[]> {
+  try {
+    const colRef = collection(db, 'members');
+    const snapshot = await getDocs(colRef);
+    if (!snapshot.empty) {
+      const firestoreMembers: Member[] = [];
+      snapshot.forEach((d) => {
+        firestoreMembers.push(d.data() as Member);
+      });
+
+      // Sort chronologically by ID (#0001 -> #0024)
+      firestoreMembers.sort((a, b) => {
+        const numA = parseInt(a.id.replace(/\D/g, ''), 10) || 0;
+        const numB = parseInt(b.id.replace(/\D/g, ''), 10) || 0;
+        return numA - numB;
+      });
+
+      // Keep local cache in sync asynchronously
+      fs.writeFile(DATA_FILE_PATH, JSON.stringify(firestoreMembers, null, 2), 'utf-8').catch(() => {});
+      return firestoreMembers;
+    }
+  } catch (err: any) {
+    console.warn('Firestore read error, falling back to local file:', err.message);
+  }
+
+  // Fallback to local file
   try {
     const raw = await fs.readFile(DATA_FILE_PATH, 'utf-8');
     return JSON.parse(raw);
   } catch {
     return MEMBERS_DATA;
   }
-}
-
-async function writeMembersToFile(members: Member[]): Promise<void> {
-  await fs.writeFile(DATA_FILE_PATH, JSON.stringify(members, null, 2), 'utf-8');
 }
 
 // GET all members (supports ?search= and ?role=)
@@ -25,7 +49,7 @@ export async function GET(request: Request) {
     const search = searchParams.get('search')?.toLowerCase().trim();
     const role = searchParams.get('role');
 
-    let list = await readMembersFromFile();
+    let list = await readMembers();
 
     if (search) {
       list = list.filter(
@@ -70,7 +94,7 @@ export async function POST(request: Request) {
     const validRoles: MemberRole[] = ['Founder', 'Leader', 'Support', 'Member'];
     const assignedRole: MemberRole = validRoles.includes(role) ? role : 'Member';
 
-    const currentMembers = await readMembersFromFile();
+    const currentMembers = await readMembers();
 
     // Auto calculate next sequential ID if not provided
     let finalId = memberId?.replace('#', '').trim();
@@ -91,10 +115,16 @@ export async function POST(request: Request) {
       avatar: avatar?.trim() || undefined,
     };
 
-    // Prepend or append depending on role hierarchy
-    // Founder -> Leader -> Support -> Member
-    const updated = [...currentMembers, newMember];
-    await writeMembersToFile(updated);
+    // 1. Save to Firebase Firestore
+    try {
+      await setDoc(doc(db, 'members', newMember.id), newMember);
+    } catch (fsErr: any) {
+      console.warn('Firestore setDoc warning:', fsErr.message);
+    }
+
+    // 2. Update local JSON file cache
+    const updated = [...currentMembers.filter((m) => m.id !== newMember.id), newMember];
+    fs.writeFile(DATA_FILE_PATH, JSON.stringify(updated, null, 2), 'utf-8').catch(() => {});
 
     return NextResponse.json({
       success: true,
@@ -123,7 +153,7 @@ export async function PUT(request: Request) {
       );
     }
 
-    const currentMembers = await readMembersFromFile();
+    const currentMembers = await readMembers();
     const cleanId = String(id).replace('#', '').trim();
 
     const index = currentMembers.findIndex(
@@ -149,8 +179,16 @@ export async function PUT(request: Request) {
       avatar: avatar !== undefined ? (avatar.trim() || undefined) : existing.avatar,
     };
 
+    // 1. Update in Firebase Firestore
+    try {
+      await setDoc(doc(db, 'members', cleanId), updatedMember, { merge: true });
+    } catch (fsErr: any) {
+      console.warn('Firestore update warning:', fsErr.message);
+    }
+
+    // 2. Update local JSON file cache
     currentMembers[index] = updatedMember;
-    await writeMembersToFile(currentMembers);
+    fs.writeFile(DATA_FILE_PATH, JSON.stringify(currentMembers, null, 2), 'utf-8').catch(() => {});
 
     return NextResponse.json({
       success: true,
@@ -179,7 +217,7 @@ export async function DELETE(request: Request) {
     }
 
     const cleanId = String(id).replace('#', '').trim();
-    const currentMembers = await readMembersFromFile();
+    const currentMembers = await readMembers();
 
     const exists = currentMembers.some(
       (m) => m.id === cleanId || m.memberId.replace('#', '') === cleanId
@@ -192,11 +230,18 @@ export async function DELETE(request: Request) {
       );
     }
 
+    // 1. Delete in Firebase Firestore
+    try {
+      await deleteDoc(doc(db, 'members', cleanId));
+    } catch (fsErr: any) {
+      console.warn('Firestore delete warning:', fsErr.message);
+    }
+
+    // 2. Update local JSON file cache
     const updated = currentMembers.filter(
       (m) => m.id !== cleanId && m.memberId.replace('#', '') !== cleanId
     );
-
-    await writeMembersToFile(updated);
+    fs.writeFile(DATA_FILE_PATH, JSON.stringify(updated, null, 2), 'utf-8').catch(() => {});
 
     return NextResponse.json({
       success: true,

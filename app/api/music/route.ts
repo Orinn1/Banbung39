@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
+import { db } from '@/lib/firebase';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 const MUSIC_CONFIG_PATH = path.join(process.cwd(), 'data', 'music.json');
 const PUBLIC_DIR = path.join(process.cwd(), 'public');
@@ -18,6 +20,19 @@ const DEFAULT_CONFIG: MusicConfig = {
 };
 
 async function getMusicConfig(): Promise<MusicConfig> {
+  // 1. Try reading from Firebase Firestore
+  try {
+    const snap = await getDoc(doc(db, 'settings', 'music'));
+    if (snap.exists()) {
+      const data = snap.data() as MusicConfig;
+      fs.writeFile(MUSIC_CONFIG_PATH, JSON.stringify(data, null, 2), 'utf-8').catch(() => {});
+      return data;
+    }
+  } catch (err: any) {
+    console.warn('Firestore music read warning:', err.message);
+  }
+
+  // 2. Fallback to local JSON file
   try {
     const raw = await fs.readFile(MUSIC_CONFIG_PATH, 'utf-8');
     return JSON.parse(raw);
@@ -69,6 +84,14 @@ export async function POST(request: Request) {
       url: musicUrl,
     };
 
+    // 1. Save to Firebase Firestore
+    try {
+      await setDoc(doc(db, 'settings', 'music'), updatedConfig, { merge: true });
+    } catch (fsErr: any) {
+      console.warn('Firestore music setDoc warning:', fsErr.message);
+    }
+
+    // 2. Save to local JSON file
     await fs.writeFile(MUSIC_CONFIG_PATH, JSON.stringify(updatedConfig, null, 2), 'utf-8');
 
     return NextResponse.json({
