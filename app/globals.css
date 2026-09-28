@@ -75,6 +75,8 @@ body {
   animation-name: snowfall;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
+  will-change: transform, opacity;
+  transform: translate3d(0, 0, 0);
 }
 
 /* Swyft-style tactical background grid */
