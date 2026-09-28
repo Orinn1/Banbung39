@@ -58,12 +58,12 @@ export default function LandingPage() {
       {/* MAIN HERO CONTENT (Split Left Hero & Right Dossier Card) */}
       <main className="relative z-20 flex-1 max-w-7xl w-full mx-auto px-6 sm:px-12 md:px-16 py-8 sm:py-12 flex flex-col lg:flex-row items-center justify-between gap-10">
         {/* LEFT COLUMN: HERO TYPOGRAPHY */}
-        <div className="flex-1 flex flex-col items-start justify-center max-w-lg">
+        <div className="flex-1 flex flex-col items-start justify-center max-w-xl lg:max-w-2xl">
 
-          {/* Signature Bold Display Title: BANBUNG & 39 */}
+          {/* Signature Bold Display Title: BANBUNG & 39 on one line */}
           <h1 
             style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-            className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-anton tracking-wide uppercase leading-[0.88] flex flex-col"
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-anton tracking-wide uppercase leading-none inline-flex items-baseline gap-2.5 sm:gap-3.5 flex-nowrap"
           >
             <span className="text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]">
               BANBUNG

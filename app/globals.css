@@ -89,7 +89,8 @@ body {
 /* Swyft 171 Hero 39 Shimmer Effect (Crisp letter sweep, zero outer glow) */
 .hero-brand-39 {
   position: relative;
-  display: block;
+  display: inline-block;
+  vertical-align: baseline;
   width: max-content;
   background: linear-gradient(180deg, #FF4554 0%, #DC2626 50%, #7F1D1D 100%);
   -webkit-background-clip: text;
