@@ -659,13 +659,13 @@ function MemberCard({
     );
   }
 
-  // Compact variant for 5-column grid (Support & Member) - Noticeably larger and no truncation
+  // Compact variant for 5-column grid (Support & Member) - Single line names (no drop/wrap)
   return (
     <div 
-      className={`rounded-2xl border ${theme.cardBorder} ${theme.cardBg} ${theme.glow} p-3.5 sm:p-4 min-h-[88px] sm:min-h-[94px] flex items-center gap-3.5 sm:gap-4 transition-all duration-300 hover:-translate-y-0.5 relative group/card`}
+      className={`rounded-xl border ${theme.cardBorder} ${theme.cardBg} ${theme.glow} p-2.5 sm:p-3 min-h-[72px] sm:min-h-[76px] flex items-center gap-2.5 sm:gap-3 transition-all duration-300 hover:-translate-y-0.5 relative group/card`}
     >
-      {/* Left: Square avatar with rounded corners - Enlarged */}
-      <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 ${theme.avatarBorder} ${theme.avatarBg} flex-shrink-0 flex items-center justify-center relative shadow-md bg-black`}>
+      {/* Left: Square avatar with rounded corners */}
+      <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl overflow-hidden border ${theme.avatarBorder} ${theme.avatarBg} flex-shrink-0 flex items-center justify-center relative shadow-sm bg-black`}>
         <img 
           src={avatarSrc} 
           alt={member.name} 
@@ -674,22 +674,22 @@ function MemberCard({
         />
       </div>
 
-      {/* Middle: Member Name & ID - Clean line-clamp-2 preventing awkward cutoffs */}
+      {/* Middle: Member Name on ONE single line (never drops down) & ID */}
       <div className="flex-1 min-w-0 pr-1">
         <h3 
-          className="text-sm sm:text-base font-bold text-white uppercase tracking-wide leading-snug line-clamp-2 group-hover:text-zinc-100 transition-colors"
+          className="text-xs sm:text-[13px] font-bold text-white uppercase tracking-wide whitespace-nowrap truncate group-hover:text-zinc-100 transition-colors"
           title={member.name}
         >
           {member.name}
         </h3>
-        <p className={`text-[11px] font-mono mt-0.5 font-semibold ${theme.idColor}`}>
+        <p className={`text-[10px] font-mono mt-0.5 ${theme.idColor} truncate`}>
           {member.memberId}
         </p>
       </div>
 
-      {/* Right: Role text + Facebook Button */}
-      <div className="flex flex-col items-end justify-between self-stretch py-0.5 flex-shrink-0 gap-1.5">
-        <span className={`font-rajdhani font-bold text-[11px] sm:text-xs tracking-wider uppercase ${theme.roleText}`}>
+      {/* Right: Compact Role text + Facebook Button */}
+      <div className="flex flex-col items-end justify-center flex-shrink-0 gap-1">
+        <span className={`font-mono text-[8px] sm:text-[9px] font-bold tracking-widest uppercase ${theme.roleText}`}>
           {roleLabel}
         </span>
         {member.facebook && (
