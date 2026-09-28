@@ -41,7 +41,7 @@ export default function RightDossierCard({ onOpenPartners }: RightDossierCardPro
               HOUSE LINKS
             </span>
             <span className="text-sm font-mono font-bold tracking-[0.16em] text-white uppercase group-hover:text-zinc-200 transition-colors leading-tight">
-              PARTNERS
+              MEMBER
             </span>
           </div>
 
