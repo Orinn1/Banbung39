@@ -86,6 +86,53 @@ body {
   mask-image: linear-gradient(to bottom, black 30%, transparent 95%);
 }
 
+/* Swyft 171 Hero 39 Shimmer Effect (No outer glow, crisp letter sweep) */
+.hero-brand-39 {
+  position: relative;
+  display: block;
+  width: max-content;
+  color: #DC2626;
+  -webkit-text-fill-color: #DC2626;
+  isolation: isolate;
+}
+
+.hero-brand-39::after {
+  content: attr(data-shine-text);
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  background: linear-gradient(
+    112deg,
+    transparent 0%,
+    transparent 36%,
+    rgba(255, 68, 68, 0.45) 43%,
+    #ff334b 47%,
+    #ffffff 50%,
+    #ff334b 53%,
+    rgba(255, 68, 68, 0.45) 57%,
+    transparent 64%,
+    transparent 100%
+  );
+  background-size: 260% 100%;
+  background-position: 135% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: hero39Sweep 3.2s linear infinite;
+  will-change: background-position;
+}
+
+@keyframes hero39Sweep {
+  0% {
+    background-position: 135% 0;
+  }
+  100% {
+    background-position: -35% 0;
+  }
+}
+
 /* Hide Next.js devtools indicator button ("N" icon at bottom-left) */
 nextjs-portal,
 [data-nextjs-toast],
