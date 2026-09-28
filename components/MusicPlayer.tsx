@@ -43,6 +43,59 @@ export default function MusicPlayer() {
     }
   }, [musicInfo.url]);
 
+  // Attempt Autoplay immediately + listen for first user interaction (touch/click/scroll/keypress)
+  useEffect(() => {
+    let hasStarted = false;
+
+    const tryPlayAudio = () => {
+      if (hasStarted || !audioRef.current) return;
+
+      const playPromise = audioRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            hasStarted = true;
+            setIsPlaying(true);
+            removeListeners();
+          })
+          .catch(() => {
+            // Autoplay with sound was blocked by browser policy; waiting for user gesture
+          });
+      }
+    };
+
+    const removeListeners = () => {
+      const events = ['click', 'touchstart', 'touchend', 'pointerdown', 'keydown', 'scroll'];
+      events.forEach((event) => {
+        window.removeEventListener(event, tryPlayAudio);
+        document.removeEventListener(event, tryPlayAudio);
+      });
+    };
+
+    // 1. Try immediate autoplay
+    tryPlayAudio();
+
+    // 2. Attach global interaction listeners to trigger immediately on first user touch/click/scroll
+    const events = ['click', 'touchstart', 'touchend', 'pointerdown', 'keydown', 'scroll'];
+    events.forEach((event) => {
+      window.addEventListener(event, tryPlayAudio, { once: true, passive: true });
+      document.addEventListener(event, tryPlayAudio, { once: true, passive: true });
+    });
+
+    // 3. Also try when audio element reports it can play
+    const audio = audioRef.current;
+    if (audio) {
+      audio.addEventListener('canplay', tryPlayAudio, { once: true });
+    }
+
+    return () => {
+      removeListeners();
+      if (audio) {
+        audio.removeEventListener('canplay', tryPlayAudio);
+      }
+    };
+  }, [musicInfo.url]);
+
   // Handle Play/Pause
   const togglePlay = () => {
     if (!audioRef.current) return;
@@ -104,7 +157,11 @@ export default function MusicPlayer() {
       <audio
         ref={audioRef}
         src={musicInfo.url}
-        preload="metadata"
+        preload="auto"
+        loop
+        autoPlay
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
         onTimeUpdate={() => {
           if (audioRef.current) {
             setProgress(audioRef.current.currentTime);
@@ -114,10 +171,6 @@ export default function MusicPlayer() {
           if (audioRef.current) {
             setDuration(audioRef.current.duration || 0);
           }
-        }}
-        onEnded={() => {
-          setIsPlaying(false);
-          setProgress(0);
         }}
       />
 
