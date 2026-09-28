@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Anton } from "next/font/google";
 import "./globals.css";
 import PageLoader from "@/components/PageLoader";
+import MusicPlayer from "@/components/MusicPlayer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -31,6 +32,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-[#060709] text-[#F3F4F6] font-sans antialiased selection:bg-white selection:text-black overflow-x-hidden">
         <PageLoader />
         {children}
+        <MusicPlayer />
       </body>
     </html>
   );

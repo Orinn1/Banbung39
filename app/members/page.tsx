@@ -4,7 +4,6 @@ import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { Search, X } from 'lucide-react';
 import SnowEffect from '@/components/SnowEffect';
-import MusicPlayer from '@/components/MusicPlayer';
 import { MEMBERS_DATA, Member, MemberRole } from '@/data/members';
 
 export default function MembersPage() {
@@ -336,9 +335,6 @@ export default function MembersPage() {
           <span className="text-zinc-400">MEMBERS</span>
         </div>
       </footer>
-
-      {/* PERSISTENT MUSIC PLAYER */}
-      <MusicPlayer />
     </div>
   );
 }

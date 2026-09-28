@@ -9,6 +9,9 @@ interface MusicInfo {
   url: string;
 }
 
+const STORAGE_KEY_TIME = 'bb39_music_time';
+const STORAGE_KEY_PLAYING = 'bb39_music_playing';
+
 export default function MusicPlayer() {
   const [isOpen, setIsOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -23,7 +26,7 @@ export default function MusicPlayer() {
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Load music metadata from API
+  // 1. Load music metadata from API
   useEffect(() => {
     fetch('/api/music')
       .then((res) => res.json())
@@ -35,15 +38,73 @@ export default function MusicPlayer() {
       .catch(() => {});
   }, []);
 
-  // Update audio source when musicInfo.url changes
+  // 2. Setup Audio Source & Restore Saved Time
   useEffect(() => {
-    if (audioRef.current && musicInfo.url) {
-      audioRef.current.src = musicInfo.url;
-      audioRef.current.load();
+    const audio = audioRef.current;
+    if (!audio || !musicInfo.url) return;
+
+    if (audio.src !== musicInfo.url && !audio.src.endsWith(musicInfo.url)) {
+      audio.src = musicInfo.url;
+      audio.load();
+
+      // Restore saved timestamp
+      try {
+        const savedTime = localStorage.getItem(STORAGE_KEY_TIME);
+        if (savedTime) {
+          const t = parseFloat(savedTime);
+          if (!isNaN(t) && t > 0) {
+            audio.currentTime = t;
+            setProgress(t);
+          }
+        }
+      } catch {}
     }
   }, [musicInfo.url]);
 
-  // Attempt Autoplay immediately + listen for first user interaction (touch/click/scroll/keypress)
+  // 3. Register MediaSession API (Lock screen, background playback, Control Center on iOS & Android)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'mediaSession' in navigator) {
+      try {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: musicInfo.title || 'BANBUNG39',
+          artist: musicInfo.artist || 'By.Mike Winterfell',
+          album: 'BANBUNG39 OFFICIAL',
+          artwork: [
+            { src: '/Logo.jpg', sizes: '96x96', type: 'image/jpeg' },
+            { src: '/Logo.jpg', sizes: '128x128', type: 'image/jpeg' },
+            { src: '/Logo.jpg', sizes: '192x192', type: 'image/jpeg' },
+            { src: '/Logo.jpg', sizes: '512x512', type: 'image/jpeg' },
+          ],
+        });
+
+        navigator.mediaSession.setActionHandler('play', () => {
+          audioRef.current?.play().then(() => setIsPlaying(true)).catch(() => {});
+        });
+
+        navigator.mediaSession.setActionHandler('pause', () => {
+          audioRef.current?.pause();
+          setIsPlaying(false);
+        });
+
+        navigator.mediaSession.setActionHandler('seekto', (details) => {
+          if (details.seekTime !== undefined && audioRef.current) {
+            audioRef.current.currentTime = details.seekTime;
+            setProgress(details.seekTime);
+          }
+        });
+
+        navigator.mediaSession.setActionHandler('previoustrack', () => {
+          handleRestart();
+        });
+
+        navigator.mediaSession.setActionHandler('nexttrack', () => {
+          handleRestart();
+        });
+      } catch {}
+    }
+  }, [musicInfo]);
+
+  // 4. Force Autoplay & Listen to First Global Interaction
   useEffect(() => {
     let hasStarted = false;
 
@@ -56,10 +117,13 @@ export default function MusicPlayer() {
           .then(() => {
             hasStarted = true;
             setIsPlaying(true);
+            try {
+              localStorage.setItem(STORAGE_KEY_PLAYING, 'true');
+            } catch {}
             removeListeners();
           })
           .catch(() => {
-            // Autoplay with sound was blocked by browser policy; waiting for user gesture
+            // Browser blocked unmuted autoplay without interaction; waiting for user gesture
           });
       }
     };
@@ -72,17 +136,16 @@ export default function MusicPlayer() {
       });
     };
 
-    // 1. Try immediate autoplay
+    // Try immediate autoplay
     tryPlayAudio();
 
-    // 2. Attach global interaction listeners to trigger immediately on first user touch/click/scroll
+    // Listen to first user touch/click/scroll anywhere on the page
     const events = ['click', 'touchstart', 'touchend', 'pointerdown', 'keydown', 'scroll'];
     events.forEach((event) => {
       window.addEventListener(event, tryPlayAudio, { once: true, passive: true });
       document.addEventListener(event, tryPlayAudio, { once: true, passive: true });
     });
 
-    // 3. Also try when audio element reports it can play
     const audio = audioRef.current;
     if (audio) {
       audio.addEventListener('canplay', tryPlayAudio, { once: true });
@@ -96,6 +159,24 @@ export default function MusicPlayer() {
     };
   }, [musicInfo.url]);
 
+  // 5. Keep playing in background / lock screen when tab becomes hidden
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      // When user switches apps or locks screen, make sure music continues
+      if (document.visibilityState === 'hidden') {
+        const wasPlaying = localStorage.getItem(STORAGE_KEY_PLAYING) === 'true';
+        if (wasPlaying && audioRef.current && audioRef.current.paused) {
+          audioRef.current.play().catch(() => {});
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
   // Handle Play/Pause
   const togglePlay = () => {
     if (!audioRef.current) return;
@@ -103,12 +184,19 @@ export default function MusicPlayer() {
     if (isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
+      try {
+        localStorage.setItem(STORAGE_KEY_PLAYING, 'false');
+      } catch {}
     } else {
       audioRef.current
         .play()
-        .then(() => setIsPlaying(true))
+        .then(() => {
+          setIsPlaying(true);
+          try {
+            localStorage.setItem(STORAGE_KEY_PLAYING, 'true');
+          } catch {}
+        })
         .catch(() => {
-          // In case audio is blocked or file doesn't exist yet
           setIsPlaying(false);
         });
     }
@@ -147,24 +235,44 @@ export default function MusicPlayer() {
     audioRef.current.currentTime = 0;
     setProgress(0);
     if (!isPlaying) {
-      audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+      audioRef.current
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+          try {
+            localStorage.setItem(STORAGE_KEY_PLAYING, 'true');
+          } catch {}
+        })
+        .catch(() => {});
     }
   };
 
   return (
     <>
-      {/* Real HTML5 Audio Element */}
+      {/* Real HTML5 Audio Element with background and loop capabilities */}
       <audio
         ref={audioRef}
         src={musicInfo.url}
         preload="auto"
         loop
         autoPlay
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
+        playsInline
+        onPlay={() => {
+          setIsPlaying(true);
+          try {
+            localStorage.setItem(STORAGE_KEY_PLAYING, 'true');
+          } catch {}
+        }}
+        onPause={() => {
+          setIsPlaying(false);
+        }}
         onTimeUpdate={() => {
           if (audioRef.current) {
-            setProgress(audioRef.current.currentTime);
+            const cur = audioRef.current.currentTime;
+            setProgress(cur);
+            try {
+              localStorage.setItem(STORAGE_KEY_TIME, String(cur));
+            } catch {}
           }
         }}
         onLoadedMetadata={() => {
@@ -202,7 +310,7 @@ export default function MusicPlayer() {
               togglePlay();
             }}
             className="w-6 h-6 rounded-full bg-white/[0.08] hover:bg-white hover:text-black text-zinc-300 flex items-center justify-center transition-all ml-0.5 sm:ml-1 active:scale-90"
-            title={isPlaying ? "Pause" : "Play"}
+            title={isPlaying ? 'Pause' : 'Play'}
           >
             {isPlaying ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3 ml-0.5" />}
           </button>
@@ -216,7 +324,7 @@ export default function MusicPlayer() {
         <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 p-3 sm:p-3.5 bg-[#0C0D12]/95 backdrop-blur-md border border-white/[0.1] rounded-2xl shadow-2xl w-[calc(100vw-32px)] sm:w-72 max-w-xs select-none transition-all duration-200">
           <div className="w-full">
             {/* Header with collapse button */}
-            <div 
+            <div
               onClick={() => setIsOpen(false)}
               className="flex items-center justify-between mb-0.5 cursor-pointer group"
               title="คลิกเพื่อย่อเครื่องเล่นเพลง"
@@ -225,7 +333,7 @@ export default function MusicPlayer() {
                 <span className={`w-1.5 h-1.5 rounded-full ${isPlaying ? 'bg-emerald-400 animate-pulse' : 'bg-zinc-600'}`} />
                 NOW PLAYING
               </span>
-              <button 
+              <button
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -281,7 +389,7 @@ export default function MusicPlayer() {
                 <button
                   onClick={togglePlay}
                   className="w-7 h-7 rounded-full bg-white text-black flex items-center justify-center hover:bg-zinc-200 transition-all active:scale-90 shadow-sm"
-                  title={isPlaying ? "Pause" : "Play"}
+                  title={isPlaying ? 'Pause' : 'Play'}
                 >
                   {isPlaying ? <Pause className="w-3.5 h-3.5 fill-current" /> : <Play className="w-3.5 h-3.5 fill-current ml-0.5" />}
                 </button>
@@ -297,7 +405,7 @@ export default function MusicPlayer() {
               <button
                 onClick={toggleMute}
                 className="text-zinc-500 hover:text-white transition-colors p-1"
-                title={isMuted ? "Unmute" : "Mute"}
+                title={isMuted ? 'Unmute' : 'Mute'}
               >
                 {isMuted ? <VolumeX className="w-3.5 h-3.5 text-red-400" /> : <Volume2 className="w-3.5 h-3.5" />}
               </button>

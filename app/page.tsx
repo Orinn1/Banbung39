@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import SnowEffect from '@/components/SnowEffect';
-import MusicPlayer from '@/components/MusicPlayer';
 import RightDossierCard from '@/components/RightDossierCard';
 import MembersModal from '@/components/MembersModal';
 
@@ -101,9 +100,6 @@ export default function LandingPage() {
           <RightDossierCard onOpenPartners={() => setIsMembersOpen(true)} />
         </div>
       </main>
-
-      {/* BOTTOM-LEFT MUSIC PLAYER WIDGET */}
-      <MusicPlayer />
 
       {/* MEMBERS DIRECTORY MODAL */}
       <MembersModal
