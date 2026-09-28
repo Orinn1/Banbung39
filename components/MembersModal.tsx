@@ -9,14 +9,14 @@ interface MembersModalProps {
 }
 
 const SAMPLE_MEMBERS = [
-  { id: '#0001', name: 'MIKE WINTERFELL', role: 'FOUNDER', status: 'Active' },
-  { id: '#0002', name: 'ALEXANDER CROSS', role: 'LEADER', status: 'Active' },
-  { id: '#0003', name: 'DANTE VALENTINO', role: 'LEADER', status: 'Active' },
-  { id: '#0004', name: 'SEBASTIAN GRAY', role: 'SUPPORT', status: 'Active' },
-  { id: '#0005', name: 'LUCAS NIGHT', role: 'SUPPORT', status: 'Active' },
-  { id: '#0006', name: 'VICTOR STONE', role: 'SUPPORT', status: 'Active' },
-  { id: '#0007', name: 'MARCUS VANCE', role: 'MEMBER', status: 'Active' },
-  { id: '#0008', name: 'KAIEN SHADOW', role: 'MEMBER', status: 'Active' },
+  { id: '#0001', name: 'MIKE WINTERFELL', role: 'FOUNDER' },
+  { id: '#0002', name: 'ALEXANDER CROSS', role: 'LEADER' },
+  { id: '#0003', name: 'DANTE VALENTINO', role: 'LEADER' },
+  { id: '#0004', name: 'SEBASTIAN GRAY', role: 'SUPPORT' },
+  { id: '#0005', name: 'LUCAS NIGHT', role: 'SUPPORT' },
+  { id: '#0006', name: 'VICTOR STONE', role: 'SUPPORT' },
+  { id: '#0007', name: 'MARCUS VANCE', role: 'MEMBER' },
+  { id: '#0008', name: 'KAIEN SHADOW', role: 'MEMBER' },
 ];
 
 export default function MembersModal({ isOpen, onClose }: MembersModalProps) {
@@ -92,10 +92,6 @@ export default function MembersModal({ isOpen, onClose }: MembersModalProps) {
                     {member.role}
                   </span>
                 </div>
-              </div>
-
-              <div className="text-[11px] font-mono text-zinc-400">
-                [{member.status.toUpperCase()}]
               </div>
             </div>
           ))}

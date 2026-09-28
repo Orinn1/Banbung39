@@ -29,10 +29,8 @@ export default function MembersPage() {
       const matchesSearch =
         !q ||
         m.name.toLowerCase().includes(q) ||
-        m.nickname.toLowerCase().includes(q) ||
         m.memberId.toLowerCase().includes(q) ||
-        m.id.includes(q) ||
-        (m.specialty && m.specialty.toLowerCase().includes(q));
+        m.id.includes(q);
       return matchesRole && matchesSearch;
     });
   }, [selectedRole, searchQuery]);
@@ -145,7 +143,7 @@ export default function MembersPage() {
 
         {/* Filter Tabs & Search Bar */}
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 p-2 bg-[#0C0D12]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl mb-10 shadow-2xl">
-          {/* Role Filter Tabs (No icons) */}
+          {/* Role Filter Tabs */}
           <div className="flex flex-wrap items-center gap-1.5 p-1">
             <button
               onClick={() => setSelectedRole('All')}
@@ -228,7 +226,7 @@ export default function MembersPage() {
             </button>
           </div>
 
-          {/* Search Box (No icons) */}
+          {/* Search Box */}
           <div className="relative min-w-[240px] sm:min-w-[280px] px-2 py-1">
             <input
               type="text"
@@ -258,11 +256,11 @@ export default function MembersPage() {
           </div>
         ) : selectedRole === 'All' && !searchQuery ? (
           /* SECTIONED VIEW WHEN 'ALL' IS SELECTED */
-          <div className="space-y-14">
+          <div className="space-y-12">
             {/* 1. FOUNDER SECTION */}
             {founderList.length > 0 && (
               <section>
-                <div className="flex items-baseline justify-between mb-5 pb-2 border-b border-white/[0.08]">
+                <div className="flex items-baseline justify-between mb-4 pb-2 border-b border-white/[0.08]">
                   <div className="flex items-baseline gap-3">
                     <h2 
                       style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
@@ -279,9 +277,9 @@ export default function MembersPage() {
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {founderList.map((m) => (
-                    <FounderCard key={m.id} member={m} getRoleBadgeStyle={getRoleBadgeStyle} />
+                    <MemberCard key={m.id} member={m} getRoleBadgeStyle={getRoleBadgeStyle} isFeatured />
                   ))}
                 </div>
               </section>
@@ -290,7 +288,7 @@ export default function MembersPage() {
             {/* 2. LEADER SECTION */}
             {leaderList.length > 0 && (
               <section>
-                <div className="flex items-baseline justify-between mb-5 pb-2 border-b border-white/[0.08]">
+                <div className="flex items-baseline justify-between mb-4 pb-2 border-b border-white/[0.08]">
                   <div className="flex items-baseline gap-3">
                     <h2 
                       style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
@@ -307,9 +305,9 @@ export default function MembersPage() {
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
                   {leaderList.map((m) => (
-                    <StandardMemberCard key={m.id} member={m} getRoleBadgeStyle={getRoleBadgeStyle} />
+                    <MemberCard key={m.id} member={m} getRoleBadgeStyle={getRoleBadgeStyle} />
                   ))}
                 </div>
               </section>
@@ -318,7 +316,7 @@ export default function MembersPage() {
             {/* 3. SUPPORT SECTION */}
             {supportList.length > 0 && (
               <section>
-                <div className="flex items-baseline justify-between mb-5 pb-2 border-b border-white/[0.08]">
+                <div className="flex items-baseline justify-between mb-4 pb-2 border-b border-white/[0.08]">
                   <div className="flex items-baseline gap-3">
                     <h2 
                       style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
@@ -335,9 +333,9 @@ export default function MembersPage() {
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
                   {supportList.map((m) => (
-                    <StandardMemberCard key={m.id} member={m} getRoleBadgeStyle={getRoleBadgeStyle} />
+                    <MemberCard key={m.id} member={m} getRoleBadgeStyle={getRoleBadgeStyle} />
                   ))}
                 </div>
               </section>
@@ -346,7 +344,7 @@ export default function MembersPage() {
             {/* 4. MEMBER SECTION */}
             {regularMemberList.length > 0 && (
               <section>
-                <div className="flex items-baseline justify-between mb-5 pb-2 border-b border-white/[0.08]">
+                <div className="flex items-baseline justify-between mb-4 pb-2 border-b border-white/[0.08]">
                   <div className="flex items-baseline gap-3">
                     <h2 
                       style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
@@ -363,9 +361,9 @@ export default function MembersPage() {
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
                   {regularMemberList.map((m) => (
-                    <StandardMemberCard key={m.id} member={m} getRoleBadgeStyle={getRoleBadgeStyle} />
+                    <MemberCard key={m.id} member={m} getRoleBadgeStyle={getRoleBadgeStyle} />
                   ))}
                 </div>
               </section>
@@ -373,9 +371,9 @@ export default function MembersPage() {
           </div>
         ) : (
           /* UNIFIED GRID VIEW WHEN FILTERED */
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
             {filteredMembers.map((m) => (
-              <StandardMemberCard key={m.id} member={m} getRoleBadgeStyle={getRoleBadgeStyle} />
+              <MemberCard key={m.id} member={m} getRoleBadgeStyle={getRoleBadgeStyle} />
             ))}
           </div>
         )}
@@ -401,111 +399,39 @@ export default function MembersPage() {
   );
 }
 
-// Pure Typographic Card for Founder (No icons / no emojis)
-function FounderCard({ 
+// Clean Minimal Member Card (Only Name, ID, Role)
+function MemberCard({ 
   member, 
-  getRoleBadgeStyle 
+  getRoleBadgeStyle,
+  isFeatured = false,
 }: { 
   member: Member; 
   getRoleBadgeStyle: (role: MemberRole) => string;
+  isFeatured?: boolean;
 }) {
   return (
-    <div className="relative p-6 sm:p-7 rounded-2xl bg-[#0D0F15]/95 backdrop-blur-xl border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.15)] flex flex-col justify-between hover:border-white/40 transition-all duration-300">
-      {/* Top Banner */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-widest uppercase border ${getRoleBadgeStyle(member.role)}`}>
-            {member.role}
-          </span>
-          <span className="text-xs font-mono text-zinc-400 font-bold tracking-wider">
-            {member.memberId}
-          </span>
-        </div>
-
-        <span className="text-[10px] font-mono tracking-widest text-zinc-300 border border-white/10 px-2 py-0.5 rounded-full">
-          STATUS: {member.status.toUpperCase()}
-        </span>
-      </div>
-
-      {/* Main Info */}
-      <div className="my-2">
-        <h3 
-          style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-          className="text-2xl sm:text-3xl font-anton tracking-wide text-white uppercase leading-tight"
-        >
-          {member.name}
-        </h3>
-        <p className="text-xs font-mono text-zinc-400 tracking-wider uppercase mt-1">
-          {member.specialty}
-        </p>
-      </div>
-
-      {/* Bio / Description */}
-      {member.bio && (
-        <p className="text-xs text-zinc-300/90 font-mono mt-3 line-clamp-2 leading-relaxed bg-white/[0.02] p-3 rounded-xl border border-white/[0.05]">
-          {member.bio}
-        </p>
-      )}
-
-      {/* Meta Footer */}
-      <div className="mt-4 pt-3 border-t border-white/[0.08] flex items-center justify-between text-[10px] font-mono text-zinc-400">
-        <span>JOINED: {member.joinedDate}</span>
-        {member.discordId && (
-          <span className="text-zinc-400">
-            DISCORD: @{member.discordId}
-          </span>
-        )}
-      </div>
-    </div>
-  );
-}
-
-// Pure Typographic Card for Leaders, Support, and Members (No icons / no emojis)
-function StandardMemberCard({ 
-  member, 
-  getRoleBadgeStyle 
-}: { 
-  member: Member; 
-  getRoleBadgeStyle: (role: MemberRole) => string;
-}) {
-  return (
-    <div className="p-5 rounded-2xl bg-[#0C0D12]/90 backdrop-blur-md border border-white/[0.08] hover:border-white/25 shadow-xl flex flex-col justify-between transition-all duration-200 hover:-translate-y-0.5">
-      {/* Top Header */}
-      <div className="flex items-center justify-between mb-3">
-        <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-widest uppercase border ${getRoleBadgeStyle(member.role)}`}>
-          {member.role}
-        </span>
-
-        <span className="text-xs font-mono text-zinc-400 font-bold">
+    <div className={`p-4 sm:p-5 rounded-2xl bg-[#0C0D12]/90 backdrop-blur-md border ${
+      isFeatured 
+        ? 'border-white/25 shadow-[0_15px_40px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.12)]' 
+        : 'border-white/[0.08] hover:border-white/25 shadow-lg'
+    } flex items-center justify-between gap-4 transition-all duration-200 hover:-translate-y-0.5`}>
+      <div className="min-w-0 flex-1">
+        <span className="text-xs font-mono text-zinc-500 block mb-1 font-bold">
           {member.memberId}
         </span>
-      </div>
-
-      {/* Body Info */}
-      <div className="my-2">
         <h3 
           style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-          className="text-xl font-anton tracking-wide text-white uppercase truncate"
+          className={`${
+            isFeatured ? 'text-2xl sm:text-3xl' : 'text-xl'
+          } font-anton tracking-wide text-white uppercase truncate`}
         >
           {member.name}
         </h3>
-        <p className="text-[11px] font-mono text-zinc-400 uppercase truncate mt-0.5">
-          {member.specialty || member.nickname}
-        </p>
       </div>
 
-      {/* Bottom Footer */}
-      <div className="mt-3 pt-2.5 border-t border-white/[0.06] flex items-center justify-between text-[10px] font-mono text-zinc-400">
-        <span className="tracking-wider">
-          [{member.status.toUpperCase()}]
-        </span>
-
-        {member.discordId && (
-          <span className="text-zinc-400">
-            @{member.discordId}
-          </span>
-        )}
-      </div>
+      <span className={`px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-widest uppercase border flex-shrink-0 ${getRoleBadgeStyle(member.role)}`}>
+        {member.role}
+      </span>
     </div>
   );
 }
