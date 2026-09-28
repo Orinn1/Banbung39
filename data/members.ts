@@ -5,6 +5,8 @@ export interface Member {
   memberId: string;
   name: string;
   role: MemberRole;
+  facebook?: string;
+
 }
 
 export const MEMBERS_DATA: Member[] = [
@@ -12,15 +14,16 @@ export const MEMBERS_DATA: Member[] = [
   {
     id: "0001",
     memberId: "#0001",
-    name: "MIKE WINTERFELL",
+    name: "MIKE RAGNAROK",
     role: "Founder",
+    facebook: "https://www.facebook.com/profile.php?id=61551917375831",
   },
 ];
 
 export const CLAN_INFO = {
   name: "BANBUNG39",
   tag: "BB39",
-  founder: "Mike Winterfell",
+  founder: "Mike Ragnarok",
   year: "2K26",
   motto: "BANBUNG39 2K26",
   totalMembersCount: MEMBERS_DATA.length,

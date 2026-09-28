@@ -70,7 +70,7 @@ export default function MembersModal({ isOpen, onClose }: MembersModalProps) {
               <div>
                 <div className="flex items-center gap-2.5">
                   <span className="text-xs font-mono font-bold text-zinc-400">
-                    {member.id}
+                    {member.memberId || member.id}
                   </span>
                   <span 
                     style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
@@ -78,11 +78,19 @@ export default function MembersModal({ isOpen, onClose }: MembersModalProps) {
                   >
                     {member.name}
                   </span>
-                  <span className="text-[10px] font-mono text-zinc-400 uppercase border border-white/10 px-2 py-0.2 rounded-full">
-                    {member.role}
-                  </span>
                 </div>
               </div>
+
+              {member.facebook && (
+                <a
+                  href={member.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1 rounded-lg bg-white/[0.04] border border-white/10 hover:border-white/40 text-[10px] font-mono text-zinc-300 hover:text-white transition-all uppercase"
+                >
+                  FACEBOOK &rarr;
+                </a>
+              )}
             </div>
           ))}
         </div>

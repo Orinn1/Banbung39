@@ -41,18 +41,7 @@ export default function MembersPage() {
   const supportList = filteredMembers.filter((m) => m.role === 'Support');
   const regularMemberList = filteredMembers.filter((m) => m.role === 'Member');
 
-  const getRoleBadgeStyle = (role: MemberRole) => {
-    switch (role) {
-      case 'Founder':
-        return 'bg-white/10 text-white border-white/40 shadow-[0_0_12px_rgba(255,255,255,0.12)]';
-      case 'Leader':
-        return 'bg-zinc-800/90 text-zinc-200 border-white/20';
-      case 'Support':
-        return 'bg-zinc-900 text-zinc-300 border-white/15';
-      case 'Member':
-        return 'bg-zinc-900/60 text-zinc-400 border-white/10';
-    }
-  };
+
 
   return (
     <div className="relative min-h-screen w-full bg-[#060709] text-[#F3F4F6] flex flex-col justify-between overflow-x-hidden select-none">
@@ -279,7 +268,7 @@ export default function MembersPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {founderList.map((m) => (
-                    <MemberCard key={m.id} member={m} getRoleBadgeStyle={getRoleBadgeStyle} isFeatured />
+                    <MemberCard key={m.id} member={m} isFeatured />
                   ))}
                 </div>
               </section>
@@ -307,7 +296,7 @@ export default function MembersPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
                   {leaderList.map((m) => (
-                    <MemberCard key={m.id} member={m} getRoleBadgeStyle={getRoleBadgeStyle} />
+                    <MemberCard key={m.id} member={m} />
                   ))}
                 </div>
               </section>
@@ -335,7 +324,7 @@ export default function MembersPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
                   {supportList.map((m) => (
-                    <MemberCard key={m.id} member={m} getRoleBadgeStyle={getRoleBadgeStyle} />
+                    <MemberCard key={m.id} member={m} />
                   ))}
                 </div>
               </section>
@@ -363,7 +352,7 @@ export default function MembersPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
                   {regularMemberList.map((m) => (
-                    <MemberCard key={m.id} member={m} getRoleBadgeStyle={getRoleBadgeStyle} />
+                    <MemberCard key={m.id} member={m} />
                   ))}
                 </div>
               </section>
@@ -373,7 +362,7 @@ export default function MembersPage() {
           /* UNIFIED GRID VIEW WHEN FILTERED */
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
             {filteredMembers.map((m) => (
-              <MemberCard key={m.id} member={m} getRoleBadgeStyle={getRoleBadgeStyle} />
+              <MemberCard key={m.id} member={m} />
             ))}
           </div>
         )}
@@ -399,39 +388,78 @@ export default function MembersPage() {
   );
 }
 
-// Clean Minimal Member Card (Only Name, ID, Role)
+// Role-specific metallic gradient border and glow themes (Authentic, dark, non-AI)
+const getRoleTheme = (role: MemberRole) => {
+  switch (role) {
+    case 'Founder':
+      // Platinum White / Polished Silver Chrome
+      return {
+        borderGradient: 'from-white/90 via-slate-300/40 to-white/10 hover:from-white hover:via-slate-200 hover:to-white/30',
+        glow: 'shadow-[0_4px_30px_rgba(255,255,255,0.08)] hover:shadow-[0_6px_40px_rgba(255,255,255,0.15)]',
+        idColor: 'text-zinc-400',
+      };
+    case 'Leader':
+      // Crimson Noir / Blood Ruby
+      return {
+        borderGradient: 'from-red-500/90 via-red-800/45 to-red-950/20 hover:from-red-400 hover:via-red-700 hover:to-red-900/40',
+        glow: 'shadow-[0_4px_30px_rgba(239,68,68,0.12)] hover:shadow-[0_6px_40px_rgba(239,68,68,0.22)]',
+        idColor: 'text-red-400/80',
+      };
+    case 'Support':
+      // Steel Ice Blue / Tactical Cobalt
+      return {
+        borderGradient: 'from-sky-400/90 via-blue-800/45 to-sky-950/20 hover:from-sky-300 hover:via-blue-700 hover:to-sky-900/40',
+        glow: 'shadow-[0_4px_30px_rgba(56,189,248,0.12)] hover:shadow-[0_6px_40px_rgba(56,189,248,0.22)]',
+        idColor: 'text-sky-400/80',
+      };
+    case 'Member':
+      // Smoked Titanium Charcoal
+      return {
+        borderGradient: 'from-zinc-500/50 via-zinc-700/25 to-zinc-900/10 hover:from-zinc-400 hover:via-zinc-600 hover:to-zinc-800/30',
+        glow: 'shadow-[0_4px_20px_rgba(0,0,0,0.6)]',
+        idColor: 'text-zinc-500',
+      };
+  }
+};
+
+// Clean Typographic Member Card with Role Gradient Border (No role badge text)
 function MemberCard({ 
   member, 
-  getRoleBadgeStyle,
   isFeatured = false,
 }: { 
   member: Member; 
-  getRoleBadgeStyle: (role: MemberRole) => string;
   isFeatured?: boolean;
 }) {
-  return (
-    <div className={`p-4 sm:p-5 rounded-2xl bg-[#0C0D12]/90 backdrop-blur-md border ${
-      isFeatured 
-        ? 'border-white/25 shadow-[0_15px_40px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.12)]' 
-        : 'border-white/[0.08] hover:border-white/25 shadow-lg'
-    } flex items-center justify-between gap-4 transition-all duration-200 hover:-translate-y-0.5`}>
-      <div className="min-w-0 flex-1">
-        <span className="text-xs font-mono text-zinc-500 block mb-1 font-bold">
-          {member.memberId}
-        </span>
-        <h3 
-          style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-          className={`${
-            isFeatured ? 'text-2xl sm:text-3xl' : 'text-xl'
-          } font-anton tracking-wide text-white uppercase truncate`}
-        >
-          {member.name}
-        </h3>
-      </div>
+  const theme = getRoleTheme(member.role);
 
-      <span className={`px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-widest uppercase border flex-shrink-0 ${getRoleBadgeStyle(member.role)}`}>
-        {member.role}
-      </span>
+  return (
+    <div className={`p-[1.5px] rounded-2xl bg-gradient-to-br ${theme.borderGradient} ${theme.glow} transition-all duration-300 hover:-translate-y-0.5`}>
+      <div className="p-4 sm:p-5 rounded-[14.5px] bg-[#0C0D12]/95 backdrop-blur-md flex items-center justify-between gap-4">
+        <div className="min-w-0 flex-1">
+          <span className={`text-xs font-mono block mb-1 font-bold ${theme.idColor}`}>
+            {member.memberId}
+          </span>
+          <h3 
+            style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
+            className={`${
+              isFeatured ? 'text-2xl sm:text-3xl' : 'text-xl'
+            } font-anton tracking-wide text-white uppercase truncate`}
+          >
+            {member.name}
+          </h3>
+        </div>
+
+        {member.facebook && (
+          <a
+            href={member.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3.5 py-1.5 rounded-xl bg-white/[0.04] border border-white/15 hover:border-white/50 text-[11px] font-mono text-zinc-300 hover:text-white transition-all uppercase tracking-wider flex-shrink-0"
+          >
+            FACEBOOK &rarr;
+          </a>
+        )}
+      </div>
     </div>
   );
 }
