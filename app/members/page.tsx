@@ -272,15 +272,15 @@ export default function MembersPage() {
               </section>
             )}
 
-            {/* 4. MEMBERS SECTION (5 Columns) */}
+            {/* 4. MEMBERS SECTION (4 Columns - Spacious & Clean) */}
             {(selectedRole === 'All' || selectedRole === 'Member') && regularMemberList.length > 0 && (
               <section>
                 <SectionHeader title="MEMBERS" role="Member" />
-                <div className="flex flex-wrap justify-center gap-3.5 sm:gap-4 max-w-[1440px] mx-auto">
+                <div className="flex flex-wrap justify-center gap-4 sm:gap-4.5 max-w-[1500px] mx-auto">
                   {regularMemberList.map((m) => (
                     <div 
                       key={m.id} 
-                      className="w-full sm:w-[calc(50%-0.5rem)] md:w-[calc(33.333%-0.7rem)] lg:w-[calc(25%-0.75rem)] xl:w-[calc(20%-0.8rem)]"
+                      className="w-full sm:w-[calc(50%-0.6rem)] lg:w-[calc(33.333%-0.75rem)] xl:w-[calc(25%-0.85rem)]"
                     >
                       <MemberCard 
                         member={m} 
@@ -659,13 +659,13 @@ function MemberCard({
     );
   }
 
-  // Compact variant for 5-column grid (Support & Member) - Single line names (no drop/wrap)
+  // Compact variant for 4-column grid (Members) - Spacious, larger avatar, bold names
   return (
     <div 
-      className={`rounded-xl border ${theme.cardBorder} ${theme.cardBg} ${theme.glow} p-2.5 sm:p-3 min-h-[72px] sm:min-h-[76px] flex items-center gap-2.5 sm:gap-3 transition-all duration-300 hover:-translate-y-0.5 relative group/card`}
+      className={`rounded-2xl border ${theme.cardBorder} ${theme.cardBg} ${theme.glow} p-3.5 sm:p-4 min-h-[86px] sm:min-h-[92px] flex items-center gap-3.5 sm:gap-4 transition-all duration-300 hover:-translate-y-0.5 relative group/card`}
     >
-      {/* Left: Square avatar with rounded corners */}
-      <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl overflow-hidden border ${theme.avatarBorder} ${theme.avatarBg} flex-shrink-0 flex items-center justify-center relative shadow-sm bg-black`}>
+      {/* Left: Square avatar with rounded corners - Enlarged */}
+      <div className={`w-14 h-14 sm:w-15 sm:h-15 rounded-xl overflow-hidden border-2 ${theme.avatarBorder} ${theme.avatarBg} flex-shrink-0 flex items-center justify-center relative shadow-md bg-black`}>
         <img 
           src={avatarSrc} 
           alt={member.name} 
@@ -677,19 +677,19 @@ function MemberCard({
       {/* Middle: Member Name on ONE single line (never drops down) & ID */}
       <div className="flex-1 min-w-0 pr-1">
         <h3 
-          className="text-xs sm:text-[13px] font-bold text-white uppercase tracking-wide whitespace-nowrap truncate group-hover:text-zinc-100 transition-colors"
+          className="text-sm sm:text-base font-bold text-white uppercase tracking-wide whitespace-nowrap truncate group-hover:text-zinc-100 transition-colors"
           title={member.name}
         >
           {member.name}
         </h3>
-        <p className={`text-[10px] font-mono mt-0.5 ${theme.idColor} truncate`}>
+        <p className={`text-[11px] font-mono mt-0.5 font-semibold ${theme.idColor} truncate`}>
           {member.memberId}
         </p>
       </div>
 
-      {/* Right: Compact Role text + Facebook Button */}
-      <div className="flex flex-col items-end justify-center flex-shrink-0 gap-1">
-        <span className={`font-mono text-[8px] sm:text-[9px] font-bold tracking-widest uppercase ${theme.roleText}`}>
+      {/* Right: Role text + Facebook Button */}
+      <div className="flex flex-col items-end justify-between self-stretch py-0.5 flex-shrink-0 gap-1.5">
+        <span className={`font-rajdhani font-bold text-[10px] sm:text-[11px] tracking-wider uppercase ${theme.roleText}`}>
           {roleLabel}
         </span>
         {member.facebook && (
