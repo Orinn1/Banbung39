@@ -215,65 +215,69 @@ export default function MembersPage() {
           </div>
         ) : (
           <div className="space-y-12">
-            {/* 1. FOUNDER SECTION (Wide / 2-Column Layout) */}
+            {/* 1. FOUNDER SECTION (Wide Cards - 2 Columns) */}
             {(selectedRole === 'All' || selectedRole === 'Founder') && founderList.length > 0 && (
               <section>
                 <SectionHeader title="FOUNDER" role="Founder" />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-6xl mx-auto">
+                <div className="flex flex-wrap justify-center gap-5 max-w-6xl mx-auto">
                   {founderList.map((m) => (
-                    <MemberCard 
-                      key={m.id} 
-                      member={m} 
-                      variant="wide"
-                    />
+                    <div key={m.id} className="w-full md:w-[calc(50%-10px)]">
+                      <MemberCard 
+                        member={m} 
+                        variant="wide"
+                      />
+                    </div>
                   ))}
                 </div>
               </section>
             )}
 
-            {/* 2. LEADER SECTION (2-Column Layout) */}
+            {/* 2. LEADER SECTION (Wide Cards - 2 on top, 1 centered at bottom) */}
             {(selectedRole === 'All' || selectedRole === 'Leader') && leaderList.length > 0 && (
               <section>
                 <SectionHeader title="LEADER" role="Leader" />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-6xl mx-auto">
+                <div className="flex flex-wrap justify-center gap-5 max-w-6xl mx-auto">
                   {leaderList.map((m) => (
-                    <MemberCard 
-                      key={m.id} 
-                      member={m} 
-                      variant="wide"
-                    />
+                    <div key={m.id} className="w-full md:w-[calc(50%-10px)]">
+                      <MemberCard 
+                        member={m} 
+                        variant="wide"
+                      />
+                    </div>
                   ))}
                 </div>
               </section>
             )}
 
-            {/* 3. SUPPORT SECTION (5-Column Layout) */}
+            {/* 3. SUPPORT SECTION (Same size as Leader - 2 on top, 1 centered at bottom) */}
             {(selectedRole === 'All' || selectedRole === 'Support') && supportList.length > 0 && (
               <section>
                 <SectionHeader title="SUPPORT" role="Support" />
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                <div className="flex flex-wrap justify-center gap-5 max-w-6xl mx-auto">
                   {supportList.map((m) => (
-                    <MemberCard 
-                      key={m.id} 
-                      member={m} 
-                      variant="compact"
-                    />
+                    <div key={m.id} className="w-full md:w-[calc(50%-10px)]">
+                      <MemberCard 
+                        member={m} 
+                        variant="wide"
+                      />
+                    </div>
                   ))}
                 </div>
               </section>
             )}
 
-            {/* 4. MEMBERS SECTION (5-Column Layout) */}
+            {/* 4. MEMBERS SECTION (Wide Cards) */}
             {(selectedRole === 'All' || selectedRole === 'Member') && regularMemberList.length > 0 && (
               <section>
                 <SectionHeader title="MEMBERS" role="Member" />
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                <div className="flex flex-wrap justify-center gap-5 max-w-6xl mx-auto">
                   {regularMemberList.map((m) => (
-                    <MemberCard 
-                      key={m.id} 
-                      member={m} 
-                      variant="compact"
-                    />
+                    <div key={m.id} className="w-full md:w-[calc(50%-10px)]">
+                      <MemberCard 
+                        member={m} 
+                        variant="wide"
+                      />
+                    </div>
                   ))}
                 </div>
               </section>
