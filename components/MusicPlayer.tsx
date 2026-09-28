@@ -30,7 +30,7 @@ export default function MusicPlayer() {
     return (
       <div
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-40 flex items-center gap-2.5 sm:gap-3 px-3 py-2 sm:px-3.5 sm:py-2.5 bg-[#0C0D12]/95 backdrop-blur-md border border-white/[0.1] hover:border-white/30 rounded-xl shadow-2xl cursor-pointer group transition-all duration-200 select-none hover:scale-105 active:scale-95"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 flex items-center gap-2.5 sm:gap-3 px-3 py-2 sm:px-3.5 sm:py-2.5 bg-[#0C0D12]/95 backdrop-blur-md border border-white/[0.1] hover:border-white/30 rounded-xl shadow-2xl cursor-pointer group transition-all duration-200 select-none hover:scale-105 active:scale-95"
         title="คลิกเพื่อเปิดเครื่องเล่นเพลง"
       >
         <div className="flex items-center gap-2">
@@ -65,7 +65,7 @@ export default function MusicPlayer() {
   }
 
   return (
-    <div className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-40 p-3 sm:p-3.5 bg-[#0C0D12]/95 backdrop-blur-md border border-white/[0.1] rounded-2xl shadow-2xl w-[calc(100vw-32px)] sm:w-72 max-w-xs select-none transition-all duration-200">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 p-3 sm:p-3.5 bg-[#0C0D12]/95 backdrop-blur-md border border-white/[0.1] rounded-2xl shadow-2xl w-[calc(100vw-32px)] sm:w-72 max-w-xs select-none transition-all duration-200">
       {/* Track Information & Controls */}
       <div className="w-full">
         {/* Header with toggle to collapse */}
