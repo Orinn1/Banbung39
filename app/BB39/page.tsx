@@ -424,14 +424,14 @@ export default function BackofficePage() {
   // 1. PASSWORD LOCK SCREEN
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen w-full bg-[#08090C] text-[#F3F4F6] flex flex-col items-center justify-center p-4 relative overflow-hidden select-none">
+      <div className="min-h-screen w-full bg-[#08090C] text-[#F3F4F6] flex flex-col items-center justify-center p-3 sm:p-4 relative overflow-hidden select-none">
         {/* Ambient Glows */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="w-full max-w-md bg-[#0E1017]/95 border border-white/10 rounded-3xl p-7 sm:p-9 shadow-2xl backdrop-blur-2xl relative z-10 text-center">
+        <div className="w-full max-w-md bg-[#0E1017]/95 border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-9 shadow-2xl backdrop-blur-2xl relative z-10 text-center">
           {/* Lock Icon */}
-          <div className="w-16 h-16 rounded-2xl bg-white/[0.04] border border-white/15 flex items-center justify-center mx-auto mb-5 shadow-inner">
-            <KeyRound className="w-8 h-8 text-amber-400 animate-pulse" />
+          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white/[0.04] border border-white/15 flex items-center justify-center mx-auto mb-4 sm:mb-5 shadow-inner">
+            <KeyRound className="w-7 h-7 sm:w-8 sm:h-8 text-amber-400 animate-pulse" />
           </div>
 
           <span className="text-[10px] font-mono tracking-[0.25em] text-zinc-400 uppercase">
@@ -443,7 +443,7 @@ export default function BackofficePage() {
           >
             BB39 BACKOFFICE
           </h1>
-          <p className="text-xs text-zinc-400 font-mono mb-6">
+          <p className="text-xs text-zinc-400 font-mono mb-5 sm:mb-6">
             กรุณากรอกรหัสผ่านเพื่อเข้าสู่ระบบจัดการหลังบ้าน
           </p>
 
@@ -469,13 +469,13 @@ export default function BackofficePage() {
 
             <button
               type="submit"
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-mono text-xs font-bold tracking-widest uppercase transition-all duration-200 shadow-lg shadow-red-950/40 active:scale-95"
+              className="w-full py-3.5 sm:py-3 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-mono text-xs font-bold tracking-widest uppercase transition-all duration-200 shadow-lg shadow-red-950/40 active:scale-95"
             >
               UNLOCK ACCESS
             </button>
           </form>
 
-          <div className="mt-6 pt-5 border-t border-white/[0.08] flex items-center justify-between text-[11px] font-mono text-zinc-500">
+          <div className="mt-5 sm:mt-6 pt-4 sm:pt-5 border-t border-white/[0.08] flex items-center justify-between text-[11px] font-mono text-zinc-500">
             <span>PASSWORD: BB39 / bb39</span>
             <Link href="/" className="hover:text-white transition-colors">
               &larr; BACK TO HOME
@@ -489,56 +489,57 @@ export default function BackofficePage() {
   // 2. AUTHENTICATED ADMIN DASHBOARD
   return (
     <div className="min-h-screen w-full bg-[#07080B] text-[#F3F4F6] flex flex-col justify-between overflow-x-hidden">
-      {/* Toast Notification */}
+      {/* Toast Notification (Responsive mobile full width or top right) */}
       {toast && (
-        <div className={`fixed top-6 right-6 z-50 px-5 py-3 rounded-2xl shadow-2xl backdrop-blur-xl border text-xs font-mono tracking-wider uppercase flex items-center gap-2.5 animate-in slide-in-from-top duration-200 ${
+        <div className={`fixed top-4 left-4 right-4 sm:left-auto sm:right-6 sm:top-6 z-50 px-4 py-3 rounded-2xl shadow-2xl backdrop-blur-xl border text-xs font-mono tracking-wider uppercase flex items-center justify-center sm:justify-start gap-2.5 animate-in slide-in-from-top duration-200 ${
           toast.type === 'success'
-            ? 'bg-emerald-950/90 border-emerald-500/40 text-emerald-200'
-            : 'bg-red-950/90 border-red-500/40 text-red-200'
+            ? 'bg-emerald-950/95 border-emerald-500/50 text-emerald-200 shadow-emerald-950/50'
+            : 'bg-red-950/95 border-red-500/50 text-red-200 shadow-red-950/50'
         }`}>
           <span>{toast.message}</span>
         </div>
       )}
 
       {/* ADMIN TOP NAVBAR */}
-      <header className="relative z-30 w-full px-4 sm:px-10 py-5 bg-[#0C0E14]/85 backdrop-blur-xl border-b border-white/[0.08] flex items-center justify-between">
+      <header className="relative z-30 w-full px-3.5 sm:px-10 py-3.5 sm:py-5 bg-[#0C0E14]/90 backdrop-blur-xl border-b border-white/[0.08] flex items-center justify-between">
         {/* Left: Branding & Status */}
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-black border border-white/15 overflow-hidden flex-shrink-0">
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-black border border-white/15 overflow-hidden flex-shrink-0">
             <img src={DEFAULT_AVATAR} alt="BB39" className="w-full h-full object-cover" />
           </div>
           <div className="flex flex-col">
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-mono font-bold tracking-wider text-white uppercase">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <span className="text-xs sm:text-sm font-mono font-bold tracking-wider text-white uppercase">
                 BANBUNG39
               </span>
-              <span className="px-2 py-0.5 rounded-full bg-red-500/10 border border-red-500/30 text-[9px] font-mono font-bold text-red-400 uppercase">
+              <span className="px-1.5 py-0.5 rounded-full bg-red-500/10 border border-red-500/30 text-[8px] sm:text-[9px] font-mono font-bold text-red-400 uppercase">
                 ADMIN
               </span>
             </div>
-            <span className="text-[10px] font-mono tracking-widest text-zinc-400 uppercase">
-              BACKOFFICE MANAGEMENT SYSTEM
+            <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-zinc-400 uppercase truncate max-w-[120px] sm:max-w-none">
+              BACKOFFICE SYSTEM
             </span>
           </div>
         </div>
 
         {/* Right: Actions */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3">
           {/* Music Manager Button */}
           <button
             onClick={() => setIsMusicModalOpen(true)}
-            className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600/30 to-teal-600/30 hover:from-emerald-600/40 hover:to-teal-600/40 border border-emerald-500/40 text-xs font-mono text-emerald-300 hover:text-white transition-all flex items-center gap-1.5 active:scale-95 shadow-sm"
+            className="px-2.5 sm:px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600/30 to-teal-600/30 hover:from-emerald-600/40 hover:to-teal-600/40 border border-emerald-500/40 text-xs font-mono text-emerald-300 hover:text-white transition-all flex items-center gap-1.5 active:scale-95 shadow-sm"
             title="Upload and Manage Music"
           >
-            <Music className="w-3.5 h-3.5 text-emerald-400" />
-            <span>จัดการเพลง (MUSIC)</span>
+            <Music className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+            <span className="hidden sm:inline">จัดการเพลง (MUSIC)</span>
+            <span className="sm:hidden text-[11px] font-semibold">เพลง</span>
           </button>
 
           {/* View Live Public Site */}
           <Link
             href="/members"
             target="_blank"
-            className="px-3 py-1.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-xs font-mono text-zinc-300 hover:text-white transition-all flex items-center gap-1.5"
+            className="p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-xs font-mono text-zinc-300 hover:text-white transition-all flex items-center gap-1.5"
             title="Open Live Public Site in new tab"
           >
             <ExternalLink className="w-3.5 h-3.5" />
@@ -548,7 +549,7 @@ export default function BackofficePage() {
           {/* Logout */}
           <button
             onClick={handleLogout}
-            className="px-3 py-1.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-xs font-mono text-red-300 hover:text-red-200 transition-all flex items-center gap-1.5 active:scale-95"
+            className="p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-xs font-mono text-red-300 hover:text-red-200 transition-all flex items-center gap-1.5 active:scale-95"
             title="Log out from Backoffice"
           >
             <LogOut className="w-3.5 h-3.5" />
@@ -558,69 +559,69 @@ export default function BackofficePage() {
       </header>
 
       {/* MAIN ADMIN CONTENT */}
-      <main className="flex-1 max-w-[1440px] w-full mx-auto px-4 sm:px-8 md:px-10 py-6 sm:py-8 space-y-6">
+      <main className="flex-1 max-w-[1440px] w-full mx-auto px-3.5 sm:px-8 md:px-10 py-4 sm:py-8 space-y-4 sm:space-y-6">
         {/* STATS OVERVIEW CARDS */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4">
-          {/* Total */}
-          <div className="bg-[#0D0F16] border border-white/10 rounded-2xl p-4 flex flex-col justify-between">
-            <span className="text-[11px] font-mono text-zinc-400 uppercase tracking-widest flex items-center gap-1.5">
-              <Users className="w-3.5 h-3.5 text-zinc-300" /> TOTAL
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-4">
+          {/* Total (Full width top banner on mobile, 1 col on desktop) */}
+          <div className="col-span-2 sm:col-span-1 bg-gradient-to-r from-red-950/30 via-[#0D0F16] to-[#0D0F16] border border-white/15 rounded-2xl p-3 sm:p-4 flex sm:flex-col justify-between items-center sm:items-start">
+            <span className="text-[10px] sm:text-[11px] font-mono text-zinc-300 uppercase tracking-wider flex items-center gap-1.5">
+              <Users className="w-3.5 h-3.5 text-red-400 flex-shrink-0" /> ทั้งหมด (TOTAL)
             </span>
             <span 
               style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-              className="text-3xl font-anton text-white mt-1"
+              className="text-2xl sm:text-3xl font-anton text-white sm:mt-1"
             >
               {stats.total}
             </span>
           </div>
 
           {/* Founder */}
-          <div className="bg-[#0D0F16] border border-amber-400/20 rounded-2xl p-4 flex flex-col justify-between">
-            <span className="text-[11px] font-mono text-amber-400 uppercase tracking-widest flex items-center gap-1.5">
-              <Crown className="w-3.5 h-3.5 text-amber-400" /> FOUNDER
+          <div className="bg-[#0D0F16] border border-amber-400/20 rounded-2xl p-3 sm:p-4 flex flex-col justify-between">
+            <span className="text-[10px] sm:text-[11px] font-mono text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+              <Crown className="w-3 h-3 text-amber-400 flex-shrink-0" /> FOUNDER
             </span>
             <span 
               style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-              className="text-3xl font-anton text-amber-300 mt-1"
+              className="text-2xl sm:text-3xl font-anton text-amber-300 mt-1"
             >
               {stats.founder}
             </span>
           </div>
 
           {/* Leader */}
-          <div className="bg-[#0D0F16] border border-red-500/20 rounded-2xl p-4 flex flex-col justify-between">
-            <span className="text-[11px] font-mono text-red-400 uppercase tracking-widest flex items-center gap-1.5">
-              <Swords className="w-3.5 h-3.5 text-red-400" /> LEADER
+          <div className="bg-[#0D0F16] border border-red-500/20 rounded-2xl p-3 sm:p-4 flex flex-col justify-between">
+            <span className="text-[10px] sm:text-[11px] font-mono text-red-400 uppercase tracking-wider flex items-center gap-1.5">
+              <Swords className="w-3 h-3 text-red-400 flex-shrink-0" /> LEADER
             </span>
             <span 
               style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-              className="text-3xl font-anton text-red-400 mt-1"
+              className="text-2xl sm:text-3xl font-anton text-red-400 mt-1"
             >
               {stats.leader}
             </span>
           </div>
 
           {/* Support */}
-          <div className="bg-[#0D0F16] border border-sky-400/20 rounded-2xl p-4 flex flex-col justify-between">
-            <span className="text-[11px] font-mono text-sky-300 uppercase tracking-widest flex items-center gap-1.5">
-              <Shield className="w-3.5 h-3.5 text-sky-300" /> SUPPORT
+          <div className="bg-[#0D0F16] border border-sky-400/20 rounded-2xl p-3 sm:p-4 flex flex-col justify-between">
+            <span className="text-[10px] sm:text-[11px] font-mono text-sky-300 uppercase tracking-wider flex items-center gap-1.5">
+              <Shield className="w-3 h-3 text-sky-300 flex-shrink-0" /> SUPPORT
             </span>
             <span 
               style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-              className="text-3xl font-anton text-sky-200 mt-1"
+              className="text-2xl sm:text-3xl font-anton text-sky-200 mt-1"
             >
               {stats.support}
             </span>
           </div>
 
           {/* Member */}
-          <div className="col-span-2 sm:col-span-1 bg-[#0D0F16] border border-white/10 rounded-2xl p-4 flex flex-col justify-between">
-            <span className="text-[11px] font-mono text-zinc-400 uppercase tracking-widest flex items-center gap-1.5">
-              <Zap className="w-3.5 h-3.5 text-zinc-400" /> MEMBERS
+          <div className="bg-[#0D0F16] border border-white/10 rounded-2xl p-3 sm:p-4 flex flex-col justify-between">
+            <span className="text-[10px] sm:text-[11px] font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-1.5">
+              <Zap className="w-3 h-3 text-zinc-400 flex-shrink-0" /> MEMBER
             </span>
             <span 
               style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-              className="text-3xl font-anton text-zinc-200 mt-1"
+              className="text-2xl sm:text-3xl font-anton text-zinc-200 mt-1"
             >
               {stats.member}
             </span>
@@ -628,35 +629,18 @@ export default function BackofficePage() {
         </div>
 
         {/* CONTROLS BAR: SEARCH, FILTERS, ADD BUTTON */}
-        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 p-3 bg-[#0D0F16] border border-white/10 rounded-2xl shadow-xl">
-          {/* Role Filters */}
-          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 md:pb-0">
-            {(['All', 'Founder', 'Leader', 'Support', 'Member'] as const).map((r) => (
-              <button
-                key={r}
-                onClick={() => setSelectedRoleFilter(r)}
-                className={`flex-shrink-0 px-3 py-1.5 rounded-xl text-xs font-mono uppercase tracking-wider transition-all ${
-                  selectedRoleFilter === r
-                    ? 'bg-white text-black font-bold shadow-md'
-                    : 'text-zinc-400 hover:text-white hover:bg-white/[0.05]'
-                }`}
-              >
-                {r.toUpperCase()}
-              </button>
-            ))}
-          </div>
-
-          {/* Search & Actions */}
-          <div className="flex items-center gap-2.5">
+        <div className="flex flex-col gap-2.5 sm:gap-3 p-3 bg-[#0D0F16] border border-white/10 rounded-2xl shadow-xl">
+          {/* Top Row: Search Box + Refresh + Add Member */}
+          <div className="flex items-center gap-2">
             {/* Search Box */}
-            <div className="relative flex-1 md:w-64">
-              <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <div className="relative flex-1">
+              <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="SEARCH NAME OR #ID..."
-                className="w-full pl-9 pr-7 py-2 bg-[#141722] border border-white/10 focus:border-white/30 rounded-xl text-xs font-mono text-white placeholder-zinc-500 focus:outline-none uppercase transition-colors"
+                placeholder="ค้นหาชื่อ หรือ #ID..."
+                className="w-full pl-8 pr-7 py-2.5 sm:py-2 bg-[#141722] border border-white/10 focus:border-white/30 rounded-xl text-xs font-mono text-white placeholder-zinc-500 focus:outline-none uppercase transition-colors"
               />
               {searchQuery && (
                 <button
@@ -672,7 +656,7 @@ export default function BackofficePage() {
             <button
               onClick={fetchMembers}
               disabled={loading}
-              className="p-2 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-zinc-300 hover:text-white transition-all disabled:opacity-50"
+              className="p-2.5 sm:p-2 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-zinc-300 hover:text-white transition-all disabled:opacity-50 flex-shrink-0 active:scale-95"
               title="Refresh Members"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
@@ -681,16 +665,61 @@ export default function BackofficePage() {
             {/* Add Member Button */}
             <button
               onClick={openAddModal}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-mono text-xs font-bold tracking-wider uppercase transition-all shadow-md flex items-center gap-1.5 flex-shrink-0 active:scale-95"
+              className="px-3 sm:px-4 py-2.5 sm:py-2 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-mono text-xs font-bold tracking-wider uppercase transition-all shadow-md flex items-center gap-1.5 flex-shrink-0 active:scale-95"
             >
-              <UserPlus className="w-3.5 h-3.5" />
-              <span>ADD MEMBER</span>
+              <UserPlus className="w-3.5 h-3.5 flex-shrink-0" />
+              <span className="hidden sm:inline">ADD MEMBER</span>
+              <span className="sm:hidden font-semibold">เพิ่มสมาชิก</span>
             </button>
+          </div>
+
+          {/* Bottom Row: Role Filter Pills with Counter Badges */}
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5 -mx-1 px-1">
+            {(['All', 'Founder', 'Leader', 'Support', 'Member'] as const).map((r) => {
+              const count = r === 'All' ? stats.total : stats[r.toLowerCase() as keyof typeof stats];
+              const isSelected = selectedRoleFilter === r;
+              return (
+                <button
+                  key={r}
+                  onClick={() => setSelectedRoleFilter(r)}
+                  className={`flex-shrink-0 px-3 py-1.5 rounded-xl text-xs font-mono uppercase tracking-wider transition-all flex items-center gap-1.5 ${
+                    isSelected
+                      ? 'bg-white text-black font-bold shadow-md'
+                      : 'text-zinc-400 hover:text-white hover:bg-white/[0.05] bg-[#141722]/60 border border-white/[0.06]'
+                  }`}
+                >
+                  <span>{r === 'All' ? 'ทั้งหมด' : r.toUpperCase()}</span>
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-md ${
+                    isSelected ? 'bg-black/15 text-black font-bold' : 'bg-white/10 text-zinc-400'
+                  }`}>
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* MEMBERS TABLE / LIST */}
+        {/* MEMBERS CONTAINER */}
         <div className="bg-[#0D0F16] border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
+          {/* Header Bar */}
+          <div className="px-4 py-3 border-b border-white/[0.08] bg-[#11131C] flex items-center justify-between text-xs font-mono">
+            <div className="flex items-center gap-2">
+              <span className="text-zinc-400 font-medium">รายการสมาชิก</span>
+              <span className="px-2 py-0.5 rounded-full bg-white/10 text-white font-bold text-[11px]">
+                {filteredMembers.length} คน
+              </span>
+              {searchQuery && (
+                <span className="text-zinc-500 text-[11px] truncate max-w-[130px] sm:max-w-none">
+                  (&ldquo;{searchQuery}&rdquo;)
+                </span>
+              )}
+            </div>
+            <span className="text-[10px] text-zinc-500 hidden sm:inline">
+              เรียงรหัสประจำตัวอัตโนมัติ (#0001 &rarr; ล่าสุด)
+            </span>
+          </div>
+
           {loading ? (
             <div className="py-24 text-center flex flex-col items-center justify-center">
               <RefreshCw className="w-6 h-6 text-red-500 animate-spin mb-3" />
@@ -699,156 +728,240 @@ export default function BackofficePage() {
               </p>
             </div>
           ) : filteredMembers.length === 0 ? (
-            <div className="py-24 text-center flex flex-col items-center justify-center">
+            <div className="py-20 text-center flex flex-col items-center justify-center p-4">
               <p className="text-xs font-mono text-zinc-500 uppercase tracking-widest mb-3">
-                [ NO MEMBERS FOUND ]
+                [ ไม่พบข้อมูลสมาชิก ]
               </p>
               <button
                 onClick={() => {
                   setSelectedRoleFilter('All');
                   setSearchQuery('');
                 }}
-                className="px-4 py-1.5 rounded-xl bg-white/[0.08] hover:bg-white/15 text-xs font-mono text-white uppercase transition-colors"
+                className="px-4 py-2 rounded-xl bg-white/[0.08] hover:bg-white/15 text-xs font-mono text-white uppercase transition-colors"
               >
-                RESET FILTERS
+                ล้างตัวกรอง (RESET)
               </button>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="border-b border-white/[0.08] bg-[#11131C] text-[11px] font-mono uppercase tracking-widest text-zinc-400">
-                    <th className="py-3.5 px-4 sm:px-6">MEMBER (เรียงรหัส)</th>
-                    <th className="py-3.5 px-3">ROLE</th>
-                    <th className="py-3.5 px-3">#ID</th>
-                    <th className="py-3.5 px-3">FACEBOOK</th>
-                    <th className="py-3.5 px-4 sm:px-6 text-right">ACTIONS</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/[0.05] text-xs font-mono">
-                  {filteredMembers.map((member) => {
-                    const badge = getRoleBadge(member.role);
-                    return (
-                      <tr 
-                        key={member.id}
-                        className="hover:bg-white/[0.02] transition-colors group"
-                      >
-                        {/* Member Avatar & Name */}
-                        <td className="py-3 px-4 sm:px-6">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl overflow-hidden bg-black border border-white/15 flex-shrink-0">
-                              <img
-                                src={member.avatar || DEFAULT_AVATAR}
-                                alt={member.name}
-                                onError={(e) => { e.currentTarget.src = DEFAULT_AVATAR; }}
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                            <div>
-                              <p className="font-bold text-white uppercase tracking-wide group-hover:text-zinc-200">
+            <>
+              {/* 1. MOBILE CARDS VIEW (md:hidden) - Optimized for touch, no horizontal scroll */}
+              <div className="md:hidden divide-y divide-white/[0.06]">
+                {filteredMembers.map((member) => {
+                  const badge = getRoleBadge(member.role);
+                  return (
+                    <div 
+                      key={member.id}
+                      className="p-3.5 flex flex-col gap-3 bg-[#0D0F16] hover:bg-white/[0.02] transition-colors"
+                    >
+                      {/* Top Row: Avatar + Info */}
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex items-center gap-3 min-w-0">
+                          {/* Avatar */}
+                          <div className="w-12 h-12 rounded-xl overflow-hidden bg-black border border-white/15 flex-shrink-0 shadow-md">
+                            <img
+                              src={member.avatar || DEFAULT_AVATAR}
+                              alt={member.name}
+                              onError={(e) => { e.currentTarget.src = DEFAULT_AVATAR; }}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+
+                          {/* Name + ID + Role */}
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <span className="font-bold text-white uppercase text-sm tracking-wide truncate">
                                 {member.name}
-                              </p>
-                              <span className="text-[10px] text-zinc-500 font-mono">
-                                ID: {member.id}
+                              </span>
+                              <span className="font-mono text-[11px] font-bold text-amber-300 bg-amber-400/10 border border-amber-400/25 px-1.5 py-0.5 rounded">
+                                {member.memberId || `#${member.id}`}
                               </span>
                             </div>
+
+                            <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                              {/* Role Badge */}
+                              <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md border text-[10px] font-bold uppercase tracking-wider ${badge.bg}`}>
+                                {badge.icon}
+                                <span>{member.role}</span>
+                              </span>
+
+                              {/* Facebook Profile Link */}
+                              {member.facebook && (
+                                <a
+                                  href={member.facebook}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1 text-[11px] font-mono text-sky-400 hover:text-sky-300 bg-sky-500/10 border border-sky-500/25 px-2 py-0.5 rounded-md"
+                                  title="Open Facebook Profile"
+                                >
+                                  <span>FACEBOOK</span>
+                                  <ExternalLink className="w-2.5 h-2.5" />
+                                </a>
+                              )}
+                            </div>
                           </div>
-                        </td>
+                        </div>
+                      </div>
 
-                        {/* Role Badge */}
-                        <td className="py-3 px-3">
-                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-[10px] font-bold uppercase tracking-wider ${badge.bg}`}>
-                            {badge.icon}
-                            <span>{member.role}</span>
-                          </span>
-                        </td>
+                      {/* Bottom Row: Full touch width Edit & Delete buttons */}
+                      <div className="grid grid-cols-2 gap-2 pt-1 border-t border-white/[0.04]">
+                        <button
+                          onClick={() => openEditModal(member)}
+                          className="w-full py-2.5 px-3 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] active:bg-white/[0.18] border border-white/10 text-zinc-200 hover:text-white transition-all flex items-center justify-center gap-1.5 text-xs font-mono font-bold active:scale-95 shadow-sm"
+                        >
+                          <Edit2 className="w-3.5 h-3.5 text-amber-400" />
+                          <span>แก้ไข (EDIT)</span>
+                        </button>
 
-                        {/* Member #ID */}
-                        <td className="py-3 px-3 font-bold text-zinc-200">
-                          {member.memberId}
-                        </td>
+                        <button
+                          onClick={() => setDeleteCandidate(member)}
+                          className="w-full py-2.5 px-3 rounded-xl bg-red-500/10 hover:bg-red-500/20 active:bg-red-500/30 border border-red-500/30 text-red-400 hover:text-red-300 transition-all flex items-center justify-center gap-1.5 text-xs font-mono font-bold active:scale-95 shadow-sm"
+                        >
+                          <Trash2 className="w-3.5 h-3.5 text-red-400" />
+                          <span>ลบ (DELETE)</span>
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
 
-                        {/* Facebook Link */}
-                        <td className="py-3 px-3">
-                          {member.facebook ? (
-                            <a
-                              href={member.facebook}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-zinc-400 hover:text-white hover:underline flex items-center gap-1.5 text-xs truncate max-w-[220px]"
-                            >
-                              <span className="truncate">{member.facebook}</span>
-                              <ExternalLink className="w-3 h-3 flex-shrink-0 text-zinc-500" />
-                            </a>
-                          ) : (
-                            <span className="text-zinc-600">-</span>
-                          )}
-                        </td>
+              {/* 2. DESKTOP TABLE VIEW (hidden md:block) */}
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-white/[0.08] bg-[#11131C] text-[11px] font-mono uppercase tracking-widest text-zinc-400">
+                      <th className="py-3.5 px-4 sm:px-6">MEMBER (เรียงรหัส)</th>
+                      <th className="py-3.5 px-3">ROLE</th>
+                      <th className="py-3.5 px-3">#ID</th>
+                      <th className="py-3.5 px-3">FACEBOOK</th>
+                      <th className="py-3.5 px-4 sm:px-6 text-right">ACTIONS</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/[0.05] text-xs font-mono">
+                    {filteredMembers.map((member) => {
+                      const badge = getRoleBadge(member.role);
+                      return (
+                        <tr 
+                          key={member.id}
+                          className="hover:bg-white/[0.02] transition-colors group"
+                        >
+                          {/* Member Avatar & Name */}
+                          <td className="py-3 px-4 sm:px-6">
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 rounded-xl overflow-hidden bg-black border border-white/15 flex-shrink-0">
+                                <img
+                                  src={member.avatar || DEFAULT_AVATAR}
+                                  alt={member.name}
+                                  onError={(e) => { e.currentTarget.src = DEFAULT_AVATAR; }}
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                              <div>
+                                <p className="font-bold text-white uppercase tracking-wide group-hover:text-zinc-200">
+                                  {member.name}
+                                </p>
+                                <span className="text-[10px] text-zinc-500 font-mono">
+                                  ID: {member.id}
+                                </span>
+                              </div>
+                            </div>
+                          </td>
 
-                        {/* Action Buttons: Edit & Delete */}
-                        <td className="py-3 px-4 sm:px-6 text-right">
-                          <div className="flex items-center justify-end gap-2">
-                            <button
-                              onClick={() => openEditModal(member)}
-                              className="px-2.5 py-1.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.12] border border-white/10 text-zinc-300 hover:text-white transition-all flex items-center gap-1 text-[11px] active:scale-95"
-                              title="Edit Member"
-                            >
-                              <Edit2 className="w-3 h-3 text-amber-400" />
-                              <span className="hidden sm:inline">EDIT</span>
-                            </button>
-                            <button
-                              onClick={() => setDeleteCandidate(member)}
-                              className="px-2.5 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 hover:text-red-300 transition-all flex items-center gap-1 text-[11px] active:scale-95"
-                              title="Delete Member"
-                            >
-                              <Trash2 className="w-3 h-3" />
-                              <span className="hidden sm:inline">DELETE</span>
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+                          {/* Role Badge */}
+                          <td className="py-3 px-3">
+                            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-[10px] font-bold uppercase tracking-wider ${badge.bg}`}>
+                              {badge.icon}
+                              <span>{member.role}</span>
+                            </span>
+                          </td>
+
+                          {/* Member #ID */}
+                          <td className="py-3 px-3 font-bold text-zinc-200">
+                            {member.memberId}
+                          </td>
+
+                          {/* Facebook Link */}
+                          <td className="py-3 px-3">
+                            {member.facebook ? (
+                              <a
+                                href={member.facebook}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-zinc-400 hover:text-white hover:underline flex items-center gap-1.5 text-xs truncate max-w-[220px]"
+                              >
+                                <span className="truncate">{member.facebook}</span>
+                                <ExternalLink className="w-3 h-3 flex-shrink-0 text-zinc-500" />
+                              </a>
+                            ) : (
+                              <span className="text-zinc-600">-</span>
+                            )}
+                          </td>
+
+                          {/* Action Buttons: Edit & Delete */}
+                          <td className="py-3 px-4 sm:px-6 text-right">
+                            <div className="flex items-center justify-end gap-2">
+                              <button
+                                onClick={() => openEditModal(member)}
+                                className="px-2.5 py-1.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.12] border border-white/10 text-zinc-300 hover:text-white transition-all flex items-center gap-1 text-[11px] active:scale-95"
+                                title="Edit Member"
+                              >
+                                <Edit2 className="w-3 h-3 text-amber-400" />
+                                <span>EDIT</span>
+                              </button>
+                              <button
+                                onClick={() => setDeleteCandidate(member)}
+                                className="px-2.5 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 hover:text-red-300 transition-all flex items-center gap-1 text-[11px] active:scale-95"
+                                title="Delete Member"
+                              >
+                                <Trash2 className="w-3 h-3" />
+                                <span>DELETE</span>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </>
           )}
         </div>
       </main>
 
       {/* FOOTER */}
-      <footer className="w-full px-4 sm:px-10 py-5 border-t border-white/[0.08] bg-[#0A0B10] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono text-zinc-500 text-center sm:text-left">
+      <footer className="w-full px-4 sm:px-10 py-4 sm:py-5 border-t border-white/[0.08] bg-[#0A0B10] flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs font-mono text-zinc-500 text-center sm:text-left">
         <div>BANBUNG39 • MANAGEMENT BACKOFFICE • 2K26</div>
         <div>AUTHORIZED ADMIN: BB39</div>
       </footer>
 
-      {/* 3. ADD / EDIT MEMBER MODAL */}
+      {/* 3. ADD / EDIT MEMBER MODAL (Scrollable & Mobile Keyboard Friendly) */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="w-full max-w-lg bg-[#0E1119] border border-white/15 rounded-3xl p-6 sm:p-7 shadow-2xl relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="w-full max-w-lg bg-[#0E1119] border border-white/15 rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-2xl relative max-h-[92vh] flex flex-col">
             {/* Modal Header */}
-            <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
+            <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-white/[0.08] flex-shrink-0">
               <div>
                 <span className="text-[10px] font-mono tracking-widest text-zinc-400 uppercase">
-                  {editingMember ? 'UPDATE RECORD' : 'CREATE NEW RECORD (เรียงรหัสอัตโนมัติ)'}
+                  {editingMember ? 'UPDATE RECORD' : 'CREATE RECORD (เรียงรหัสอัตโนมัติ)'}
                 </span>
                 <h3 
                   style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-                  className="text-xl font-anton text-white tracking-wider uppercase mt-0.5"
+                  className="text-lg sm:text-xl font-anton text-white tracking-wider uppercase mt-0.5"
                 >
                   {editingMember ? `EDIT: ${editingMember.name}` : 'ADD NEW MEMBER'}
                 </h3>
               </div>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="w-8 h-8 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-zinc-400 hover:text-white flex items-center justify-center transition-colors"
+                className="w-8 h-8 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-zinc-400 hover:text-white flex items-center justify-center transition-colors flex-shrink-0"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Modal Form */}
-            <form onSubmit={handleSaveMember} className="mt-5 space-y-4">
+            {/* Modal Form: Scrollable */}
+            <form onSubmit={handleSaveMember} className="mt-4 sm:mt-5 space-y-4 overflow-y-auto overscroll-contain pr-1 -mr-1 flex-1">
               {formError && (
                 <div className="p-3 rounded-xl bg-red-950/60 border border-red-500/40 text-xs font-mono text-red-200">
                   {formError}
@@ -881,7 +994,7 @@ export default function BackofficePage() {
                       key={r}
                       type="button"
                       onClick={() => setFormRole(r)}
-                      className={`py-2 px-3 rounded-xl border text-xs font-mono font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 ${
+                      className={`py-2 px-3 rounded-xl border text-xs font-mono font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 active:scale-95 ${
                         formRole === r
                           ? r === 'Founder'
                             ? 'bg-amber-400/20 border-amber-400 text-amber-300 shadow-md'
@@ -949,7 +1062,7 @@ export default function BackofficePage() {
               {/* Avatar Upload from Computer */}
               <div>
                 <label className="block text-[11px] font-mono text-zinc-400 uppercase tracking-wider mb-2">
-                  รูปโปรไฟล์สมาชิก (เลือกรูปจากเครื่องคอมพิวเตอร์)
+                  รูปโปรไฟล์สมาชิก (เลือกรูปจากเครื่อง)
                 </label>
 
                 {/* Hidden File Input */}
@@ -963,7 +1076,7 @@ export default function BackofficePage() {
 
                 <div className="flex items-center gap-3.5 p-3.5 bg-[#141723] border border-white/10 rounded-2xl">
                   {/* Avatar Preview */}
-                  <div className="w-16 h-16 rounded-xl overflow-hidden bg-black border-2 border-white/20 flex-shrink-0 flex items-center justify-center relative shadow-md">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden bg-black border-2 border-white/20 flex-shrink-0 flex items-center justify-center relative shadow-md">
                     <img
                       src={avatarPreview || formAvatar || DEFAULT_AVATAR}
                       alt="Avatar Preview"
@@ -998,7 +1111,7 @@ export default function BackofficePage() {
                           setAvatarPreview(DEFAULT_AVATAR);
                           setFormAvatar(DEFAULT_AVATAR);
                         }}
-                        className="px-3 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.1] border border-white/10 text-[11px] font-mono text-zinc-400 hover:text-white uppercase transition-colors"
+                        className="px-2.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.1] border border-white/10 text-[11px] font-mono text-zinc-400 hover:text-white uppercase transition-colors"
                       >
                         ใช้โลโก้ BB39
                       </button>
@@ -1008,18 +1121,18 @@ export default function BackofficePage() {
               </div>
 
               {/* Modal Buttons */}
-              <div className="pt-3 border-t border-white/[0.08] flex items-center justify-end gap-2.5">
+              <div className="pt-3 border-t border-white/[0.08] flex items-center gap-2.5 flex-shrink-0">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-xs font-mono text-zinc-300 hover:text-white uppercase transition-colors"
+                  className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-xs font-mono text-zinc-300 hover:text-white uppercase transition-colors"
                 >
                   CANCEL
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white text-xs font-mono font-bold tracking-wider uppercase transition-all shadow-md active:scale-95 disabled:opacity-50"
+                  className="flex-1 sm:flex-initial px-6 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white text-xs font-mono font-bold tracking-wider uppercase transition-all shadow-md active:scale-95 disabled:opacity-50"
                 >
                   {isSubmitting ? 'SAVING...' : editingMember ? 'SAVE CHANGES' : 'CREATE MEMBER'}
                 </button>
@@ -1031,8 +1144,8 @@ export default function BackofficePage() {
 
       {/* 4. DELETE CONFIRMATION MODAL */}
       {deleteCandidate && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="w-full max-w-sm bg-[#0E1119] border border-red-500/30 rounded-3xl p-6 shadow-2xl text-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="w-full max-w-sm bg-[#0E1119] border border-red-500/30 rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-2xl text-center">
             <div className="w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/30 flex items-center justify-center mx-auto mb-4 text-red-400">
               <Trash2 className="w-6 h-6" />
             </div>
@@ -1047,7 +1160,7 @@ export default function BackofficePage() {
               ต้องการลบสมาชิก <span className="text-white font-bold">{deleteCandidate.name}</span> ({deleteCandidate.memberId}) ใช่หรือไม่?
             </p>
 
-            <div className="flex items-center justify-center gap-3">
+            <div className="flex items-center justify-center gap-2.5">
               <button
                 onClick={() => setDeleteCandidate(null)}
                 className="flex-1 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-xs font-mono text-zinc-300 hover:text-white uppercase transition-colors"
@@ -1067,10 +1180,10 @@ export default function BackofficePage() {
 
       {/* 5. MUSIC MANAGEMENT MODAL (MP3 UPLOAD FROM COMPUTER) */}
       {isMusicModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="w-full max-w-md bg-[#0E1119] border border-emerald-500/30 rounded-3xl p-6 sm:p-7 shadow-2xl relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="w-full max-w-md bg-[#0E1119] border border-emerald-500/30 rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-2xl relative max-h-[92vh] flex flex-col">
             {/* Modal Header */}
-            <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
+            <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-white/[0.08] flex-shrink-0">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
                   <Music className="w-5 h-5" />
@@ -1078,12 +1191,12 @@ export default function BackofficePage() {
                 <div>
                   <h3 
                     style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-                    className="text-xl font-anton text-white tracking-wider uppercase"
+                    className="text-lg sm:text-xl font-anton text-white tracking-wider uppercase"
                   >
                     MUSIC SETTINGS
                   </h3>
                   <span className="text-[10px] font-mono tracking-widest text-zinc-400 uppercase">
-                    อัปโหลดไฟล์ MP3 จากคอมพิวเตอร์
+                    อัปโหลดไฟล์ MP3 จากเครื่อง
                   </span>
                 </div>
               </div>
@@ -1093,14 +1206,14 @@ export default function BackofficePage() {
                   setSelectedFile(null);
                   setFilePreviewUrl(null);
                 }}
-                className="w-8 h-8 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-zinc-400 hover:text-white flex items-center justify-center transition-colors"
+                className="w-8 h-8 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-zinc-400 hover:text-white flex items-center justify-center transition-colors flex-shrink-0"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Music Form */}
-            <form onSubmit={handleSaveMusic} className="mt-5 space-y-4">
+            {/* Music Form: Scrollable */}
+            <form onSubmit={handleSaveMusic} className="mt-4 sm:mt-5 space-y-4 overflow-y-auto overscroll-contain pr-1 -mr-1 flex-1">
               {musicError && (
                 <div className="p-3 rounded-xl bg-red-950/60 border border-red-500/40 text-xs font-mono text-red-200">
                   {musicError}
@@ -1121,9 +1234,9 @@ export default function BackofficePage() {
                 />
                 <div
                   onClick={() => fileInputRef.current?.click()}
-                  className="border-2 border-dashed border-white/20 hover:border-emerald-400/50 bg-[#141723] rounded-2xl p-5 text-center cursor-pointer transition-all hover:bg-[#181C2B] group"
+                  className="border-2 border-dashed border-white/20 hover:border-emerald-400/50 bg-[#141723] rounded-2xl p-4 sm:p-5 text-center cursor-pointer transition-all hover:bg-[#181C2B] group"
                 >
-                  <Upload className="w-8 h-8 text-zinc-400 group-hover:text-emerald-400 mx-auto mb-2 transition-colors" />
+                  <Upload className="w-7 h-7 sm:w-8 sm:h-8 text-zinc-400 group-hover:text-emerald-400 mx-auto mb-2 transition-colors" />
                   <p className="text-xs font-mono font-bold text-white uppercase tracking-wider">
                     {selectedFile ? selectedFile.name : 'คลิกเพื่อเลือกไฟล์ MP3 จากเครื่อง'}
                   </p>
@@ -1180,7 +1293,7 @@ export default function BackofficePage() {
               </div>
 
               {/* Modal Buttons */}
-              <div className="pt-3 border-t border-white/[0.08] flex items-center justify-end gap-2.5">
+              <div className="pt-3 border-t border-white/[0.08] flex items-center gap-2.5 flex-shrink-0">
                 <button
                   type="button"
                   onClick={() => {
@@ -1188,14 +1301,14 @@ export default function BackofficePage() {
                     setSelectedFile(null);
                     setFilePreviewUrl(null);
                   }}
-                  className="px-4 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-xs font-mono text-zinc-300 hover:text-white uppercase transition-colors"
+                  className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-xs font-mono text-zinc-300 hover:text-white uppercase transition-colors"
                 >
                   CANCEL
                 </button>
                 <button
                   type="submit"
                   disabled={isUploadingMusic}
-                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white text-xs font-mono font-bold tracking-wider uppercase transition-all shadow-md active:scale-95 disabled:opacity-50 flex items-center gap-1.5"
+                  className="flex-1 sm:flex-initial px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white text-xs font-mono font-bold tracking-wider uppercase transition-all shadow-md active:scale-95 disabled:opacity-50 flex items-center justify-center gap-1.5"
                 >
                   <Upload className="w-3.5 h-3.5" />
                   <span>{isUploadingMusic ? 'UPLOADING...' : 'UPLOAD & SAVE'}</span>
