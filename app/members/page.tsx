@@ -405,49 +405,86 @@ const getFacebookHandle = (url?: string, name?: string) => {
   }
 };
 
-// Theme tokens for the Facebook hover profile popup card
+// Theme tokens for the Facebook hover profile popup card (100% matched to member card themes)
 const getPopupTheme = (role: MemberRole) => {
   switch (role) {
     case 'Founder':
+      // Platinum White / Polished Silver Chrome
       return {
-        cardBorder: 'border-[#E6A13B]/30',
-        bannerGradient: 'from-[#2A1D0B]/90 via-[#18130B]/60 to-[#0C0F17]',
-        avatarRing: 'from-[#E6A13B] via-[#925C17] to-[#402604] shadow-[0_0_20px_rgba(230,161,59,0.35)]',
-        avatarText: 'text-[#E6A13B]',
-        badgeBorder: 'border-[#E6A13B]/40 bg-[#E6A13B]/10 text-[#E6A13B]',
-        badgeIcon: '👑',
-        button: 'border-[#E6A13B]/40 hover:border-[#E6A13B]/80 bg-[#E6A13B]/[0.06] hover:bg-[#E6A13B]/15 text-[#E6A13B]',
+        cardBorder: 'border-white/20',
+        bannerGradient: 'from-white/[0.14] via-zinc-800/25 to-[#0C0D12]',
+        avatarRing: 'from-white via-slate-200 to-zinc-600 shadow-[0_0_20px_rgba(255,255,255,0.22)]',
+        avatarText: 'text-white',
+        badgeBorder: 'border-white/30 bg-white/10 text-white',
+        badgeIcon: 'crown',
+        button: 'border-white/25 hover:border-white/60 bg-white/[0.06] hover:bg-white/15 text-white',
       };
     case 'Leader':
+      // Crimson Noir / Blood Ruby
       return {
-        cardBorder: 'border-[#EF4444]/30',
-        bannerGradient: 'from-[#330C0E]/90 via-[#1F0809]/60 to-[#0C0F17]',
-        avatarRing: 'from-[#EF4444] via-[#991B1B] to-[#450A0A] shadow-[0_0_20px_rgba(239,68,68,0.35)]',
-        avatarText: 'text-[#EF4444]',
-        badgeBorder: 'border-[#EF4444]/40 bg-[#EF4444]/10 text-[#EF4444]',
-        badgeIcon: '⚔',
-        button: 'border-[#EF4444]/40 hover:border-[#EF4444]/80 bg-[#EF4444]/[0.06] hover:bg-[#EF4444]/15 text-[#EF4444]',
+        cardBorder: 'border-red-500/30',
+        bannerGradient: 'from-red-950/70 via-red-950/25 to-[#0C0D12]',
+        avatarRing: 'from-red-500 via-red-700 to-red-950 shadow-[0_0_20px_rgba(239,68,68,0.35)]',
+        avatarText: 'text-red-400',
+        badgeBorder: 'border-red-500/40 bg-red-500/10 text-red-400',
+        badgeIcon: 'swords',
+        button: 'border-red-500/40 hover:border-red-500/80 bg-red-500/[0.06] hover:bg-red-500/15 text-red-400 hover:text-red-300',
       };
     case 'Support':
+      // Steel Ice Blue / Tactical Cobalt
       return {
-        cardBorder: 'border-[#38BDF8]/30',
-        bannerGradient: 'from-[#082436]/90 via-[#061524]/60 to-[#0C0F17]',
-        avatarRing: 'from-[#38BDF8] via-[#0369A1] to-[#082F49] shadow-[0_0_20px_rgba(56,189,248,0.35)]',
-        avatarText: 'text-[#38BDF8]',
-        badgeBorder: 'border-[#38BDF8]/40 bg-[#38BDF8]/10 text-[#38BDF8]',
-        badgeIcon: '🛡',
-        button: 'border-[#38BDF8]/40 hover:border-[#38BDF8]/80 bg-[#38BDF8]/[0.06] hover:bg-[#38BDF8]/15 text-[#38BDF8]',
+        cardBorder: 'border-sky-400/30',
+        bannerGradient: 'from-sky-950/70 via-blue-950/25 to-[#0C0D12]',
+        avatarRing: 'from-sky-400 via-blue-700 to-sky-950 shadow-[0_0_20px_rgba(56,189,248,0.35)]',
+        avatarText: 'text-sky-300',
+        badgeBorder: 'border-sky-400/40 bg-sky-400/10 text-sky-400',
+        badgeIcon: 'shield',
+        button: 'border-sky-400/40 hover:border-sky-400/80 bg-sky-400/[0.06] hover:bg-sky-400/15 text-sky-400 hover:text-sky-300',
       };
     case 'Member':
+      // Smoked Titanium Charcoal
       return {
         cardBorder: 'border-zinc-500/30',
-        bannerGradient: 'from-zinc-800/90 via-zinc-900/60 to-[#0C0F17]',
-        avatarRing: 'from-zinc-300 via-zinc-500 to-zinc-800 shadow-[0_0_20px_rgba(255,255,255,0.15)]',
+        bannerGradient: 'from-zinc-800/40 via-zinc-900/20 to-[#0C0D12]',
+        avatarRing: 'from-zinc-300 via-zinc-500 to-zinc-800 shadow-[0_0_20px_rgba(255,255,255,0.1)]',
         avatarText: 'text-zinc-200',
         badgeBorder: 'border-zinc-500/40 bg-zinc-500/10 text-zinc-300',
-        badgeIcon: '⚡',
+        badgeIcon: 'zap',
         button: 'border-zinc-500/40 hover:border-zinc-300 bg-white/[0.05] hover:bg-white/10 text-zinc-200',
       };
+  }
+};
+
+// Render clean monochromatic SVG role icon
+const renderRoleIcon = (icon: string) => {
+  switch (icon) {
+    case 'crown':
+      return (
+        <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z" />
+        </svg>
+      );
+    case 'swords':
+      return (
+        <svg className="w-3 h-3 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M14.5 17.5L3 6V3h3l11.5 11.5" />
+          <path d="M13 19l6-6" />
+          <path d="M16 16l4 4" />
+          <path d="M19 21l2-2" />
+        </svg>
+      );
+    case 'shield':
+      return (
+        <svg className="w-3 h-3 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+      );
+    default:
+      return (
+        <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+        </svg>
+      );
   }
 };
 
@@ -497,18 +534,18 @@ function MemberCard({
               </svg>
             </a>
 
-            {/* Bouncy Hover Profile Card Popup (Matching User Spec) */}
+            {/* Bouncy Hover Profile Card Popup (100% Matching Role Theme) */}
             <div className="invisible group-hover/fb:visible opacity-0 scale-90 -translate-y-2 group-hover/fb:opacity-100 group-hover/fb:scale-100 group-hover/fb:translate-y-0 group-hover/fb:animate-popup-bounce transition-all duration-200 origin-bottom-right absolute bottom-full right-0 mb-3 z-50 pointer-events-auto">
               {/* Invisible Hover Bridge */}
               <div className="absolute -bottom-3 left-0 right-0 h-4" />
 
               {/* The Profile Mini Card */}
-              <div className={`w-64 rounded-2xl bg-[#0B0E17] border ${popup.cardBorder} shadow-[0_20px_50px_rgba(0,0,0,0.95),0_0_30px_rgba(0,0,0,0.85)] overflow-hidden text-left`}>
+              <div className={`w-64 rounded-2xl bg-[#0C0D12] border ${popup.cardBorder} shadow-[0_20px_50px_rgba(0,0,0,0.95),0_0_30px_rgba(0,0,0,0.85)] overflow-hidden text-left`}>
                 {/* Header Banner Area */}
                 <div className={`h-16 bg-gradient-to-b ${popup.bannerGradient} relative p-3 flex items-start justify-between`}>
                   {/* Avatar with Metallic Glowing Ring */}
-                  <div className={`w-14 h-14 rounded-full p-[2.5px] bg-gradient-to-b ${popup.avatarRing} relative -mb-7 mt-0.5`}>
-                    <div className="w-full h-full rounded-full bg-[#0E121C] flex items-center justify-center overflow-hidden border border-black/40">
+                  <div className={`w-14 h-14 rounded-full p-[2px] bg-gradient-to-b ${popup.avatarRing} relative -mb-7 mt-0.5`}>
+                    <div className="w-full h-full rounded-full bg-[#0C0D12] flex items-center justify-center overflow-hidden border border-black/40">
                       <span className={`font-anton text-2xl uppercase ${popup.avatarText}`}>
                         {member.name.charAt(0)}
                       </span>
@@ -537,7 +574,7 @@ function MemberCard({
                   {/* Role Badge */}
                   <div>
                     <div className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg border ${popup.badgeBorder} text-[10px] font-mono font-bold tracking-wider uppercase`}>
-                      <span>{popup.badgeIcon}</span>
+                      {renderRoleIcon(popup.badgeIcon)}
                       <span>{member.role}</span>
                     </div>
                   </div>
