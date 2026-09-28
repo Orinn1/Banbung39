@@ -12,16 +12,16 @@ interface MusicInfo {
 const STORAGE_KEY_TIME = 'bb39_music_time';
 const STORAGE_KEY_PLAYING = 'bb39_music_playing';
 
-// Helper to compare audio URLs ignoring query params and domains
+// Helper to compare audio URLs taking origin and query params into account
 function isSameTrack(urlA: string, urlB: string): boolean {
   if (!urlA || !urlB) return false;
   try {
     const origin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
-    const pathA = new URL(urlA, origin).pathname;
-    const pathB = new URL(urlB, origin).pathname;
-    return pathA === pathB;
+    const objA = new URL(urlA, origin);
+    const objB = new URL(urlB, origin);
+    return (objA.pathname + objA.search) === (objB.pathname + objB.search);
   } catch {
-    return urlA.split('?')[0] === urlB.split('?')[0];
+    return urlA === urlB;
   }
 }
 

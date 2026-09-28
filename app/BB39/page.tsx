@@ -25,6 +25,7 @@ import {
   Play,
   Pause,
   Volume2,
+  Link2,
 } from 'lucide-react';
 import { Member, MemberRole, MEMBERS_DATA } from '@/data/members';
 
@@ -60,9 +61,11 @@ export default function BackofficePage() {
 
   // Music Manager states
   const [isMusicModalOpen, setIsMusicModalOpen] = useState<boolean>(false);
+  const [musicTab, setMusicTab] = useState<'file' | 'link'>('file');
   const [musicTitle, setMusicTitle] = useState<string>('BANBUNG39');
   const [musicArtist, setMusicArtist] = useState<string>('By.Mike Winterfell');
   const [musicUrl, setMusicUrl] = useState<string>('/music.mp3');
+  const [directMusicUrl, setDirectMusicUrl] = useState<string>('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [filePreviewUrl, setFilePreviewUrl] = useState<string | null>(null);
   const [isUploadingMusic, setIsUploadingMusic] = useState<boolean>(false);
@@ -120,6 +123,10 @@ export default function BackofficePage() {
         setMusicTitle(data.data.title || 'BANBUNG39');
         setMusicArtist(data.data.artist || 'By.Mike Winterfell');
         setMusicUrl(data.data.url || '/music.mp3');
+        if (data.data.url && (data.data.url.startsWith('http://') || data.data.url.startsWith('https://'))) {
+          setDirectMusicUrl(data.data.url);
+          setMusicTab('link');
+        }
       }
     } catch {}
   };
@@ -334,10 +341,25 @@ export default function BackofficePage() {
 
     try {
       const formData = new FormData();
-      formData.append('title', musicTitle.trim());
-      formData.append('artist', musicArtist.trim());
-      if (selectedFile) {
-        formData.append('file', selectedFile);
+      formData.append('title', musicTitle.trim() || 'BANBUNG39');
+      formData.append('artist', musicArtist.trim() || 'By.Mike Winterfell');
+
+      if (musicTab === 'file') {
+        if (!selectedFile && !musicUrl) {
+          setMusicError('กรุณาเลือกไฟล์เพลง MP3 หรือเปลี่ยนไปใช้แท็บวางลิงก์ (URL)');
+          setIsUploadingMusic(false);
+          return;
+        }
+        if (selectedFile) {
+          formData.append('file', selectedFile);
+        }
+      } else {
+        if (!directMusicUrl.trim()) {
+          setMusicError('กรุณากรอกลิงก์ไฟล์เพลง (.mp3 link)');
+          setIsUploadingMusic(false);
+          return;
+        }
+        formData.append('url', directMusicUrl.trim());
       }
 
       const res = await fetch('/api/music', {
@@ -347,7 +369,7 @@ export default function BackofficePage() {
 
       const data = await res.json();
       if (data.success) {
-        showToast('อัปโหลดและบันทึกเพลงสำเร็จเรียบร้อยแล้ว!');
+        showToast('บันทึกและอัปเดตเพลงขึ้นระบบสำเร็จเรียบร้อย!');
         setMusicUrl(data.data.url);
         setIsMusicModalOpen(false);
         setSelectedFile(null);
@@ -1220,43 +1242,94 @@ export default function BackofficePage() {
                 </div>
               )}
 
-              {/* File Upload Box */}
-              <div>
-                <label className="block text-[11px] font-mono text-zinc-400 uppercase tracking-wider mb-2">
-                  เลือกไฟล์เพลง (.MP3) จากเครื่องคอมพิวเตอร์
-                </label>
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  accept=".mp3,audio/mpeg,audio/mp3"
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-                <div
-                  onClick={() => fileInputRef.current?.click()}
-                  className="border-2 border-dashed border-white/20 hover:border-emerald-400/50 bg-[#141723] rounded-2xl p-4 sm:p-5 text-center cursor-pointer transition-all hover:bg-[#181C2B] group"
+              {/* Tab Selector: Upload MP3 File vs Direct Link */}
+              <div className="flex rounded-xl bg-[#141723] p-1 border border-white/10 gap-1">
+                <button
+                  type="button"
+                  onClick={() => setMusicTab('file')}
+                  className={`flex-1 py-2 px-3 rounded-lg text-xs font-mono font-semibold transition-all flex items-center justify-center gap-1.5 ${
+                    musicTab === 'file'
+                      ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shadow-sm'
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
                 >
-                  <Upload className="w-7 h-7 sm:w-8 sm:h-8 text-zinc-400 group-hover:text-emerald-400 mx-auto mb-2 transition-colors" />
-                  <p className="text-xs font-mono font-bold text-white uppercase tracking-wider">
-                    {selectedFile ? selectedFile.name : 'คลิกเพื่อเลือกไฟล์ MP3 จากเครื่อง'}
-                  </p>
-                  <p className="text-[10px] font-mono text-zinc-500 mt-1">
-                    {selectedFile
-                      ? `ขนาดไฟล์: ${(selectedFile.size / (1024 * 1024)).toFixed(2)} MB`
-                      : 'รองรับไฟล์นามสกุล .mp3 เท่านั้น'}
-                  </p>
-                </div>
+                  <Upload className="w-3.5 h-3.5" />
+                  <span>อัปโหลดไฟล์ MP3</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMusicTab('link')}
+                  className={`flex-1 py-2 px-3 rounded-lg text-xs font-mono font-semibold transition-all flex items-center justify-center gap-1.5 ${
+                    musicTab === 'link'
+                      ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shadow-sm'
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  <Link2 className="w-3.5 h-3.5" />
+                  <span>วางลิงก์เพลง (URL)</span>
+                </button>
               </div>
 
+              {/* Mode 1: File Upload Box */}
+              {musicTab === 'file' && (
+                <div>
+                  <label className="block text-[11px] font-mono text-zinc-400 uppercase tracking-wider mb-2">
+                    เลือกไฟล์เพลง (.MP3) จากเครื่องคอมพิวเตอร์
+                  </label>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    accept=".mp3,audio/mpeg,audio/mp3"
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    className="border-2 border-dashed border-white/20 hover:border-emerald-400/50 bg-[#141723] rounded-2xl p-4 sm:p-5 text-center cursor-pointer transition-all hover:bg-[#181C2B] group"
+                  >
+                    <Upload className="w-7 h-7 sm:w-8 sm:h-8 text-zinc-400 group-hover:text-emerald-400 mx-auto mb-2 transition-colors" />
+                    <p className="text-xs font-mono font-bold text-white uppercase tracking-wider">
+                      {selectedFile ? selectedFile.name : 'คลิกเพื่อเลือกไฟล์ MP3 จากเครื่อง'}
+                    </p>
+                    <p className="text-[10px] font-mono text-zinc-500 mt-1">
+                      {selectedFile
+                        ? `ขนาดไฟล์: ${(selectedFile.size / (1024 * 1024)).toFixed(2)} MB`
+                        : 'รองรับไฟล์นามสกุล .mp3 เท่านั้น (บันทึกขึ้น Cloud อัตโนมัติ)'}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Mode 2: Direct URL Input */}
+              {musicTab === 'link' && (
+                <div>
+                  <label className="block text-[11px] font-mono text-zinc-400 uppercase tracking-wider mb-2">
+                    ลิงก์ไฟล์เพลง (.MP3 Direct URL)
+                  </label>
+                  <input
+                    type="url"
+                    value={directMusicUrl}
+                    onChange={(e) => setDirectMusicUrl(e.target.value)}
+                    placeholder="https://.../music.mp3 หรือลิงก์ตรง Discord / Catbox / Google Drive"
+                    className="w-full px-4 py-2.5 bg-[#161924] border border-white/15 focus:border-white/40 rounded-xl text-xs font-mono text-white placeholder-zinc-500 focus:outline-none transition-colors"
+                  />
+                  <p className="text-[10px] font-mono text-zinc-500 mt-1.5">
+                    สามารถวางลิงก์ไฟล์เสียง .mp3 ได้โดยตรงจากเว็บฝากไฟล์ทั่วไป หรือ Discord CDN
+                  </p>
+                </div>
+              )}
+
               {/* Audio Preview if selected or existing */}
-              {(filePreviewUrl || musicUrl) && (
+              {((musicTab === 'file' && (filePreviewUrl || musicUrl)) ||
+                (musicTab === 'link' && (directMusicUrl || musicUrl))) && (
                 <div className="p-3 rounded-xl bg-[#141723] border border-white/10">
                   <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider block mb-1.5 flex items-center gap-1.5">
                     <Volume2 className="w-3.5 h-3.5 text-emerald-400" /> ตัวอย่างเสียง (PREVIEW):
                   </span>
                   <audio
+                    key={musicTab === 'file' ? (filePreviewUrl || musicUrl) : (directMusicUrl || musicUrl)}
                     controls
-                    src={filePreviewUrl || musicUrl}
+                    src={musicTab === 'file' ? (filePreviewUrl || musicUrl) : (directMusicUrl || musicUrl)}
                     className="w-full h-8"
                   />
                 </div>
@@ -1311,7 +1384,7 @@ export default function BackofficePage() {
                   className="flex-1 sm:flex-initial px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white text-xs font-mono font-bold tracking-wider uppercase transition-all shadow-md active:scale-95 disabled:opacity-50 flex items-center justify-center gap-1.5"
                 >
                   <Upload className="w-3.5 h-3.5" />
-                  <span>{isUploadingMusic ? 'UPLOADING...' : 'UPLOAD & SAVE'}</span>
+                  <span>{isUploadingMusic ? 'SAVING TO CLOUD...' : 'SAVE MUSIC'}</span>
                 </button>
               </div>
             </form>

@@ -4,6 +4,8 @@ import path from 'path';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 
+export const dynamic = 'force-dynamic';
+
 const MUSIC_CONFIG_PATH = path.join(process.cwd(), 'data', 'music.json');
 const PUBLIC_DIR = path.join(process.cwd(), 'public');
 
@@ -25,6 +27,7 @@ async function getMusicConfig(): Promise<MusicConfig> {
     const snap = await getDoc(doc(db, 'settings', 'music'));
     if (snap.exists()) {
       const data = snap.data() as MusicConfig;
+      // Best-effort local file cache (safe on serverless)
       fs.writeFile(MUSIC_CONFIG_PATH, JSON.stringify(data, null, 2), 'utf-8').catch(() => {});
       return data;
     }
@@ -54,14 +57,19 @@ export async function POST(request: Request) {
     const formData = await request.formData();
     const title = formData.get('title') as string | null;
     const artist = formData.get('artist') as string | null;
+    const directUrl = formData.get('url') as string | null;
     const file = formData.get('file') as File | null;
 
     const currentConfig = await getMusicConfig();
     let musicUrl = currentConfig.url;
 
-    // If an MP3 file was uploaded
+    // Option A: Direct URL provided
+    if (directUrl && directUrl.trim().length > 0) {
+      musicUrl = directUrl.trim();
+    }
+
+    // Option B: MP3 File uploaded
     if (file && typeof file === 'object' && file.size > 0) {
-      // Validate audio file
       const fileName = file.name.toLowerCase();
       if (!fileName.endsWith('.mp3') && !file.type.includes('audio')) {
         return NextResponse.json(
@@ -71,11 +79,43 @@ export async function POST(request: Request) {
       }
 
       const buffer = Buffer.from(await file.arrayBuffer());
-      const targetFileName = 'music.mp3';
-      const targetFilePath = path.join(PUBLIC_DIR, targetFileName);
+      const now = Date.now();
 
-      await fs.writeFile(targetFilePath, buffer);
-      musicUrl = `/music.mp3?t=${Date.now()}`;
+      // 1. Attempt writing to local filesystem for local dev (ignore EROFS on Vercel)
+      try {
+        const targetFilePath = path.join(PUBLIC_DIR, 'music.mp3');
+        await fs.writeFile(targetFilePath, buffer);
+      } catch (fsErr: any) {
+        // Expected on Vercel serverless (read-only filesystem)
+        console.log('Serverless environment: disk is read-only, storing to Firestore cloud chunks.');
+      }
+
+      // 2. Save audio into Firestore chunks (works 100% on Vercel and all clouds)
+      const CHUNK_SIZE = 400 * 1024; // 400 KB per chunk (safely below Firestore 1MB limit)
+      const totalChunks = Math.ceil(buffer.length / CHUNK_SIZE);
+
+      const writePromises = [];
+      for (let i = 0; i < totalChunks; i++) {
+        const slice = buffer.subarray(i * CHUNK_SIZE, (i + 1) * CHUNK_SIZE);
+        writePromises.push(
+          setDoc(doc(db, 'music_chunks', `chunk_${i}`), {
+            data: slice.toString('base64'),
+            index: i,
+          })
+        );
+      }
+      await Promise.all(writePromises);
+
+      // Save audio metadata
+      await setDoc(doc(db, 'settings', 'music_audio_meta'), {
+        totalChunks,
+        totalSize: buffer.length,
+        mimeType: file.type || 'audio/mpeg',
+        fileName: file.name,
+        updatedAt: now,
+      });
+
+      musicUrl = `/api/music/audio?t=${now}`;
     }
 
     const updatedConfig: MusicConfig = {
@@ -91,8 +131,12 @@ export async function POST(request: Request) {
       console.warn('Firestore music setDoc warning:', fsErr.message);
     }
 
-    // 2. Save to local JSON file
-    await fs.writeFile(MUSIC_CONFIG_PATH, JSON.stringify(updatedConfig, null, 2), 'utf-8');
+    // 2. Save to local JSON file (safe for serverless)
+    try {
+      await fs.writeFile(MUSIC_CONFIG_PATH, JSON.stringify(updatedConfig, null, 2), 'utf-8');
+    } catch {
+      // Ignored on serverless
+    }
 
     return NextResponse.json({
       success: true,
@@ -100,6 +144,7 @@ export async function POST(request: Request) {
       data: updatedConfig,
     });
   } catch (err: any) {
+    console.error('Error in /api/music POST:', err);
     return NextResponse.json(
       { success: false, error: err.message || 'Failed to upload music' },
       { status: 500 }
