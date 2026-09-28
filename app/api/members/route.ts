@@ -13,7 +13,7 @@ export async function GET(request: Request) {
     filtered = filtered.filter(
       (m) =>
         m.name.toLowerCase().includes(search) ||
-        m.username.toLowerCase().includes(search) ||
+        (m.username && m.username.toLowerCase().includes(search)) ||
         m.nickname.toLowerCase().includes(search) ||
         m.id.includes(search) ||
         m.memberId.toLowerCase().includes(search)

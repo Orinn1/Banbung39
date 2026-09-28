@@ -6,12 +6,19 @@ export interface Member {
   memberId: string;
   name: string;
   nickname: string;
+  username?: string;
+  avatar?: string;
   role: MemberRole;
   status: MemberStatus;
   joinedDate: string;
   specialty?: string;
   bio?: string;
+  phone?: string;
   discordId?: string;
+  facebook?: string;
+  discord?: string;
+  instagram?: string;
+  tiktok?: string;
 }
 
 export const MEMBERS_DATA: Member[] = [
@@ -177,6 +184,8 @@ export const CLAN_INFO = {
   totalMembersCount: MEMBERS_DATA.length,
   activeMembersCount: MEMBERS_DATA.filter((m) => m.status === 'Active').length,
 };
+
+export const FAMILY_INFO = CLAN_INFO;
 
 export function getMembers(): Member[] {
   return MEMBERS_DATA;
