@@ -34,22 +34,22 @@ export default function RightDossierCard({ onOpenPartners }: RightDossierCardPro
       <div className="mt-4">
         <Link
           href="/members"
-          className="group flex items-center justify-between px-4 py-3 rounded-xl bg-[#12141C]/90 border border-white/[0.08] hover:border-white/30 transition-all duration-200 cursor-pointer"
+          className="group flex items-center justify-between px-4 sm:px-5 py-3.5 rounded-xl bg-[#131622]/95 border border-white/[0.12] hover:border-white/30 hover:bg-[#181D2C] transition-all duration-200 cursor-pointer shadow-lg"
         >
           <div className="flex flex-col">
-            <span className="text-[9px] font-mono tracking-widest text-zinc-400 uppercase">
+            <span className="text-[10px] font-mono tracking-[0.22em] text-zinc-400 uppercase font-medium leading-none mb-1">
               HOUSE LINKS
             </span>
-            <span className="text-xs font-bold text-white tracking-wider uppercase font-anton group-hover:text-zinc-200 transition-colors">
+            <span className="text-sm font-mono font-bold tracking-[0.16em] text-white uppercase group-hover:text-zinc-200 transition-colors leading-tight">
               PARTNERS
             </span>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded-full bg-white/[0.06] border border-white/[0.12] text-[10px] font-mono text-zinc-300">
+          <div className="flex items-center gap-2.5">
+            <span className="px-2.5 py-0.5 rounded-full bg-white/[0.08] border border-white/20 text-[11px] font-mono font-semibold text-zinc-200">
               02
             </span>
-            <ArrowRight className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
+            <ArrowRight className="w-4 h-4 text-zinc-300 group-hover:text-white group-hover:translate-x-1 transition-all" />
           </div>
         </Link>
       </div>
