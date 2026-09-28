@@ -12,6 +12,19 @@ interface MusicInfo {
 const STORAGE_KEY_TIME = 'bb39_music_time';
 const STORAGE_KEY_PLAYING = 'bb39_music_playing';
 
+// Helper to compare audio URLs ignoring query params and domains
+function isSameTrack(urlA: string, urlB: string): boolean {
+  if (!urlA || !urlB) return false;
+  try {
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
+    const pathA = new URL(urlA, origin).pathname;
+    const pathB = new URL(urlB, origin).pathname;
+    return pathA === pathB;
+  } catch {
+    return urlA.split('?')[0] === urlB.split('?')[0];
+  }
+}
+
 export default function MusicPlayer() {
   const [isOpen, setIsOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -25,29 +38,46 @@ export default function MusicPlayer() {
   });
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const hasStartedRef = useRef<boolean>(false);
+  const hasRestoredTimeRef = useRef<boolean>(false);
 
-  // 1. Load music metadata from API
+  // 1. Load music metadata from API (without disrupting current playback)
   useEffect(() => {
     fetch('/api/music')
       .then((res) => res.json())
       .then((data) => {
         if (data.success && data.data) {
-          setMusicInfo(data.data);
+          setMusicInfo((prev) => {
+            // If the audio URL is basically the same file, keep track title/artist without resetting audio
+            return {
+              title: data.data.title || prev.title,
+              artist: data.data.artist || prev.artist,
+              url: data.data.url || prev.url,
+            };
+          });
         }
       })
       .catch(() => {});
   }, []);
 
-  // 2. Setup Audio Source & Restore Saved Time
+  // 2. Setup Audio Source ONLY if the actual file changes
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio || !musicInfo.url) return;
 
-    if (audio.src !== musicInfo.url && !audio.src.endsWith(musicInfo.url)) {
-      audio.src = musicInfo.url;
-      audio.load();
+    // Check if the current audio src is actually a different song
+    if (audio.src && isSameTrack(audio.src, musicInfo.url)) {
+      // Same song! Do NOT call audio.load() and do NOT reset playback!
+      return;
+    }
 
-      // Restore saved timestamp
+    // Only set and load if it's genuinely a new audio file
+    audio.src = musicInfo.url;
+    audio.load();
+
+    // Restore saved time only once on initial mount
+    if (!hasRestoredTimeRef.current) {
+      hasRestoredTimeRef.current = true;
       try {
         const savedTime = localStorage.getItem(STORAGE_KEY_TIME);
         if (savedTime) {
@@ -104,18 +134,18 @@ export default function MusicPlayer() {
     }
   }, [musicInfo]);
 
-  // 4. Force Autoplay & Listen to First Global Interaction
+  // 4. Force Autoplay & Listen to First Global Interaction (Single-fire only)
   useEffect(() => {
-    let hasStarted = false;
-
     const tryPlayAudio = () => {
-      if (hasStarted || !audioRef.current) return;
+      // If already started or playing, never re-trigger
+      if (hasStartedRef.current) return;
+      if (!audioRef.current) return;
 
       const playPromise = audioRef.current.play();
       if (playPromise !== undefined) {
         playPromise
           .then(() => {
-            hasStarted = true;
+            hasStartedRef.current = true;
             setIsPlaying(true);
             try {
               localStorage.setItem(STORAGE_KEY_PLAYING, 'true');
@@ -123,7 +153,7 @@ export default function MusicPlayer() {
             removeListeners();
           })
           .catch(() => {
-            // Browser blocked unmuted autoplay without interaction; waiting for user gesture
+            // Browser policy blocked unmuted autoplay without user gesture; keep listeners active
           });
       }
     };
@@ -139,7 +169,7 @@ export default function MusicPlayer() {
     // Try immediate autoplay
     tryPlayAudio();
 
-    // Listen to first user touch/click/scroll anywhere on the page
+    // Attach global listeners for first touch/click/scroll
     const events = ['click', 'touchstart', 'touchend', 'pointerdown', 'keydown', 'scroll'];
     events.forEach((event) => {
       window.addEventListener(event, tryPlayAudio, { once: true, passive: true });
@@ -157,12 +187,11 @@ export default function MusicPlayer() {
         audio.removeEventListener('canplay', tryPlayAudio);
       }
     };
-  }, [musicInfo.url]);
+  }, []);
 
   // 5. Keep playing in background / lock screen when tab becomes hidden
   useEffect(() => {
     const handleVisibilityChange = () => {
-      // When user switches apps or locks screen, make sure music continues
       if (document.visibilityState === 'hidden') {
         const wasPlaying = localStorage.getItem(STORAGE_KEY_PLAYING) === 'true';
         if (wasPlaying && audioRef.current && audioRef.current.paused) {
@@ -191,6 +220,7 @@ export default function MusicPlayer() {
       audioRef.current
         .play()
         .then(() => {
+          hasStartedRef.current = true;
           setIsPlaying(true);
           try {
             localStorage.setItem(STORAGE_KEY_PLAYING, 'true');
@@ -238,6 +268,7 @@ export default function MusicPlayer() {
       audioRef.current
         .play()
         .then(() => {
+          hasStartedRef.current = true;
           setIsPlaying(true);
           try {
             localStorage.setItem(STORAGE_KEY_PLAYING, 'true');
@@ -252,12 +283,11 @@ export default function MusicPlayer() {
       {/* Real HTML5 Audio Element with background and loop capabilities */}
       <audio
         ref={audioRef}
-        src={musicInfo.url}
         preload="auto"
         loop
-        autoPlay
         playsInline
         onPlay={() => {
+          hasStartedRef.current = true;
           setIsPlaying(true);
           try {
             localStorage.setItem(STORAGE_KEY_PLAYING, 'true');
