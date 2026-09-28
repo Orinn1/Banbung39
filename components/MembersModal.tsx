@@ -2,32 +2,22 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { MEMBERS_DATA } from '@/data/members';
 
 interface MembersModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const SAMPLE_MEMBERS = [
-  { id: '#0001', name: 'MIKE WINTERFELL', role: 'FOUNDER' },
-  { id: '#0002', name: 'ALEXANDER CROSS', role: 'LEADER' },
-  { id: '#0003', name: 'DANTE VALENTINO', role: 'LEADER' },
-  { id: '#0004', name: 'SEBASTIAN GRAY', role: 'SUPPORT' },
-  { id: '#0005', name: 'LUCAS NIGHT', role: 'SUPPORT' },
-  { id: '#0006', name: 'VICTOR STONE', role: 'SUPPORT' },
-  { id: '#0007', name: 'MARCUS VANCE', role: 'MEMBER' },
-  { id: '#0008', name: 'KAIEN SHADOW', role: 'MEMBER' },
-];
-
 export default function MembersModal({ isOpen, onClose }: MembersModalProps) {
   const [search, setSearch] = useState('');
 
   if (!isOpen) return null;
 
-  const filtered = SAMPLE_MEMBERS.filter(
+  const filtered = MEMBERS_DATA.filter(
     (m) =>
       m.name.toLowerCase().includes(search.toLowerCase()) ||
-      m.id.toLowerCase().includes(search.toLowerCase()) ||
+      m.memberId.toLowerCase().includes(search.toLowerCase()) ||
       m.role.toLowerCase().includes(search.toLowerCase())
   );
 
