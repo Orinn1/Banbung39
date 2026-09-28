@@ -390,6 +390,67 @@ const getRoleTheme = (role: MemberRole) => {
   }
 };
 
+// Format Facebook handle for display (e.g. facebook.com/nongpiper00 or facebook.com/name)
+const getFacebookHandle = (url?: string, name?: string) => {
+  if (!url) return 'facebook.com';
+  try {
+    const clean = url.replace(/^https?:\/\/(www\.)?facebook\.com\//, '');
+    if (clean.startsWith('profile.php') || clean.startsWith('share/')) {
+      const slug = name ? name.toLowerCase().replace(/[^a-z0-9]/g, '.') : 'profile';
+      return `facebook.com/${slug}`;
+    }
+    return `facebook.com/${clean.split('?')[0].replace(/\/$/, '')}`;
+  } catch {
+    return 'facebook.com';
+  }
+};
+
+// Theme tokens for the Facebook hover profile popup card
+const getPopupTheme = (role: MemberRole) => {
+  switch (role) {
+    case 'Founder':
+      return {
+        cardBorder: 'border-[#E6A13B]/30',
+        bannerGradient: 'from-[#2A1D0B]/90 via-[#18130B]/60 to-[#0C0F17]',
+        avatarRing: 'from-[#E6A13B] via-[#925C17] to-[#402604] shadow-[0_0_20px_rgba(230,161,59,0.35)]',
+        avatarText: 'text-[#E6A13B]',
+        badgeBorder: 'border-[#E6A13B]/40 bg-[#E6A13B]/10 text-[#E6A13B]',
+        badgeIcon: '👑',
+        button: 'border-[#E6A13B]/40 hover:border-[#E6A13B]/80 bg-[#E6A13B]/[0.06] hover:bg-[#E6A13B]/15 text-[#E6A13B]',
+      };
+    case 'Leader':
+      return {
+        cardBorder: 'border-[#EF4444]/30',
+        bannerGradient: 'from-[#330C0E]/90 via-[#1F0809]/60 to-[#0C0F17]',
+        avatarRing: 'from-[#EF4444] via-[#991B1B] to-[#450A0A] shadow-[0_0_20px_rgba(239,68,68,0.35)]',
+        avatarText: 'text-[#EF4444]',
+        badgeBorder: 'border-[#EF4444]/40 bg-[#EF4444]/10 text-[#EF4444]',
+        badgeIcon: '⚔',
+        button: 'border-[#EF4444]/40 hover:border-[#EF4444]/80 bg-[#EF4444]/[0.06] hover:bg-[#EF4444]/15 text-[#EF4444]',
+      };
+    case 'Support':
+      return {
+        cardBorder: 'border-[#38BDF8]/30',
+        bannerGradient: 'from-[#082436]/90 via-[#061524]/60 to-[#0C0F17]',
+        avatarRing: 'from-[#38BDF8] via-[#0369A1] to-[#082F49] shadow-[0_0_20px_rgba(56,189,248,0.35)]',
+        avatarText: 'text-[#38BDF8]',
+        badgeBorder: 'border-[#38BDF8]/40 bg-[#38BDF8]/10 text-[#38BDF8]',
+        badgeIcon: '🛡',
+        button: 'border-[#38BDF8]/40 hover:border-[#38BDF8]/80 bg-[#38BDF8]/[0.06] hover:bg-[#38BDF8]/15 text-[#38BDF8]',
+      };
+    case 'Member':
+      return {
+        cardBorder: 'border-zinc-500/30',
+        bannerGradient: 'from-zinc-800/90 via-zinc-900/60 to-[#0C0F17]',
+        avatarRing: 'from-zinc-300 via-zinc-500 to-zinc-800 shadow-[0_0_20px_rgba(255,255,255,0.15)]',
+        avatarText: 'text-zinc-200',
+        badgeBorder: 'border-zinc-500/40 bg-zinc-500/10 text-zinc-300',
+        badgeIcon: '⚡',
+        button: 'border-zinc-500/40 hover:border-zinc-300 bg-white/[0.05] hover:bg-white/10 text-zinc-200',
+      };
+  }
+};
+
 // Clean Typographic Member Card with Role Gradient Border
 function MemberCard({ 
   member, 
@@ -399,6 +460,7 @@ function MemberCard({
   isFeatured?: boolean;
 }) {
   const theme = getRoleTheme(member.role);
+  const popup = getPopupTheme(member.role);
 
   return (
     <div 
@@ -421,32 +483,81 @@ function MemberCard({
 
         {member.facebook && (
           <div className="relative group/fb flex-shrink-0">
+            {/* Facebook Icon Button Trigger */}
             <a
               href={member.facebook}
               target="_blank"
               rel="noopener noreferrer"
               title="Facebook Profile"
               aria-label="Facebook Profile"
-              className="w-9 h-9 rounded-xl bg-white/[0.04] border border-white/15 hover:border-[#1877F2]/60 hover:bg-[#1877F2]/10 text-zinc-400 hover:text-[#1877F2] hover:scale-105 active:scale-95 flex items-center justify-center transition-all duration-200 cursor-pointer shadow-sm"
+              className="w-9 h-9 rounded-xl bg-white/[0.04] border border-white/15 hover:border-white/50 text-zinc-400 hover:text-white hover:bg-white/[0.08] flex items-center justify-center transition-all duration-200 cursor-pointer shadow-sm"
             >
               <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
               </svg>
             </a>
 
-            {/* Small Bouncy Popup on Hover */}
-            <div className="pointer-events-none absolute bottom-full right-0 mb-2 opacity-0 translate-y-2 scale-75 group-hover/fb:opacity-100 group-hover/fb:translate-y-0 group-hover/fb:scale-100 group-hover/fb:animate-popup-bounce transition-all duration-200 origin-bottom-right z-30 flex flex-col items-end whitespace-nowrap">
-              <div className="px-2.5 py-1 rounded-lg bg-[#0E131E] border border-[#1877F2]/40 shadow-[0_8px_20px_rgba(0,0,0,0.85),0_0_12px_rgba(24,119,242,0.25)] flex items-center gap-1.5 backdrop-blur-md">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#1877F2] animate-pulse" />
-                <span className="text-[10px] font-mono font-bold tracking-wider text-white uppercase">
-                  FACEBOOK
-                </span>
-                <span className="text-[9px] font-mono text-[#1877F2] font-semibold">
-                  &rarr;
-                </span>
+            {/* Bouncy Hover Profile Card Popup (Matching User Spec) */}
+            <div className="invisible group-hover/fb:visible opacity-0 scale-90 -translate-y-2 group-hover/fb:opacity-100 group-hover/fb:scale-100 group-hover/fb:translate-y-0 group-hover/fb:animate-popup-bounce transition-all duration-200 origin-bottom-right absolute bottom-full right-0 mb-3 z-50 pointer-events-auto">
+              {/* Invisible Hover Bridge */}
+              <div className="absolute -bottom-3 left-0 right-0 h-4" />
+
+              {/* The Profile Mini Card */}
+              <div className={`w-64 rounded-2xl bg-[#0B0E17] border ${popup.cardBorder} shadow-[0_20px_50px_rgba(0,0,0,0.95),0_0_30px_rgba(0,0,0,0.85)] overflow-hidden text-left`}>
+                {/* Header Banner Area */}
+                <div className={`h-16 bg-gradient-to-b ${popup.bannerGradient} relative p-3 flex items-start justify-between`}>
+                  {/* Avatar with Metallic Glowing Ring */}
+                  <div className={`w-14 h-14 rounded-full p-[2.5px] bg-gradient-to-b ${popup.avatarRing} relative -mb-7 mt-0.5`}>
+                    <div className="w-full h-full rounded-full bg-[#0E121C] flex items-center justify-center overflow-hidden border border-black/40">
+                      <span className={`font-anton text-2xl uppercase ${popup.avatarText}`}>
+                        {member.name.charAt(0)}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Facebook Watermark Icon in Top Right */}
+                  <div className="w-8 h-8 rounded-full bg-white/[0.05] border border-white/[0.08] flex items-center justify-center text-zinc-500">
+                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                    </svg>
+                  </div>
+                </div>
+
+                {/* Card Body Info */}
+                <div className="px-4 pb-4 pt-5 flex flex-col gap-2.5">
+                  <div>
+                    <h4 className="text-base font-bold text-white font-sans tracking-wide leading-tight truncate">
+                      {member.name}
+                    </h4>
+                    <p className="text-xs text-zinc-400 font-sans truncate mt-0.5">
+                      {getFacebookHandle(member.facebook, member.name)}
+                    </p>
+                  </div>
+
+                  {/* Role Badge */}
+                  <div>
+                    <div className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg border ${popup.badgeBorder} text-[10px] font-mono font-bold tracking-wider uppercase`}>
+                      <span>{popup.badgeIcon}</span>
+                      <span>{member.role}</span>
+                    </div>
+                  </div>
+
+                  {/* View Profile Action Button */}
+                  <a
+                    href={member.facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`mt-1 w-full py-2.5 px-3 rounded-xl border ${popup.button} text-xs font-sans font-bold flex items-center justify-center gap-2 transition-all duration-200 group/btn shadow-sm`}
+                  >
+                    <svg className="w-3.5 h-3.5 fill-none stroke-current group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" strokeWidth="2.2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                      <polyline points="15 3 21 3 21 9" />
+                      <line x1="10" y1="14" x2="21" y2="3" />
+                    </svg>
+                    <span>View Profile</span>
+                  </a>
+                </div>
               </div>
-              {/* Pointer Arrow */}
-              <div className="w-1.5 h-1.5 bg-[#0E131E] border-r border-b border-[#1877F2]/40 rotate-45 mr-3.5 -mt-1" />
             </div>
           </div>
         )}
