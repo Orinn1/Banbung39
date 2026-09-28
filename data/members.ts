@@ -6,6 +6,7 @@ export interface Member {
   name: string;
   role: MemberRole;
   facebook?: string;
+  avatar?: string;
 }
 
 export const MEMBERS_DATA: Member[] = [

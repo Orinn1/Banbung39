@@ -36,7 +36,7 @@ export default function MembersPage() {
     });
   }, [selectedRole, searchQuery]);
 
-  // Group by role for the "All" view
+  // Group by role
   const founderList = filteredMembers.filter((m) => m.role === 'Founder');
   const leaderList = filteredMembers.filter((m) => m.role === 'Leader');
   const supportList = filteredMembers.filter((m) => m.role === 'Support');
@@ -47,7 +47,7 @@ export default function MembersPage() {
       {/* Falling Snowflakes Particle Effect */}
       <SnowEffect />
 
-      {/* Atmospheric Dark Cinematic Background (Matching Home Page) */}
+      {/* Atmospheric Dark Cinematic Background */}
       <div className="absolute inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0F1117]/80 via-[#08090C]/95 to-[#040507]" />
         
@@ -86,10 +86,10 @@ export default function MembersPage() {
         </nav>
       </header>
 
-      {/* MAIN CONTAINER (Matching Home Page Max Width & Padding) */}
-      <main className="relative z-20 flex-1 max-w-7xl w-full mx-auto px-6 sm:px-12 md:px-16 py-8 sm:py-12">
-        {/* Clean Hero Title (Matching Home Page Style) */}
-        <div className="mb-10 sm:mb-12">
+      {/* MAIN CONTAINER */}
+      <main className="relative z-20 flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 md:px-12 py-8 sm:py-12">
+        {/* Clean Hero Title */}
+        <div className="mb-8 sm:mb-10 text-center sm:text-left">
           <h1 
             style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
             className="text-4xl sm:text-6xl md:text-7xl font-anton tracking-wide text-white uppercase leading-[0.95]"
@@ -99,7 +99,7 @@ export default function MembersPage() {
         </div>
 
         {/* Filter Tabs & Search Bar */}
-        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 p-2 bg-[#0C0D12]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl mb-10 shadow-2xl">
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 p-2 bg-[#0C0D12]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl mb-8 shadow-2xl">
           {/* Role Filter Tabs */}
           <div className="flex flex-wrap items-center gap-1.5 p-1">
             <button
@@ -165,6 +165,24 @@ export default function MembersPage() {
                 {counts.support}
               </span>
             </button>
+
+            {counts.member > 0 && (
+              <button
+                onClick={() => setSelectedRole('Member')}
+                className={`px-4 py-2 rounded-xl text-xs font-mono tracking-wider uppercase transition-all duration-200 flex items-center gap-2 ${
+                  selectedRole === 'Member'
+                    ? 'bg-white text-black font-bold shadow-md'
+                    : 'text-zinc-400 hover:text-white hover:bg-white/[0.05]'
+                }`}
+              >
+                <span>MEMBERS</span>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
+                  selectedRole === 'Member' ? 'bg-black/10 text-black' : 'bg-white/[0.08] text-zinc-400'
+                }`}>
+                  {counts.member}
+                </span>
+              </button>
+            )}
           </div>
 
           {/* Search Box */}
@@ -195,142 +213,71 @@ export default function MembersPage() {
               RESET FILTER
             </button>
           </div>
-        ) : selectedRole === 'All' && !searchQuery ? (
-          /* SECTIONED VIEW WHEN 'ALL' IS SELECTED */
+        ) : (
           <div className="space-y-12">
-            {/* 1. FOUNDER SECTION */}
-            {founderList.length > 0 && (
+            {/* 1. FOUNDER SECTION (Wide / 2-Column Layout) */}
+            {(selectedRole === 'All' || selectedRole === 'Founder') && founderList.length > 0 && (
               <section>
-                <div className="flex items-baseline justify-between mb-4 pb-2 border-b border-white/[0.08]">
-                  <div className="flex items-baseline gap-3">
-                    <h2 
-                      style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-                      className="text-2xl sm:text-3xl font-anton tracking-wider text-white uppercase"
-                    >
-                      FOUNDER
-                    </h2>
-                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
-                      SUPREME LEADERSHIP
-                    </span>
-                  </div>
-                  <span className="text-xs font-mono text-zinc-400">
-                    {founderList.length}
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                <SectionHeader title="FOUNDER" role="Founder" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto">
                   {founderList.map((m) => (
                     <MemberCard 
                       key={m.id} 
                       member={m} 
+                      variant="wide"
                     />
                   ))}
                 </div>
               </section>
             )}
 
-            {/* 2. LEADER SECTION */}
-            {leaderList.length > 0 && (
+            {/* 2. LEADER SECTION (2-Column Layout) */}
+            {(selectedRole === 'All' || selectedRole === 'Leader') && leaderList.length > 0 && (
               <section>
-                <div className="flex items-baseline justify-between mb-4 pb-2 border-b border-white/[0.08]">
-                  <div className="flex items-baseline gap-3">
-                    <h2 
-                      style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-                      className="text-2xl sm:text-3xl font-anton tracking-wider text-white uppercase"
-                    >
-                      LEADER
-                    </h2>
-                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
-                      COMMAND & TACTICAL OPS
-                    </span>
-                  </div>
-                  <span className="text-xs font-mono text-zinc-400">
-                    {leaderList.length}
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                <SectionHeader title="LEADER" role="Leader" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto">
                   {leaderList.map((m) => (
                     <MemberCard 
                       key={m.id} 
                       member={m} 
+                      variant="wide"
                     />
                   ))}
                 </div>
               </section>
             )}
 
-            {/* 3. SUPPORT SECTION */}
-            {supportList.length > 0 && (
+            {/* 3. SUPPORT SECTION (5-Column Layout) */}
+            {(selectedRole === 'All' || selectedRole === 'Support') && supportList.length > 0 && (
               <section>
-                <div className="flex items-baseline justify-between mb-4 pb-2 border-b border-white/[0.08]">
-                  <div className="flex items-baseline gap-3">
-                    <h2 
-                      style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-                      className="text-2xl sm:text-3xl font-anton tracking-wider text-white uppercase"
-                    >
-                      SUPPORT
-                    </h2>
-                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
-                      LOGISTICS & COMMUNITY
-                    </span>
-                  </div>
-                  <span className="text-xs font-mono text-zinc-400">
-                    {supportList.length}
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                <SectionHeader title="SUPPORT" role="Support" />
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                   {supportList.map((m) => (
                     <MemberCard 
                       key={m.id} 
                       member={m} 
+                      variant="compact"
                     />
                   ))}
                 </div>
               </section>
             )}
 
-            {/* 4. MEMBER SECTION */}
-            {regularMemberList.length > 0 && (
+            {/* 4. MEMBERS SECTION (5-Column Layout) */}
+            {(selectedRole === 'All' || selectedRole === 'Member') && regularMemberList.length > 0 && (
               <section>
-                <div className="flex items-baseline justify-between mb-4 pb-2 border-b border-white/[0.08]">
-                  <div className="flex items-baseline gap-3">
-                    <h2 
-                      style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-                      className="text-2xl sm:text-3xl font-anton tracking-wider text-white uppercase"
-                    >
-                      MEMBER
-                    </h2>
-                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
-                      CORE OPERATIVES
-                    </span>
-                  </div>
-                  <span className="text-xs font-mono text-zinc-400">
-                    {regularMemberList.length}
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                <SectionHeader title="MEMBERS" role="Member" />
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                   {regularMemberList.map((m) => (
                     <MemberCard 
                       key={m.id} 
                       member={m} 
+                      variant="compact"
                     />
                   ))}
                 </div>
               </section>
             )}
-          </div>
-        ) : (
-          /* UNIFIED GRID VIEW WHEN FILTERED */
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-            {filteredMembers.map((m) => (
-              <MemberCard 
-                key={m.id} 
-                member={m} 
-              />
-            ))}
           </div>
         )}
       </main>
@@ -355,41 +302,95 @@ export default function MembersPage() {
   );
 }
 
-// Role-specific metallic gradient border and glow themes (Authentic, dark, non-AI)
+// Section Header with sleek horizontal flanking lines matching reference screenshots
+function SectionHeader({
+  title,
+  role,
+}: {
+  title: string;
+  role: MemberRole;
+}) {
+  const theme = getRoleTheme(role);
+  return (
+    <div className="flex items-center justify-center gap-3 sm:gap-6 my-6 sm:my-8">
+      <div className={`h-[1px] flex-1 max-w-[120px] sm:max-w-xs md:max-w-md ${theme.headingLineLeft}`} />
+      <h2 
+        className={`font-rajdhani text-lg sm:text-xl md:text-2xl font-bold tracking-[0.28em] uppercase text-center ${theme.headingText}`}
+      >
+        {title}
+      </h2>
+      <div className={`h-[1px] flex-1 max-w-[120px] sm:max-w-xs md:max-w-md ${theme.headingLineRight}`} />
+    </div>
+  );
+}
+
+// Role-specific metallic gradient border, background, and glow themes (BANBUNG39 Authentic Noir Colors)
 const getRoleTheme = (role: MemberRole) => {
   switch (role) {
     case 'Founder':
       // Platinum White / Polished Silver Chrome
       return {
-        borderGradient: 'from-white/90 via-slate-300/40 to-white/10 hover:from-white hover:via-slate-200 hover:to-white/30',
-        glow: 'shadow-[0_4px_30px_rgba(255,255,255,0.08)] hover:shadow-[0_6px_40px_rgba(255,255,255,0.15)]',
+        cardBorder: 'border-white/30 hover:border-white/90',
+        cardBg: 'bg-gradient-to-r from-white/[0.06] via-[#0C0D12]/95 to-[#08090C]/95',
+        glow: 'shadow-[0_4px_25px_rgba(255,255,255,0.06)] hover:shadow-[0_4px_35px_rgba(255,255,255,0.18)]',
+        avatarBorder: 'border-white/20',
+        avatarBg: 'bg-gradient-to-br from-white/10 via-zinc-800/40 to-black',
+        avatarText: 'text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]',
+        roleText: 'text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]',
+        headingText: 'text-white drop-shadow-[0_0_12px_rgba(255,255,255,0.45)]',
+        headingLineLeft: 'bg-gradient-to-r from-transparent via-white/40 to-white/70',
+        headingLineRight: 'bg-gradient-to-l from-transparent via-white/40 to-white/70',
         idColor: 'text-zinc-400',
       };
     case 'Leader':
       // Crimson Noir / Blood Ruby
       return {
-        borderGradient: 'from-red-500/90 via-red-800/45 to-red-950/20 hover:from-red-400 hover:via-red-700 hover:to-red-900/40',
-        glow: 'shadow-[0_4px_30px_rgba(239,68,68,0.12)] hover:shadow-[0_6px_40px_rgba(239,68,68,0.22)]',
+        cardBorder: 'border-red-500/40 hover:border-red-400',
+        cardBg: 'bg-gradient-to-r from-red-950/30 via-[#0C0D12]/95 to-[#08090C]/95',
+        glow: 'shadow-[0_4px_25px_rgba(239,68,68,0.12)] hover:shadow-[0_4px_35px_rgba(239,68,68,0.25)]',
+        avatarBorder: 'border-red-500/30',
+        avatarBg: 'bg-gradient-to-br from-red-950/60 via-zinc-900/40 to-black',
+        avatarText: 'text-red-400 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]',
+        roleText: 'text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.4)]',
+        headingText: 'text-red-500 drop-shadow-[0_0_12px_rgba(239,68,68,0.55)]',
+        headingLineLeft: 'bg-gradient-to-r from-transparent via-red-500/40 to-red-500/80',
+        headingLineRight: 'bg-gradient-to-l from-transparent via-red-500/40 to-red-500/80',
         idColor: 'text-red-400/80',
       };
     case 'Support':
       // Steel Ice Blue / Tactical Cobalt
       return {
-        borderGradient: 'from-sky-400/90 via-blue-800/45 to-sky-950/20 hover:from-sky-300 hover:via-blue-700 hover:to-sky-900/40',
-        glow: 'shadow-[0_4px_30px_rgba(56,189,248,0.12)] hover:shadow-[0_6px_40px_rgba(56,189,248,0.22)]',
+        cardBorder: 'border-sky-400/40 hover:border-sky-300',
+        cardBg: 'bg-gradient-to-r from-sky-950/30 via-[#0C0D12]/95 to-[#08090C]/95',
+        glow: 'shadow-[0_4px_25px_rgba(56,189,248,0.12)] hover:shadow-[0_4px_35px_rgba(56,189,248,0.25)]',
+        avatarBorder: 'border-sky-400/30',
+        avatarBg: 'bg-gradient-to-br from-sky-950/60 via-zinc-900/40 to-black',
+        avatarText: 'text-sky-300 drop-shadow-[0_0_8px_rgba(56,189,248,0.5)]',
+        roleText: 'text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.4)]',
+        headingText: 'text-sky-400 drop-shadow-[0_0_12px_rgba(56,189,248,0.55)]',
+        headingLineLeft: 'bg-gradient-to-r from-transparent via-sky-400/40 to-sky-400/80',
+        headingLineRight: 'bg-gradient-to-l from-transparent via-sky-400/40 to-sky-400/80',
         idColor: 'text-sky-400/80',
       };
     case 'Member':
       // Smoked Titanium Charcoal
       return {
-        borderGradient: 'from-zinc-500/50 via-zinc-700/25 to-zinc-900/10 hover:from-zinc-400 hover:via-zinc-600 hover:to-zinc-800/30',
-        glow: 'shadow-[0_4px_20px_rgba(0,0,0,0.6)]',
+        cardBorder: 'border-zinc-700/50 hover:border-zinc-500',
+        cardBg: 'bg-gradient-to-r from-zinc-900/40 via-[#0C0D12]/95 to-[#08090C]/95',
+        glow: 'shadow-[0_4px_20px_rgba(0,0,0,0.6)] hover:shadow-[0_4px_25px_rgba(255,255,255,0.06)]',
+        avatarBorder: 'border-zinc-700/40',
+        avatarBg: 'bg-gradient-to-br from-zinc-800/40 via-zinc-900/40 to-black',
+        avatarText: 'text-zinc-300',
+        roleText: 'text-zinc-400',
+        headingText: 'text-zinc-400 drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]',
+        headingLineLeft: 'bg-gradient-to-r from-transparent via-zinc-600/40 to-zinc-500/70',
+        headingLineRight: 'bg-gradient-to-l from-transparent via-zinc-600/40 to-zinc-500/70',
         idColor: 'text-zinc-500',
       };
   }
 };
 
-// Format Facebook handle for display (e.g. facebook.com/nongpiper00 or facebook.com/name)
+// Format Facebook handle for display
 const getFacebookHandle = (url?: string, name?: string) => {
   if (!url) return 'facebook.com';
   try {
@@ -404,11 +405,10 @@ const getFacebookHandle = (url?: string, name?: string) => {
   }
 };
 
-// Theme tokens for the Facebook hover profile popup card (100% matched to member card themes)
+// Theme tokens for the Facebook hover profile popup card
 const getPopupTheme = (role: MemberRole) => {
   switch (role) {
     case 'Founder':
-      // Platinum White / Polished Silver Chrome
       return {
         cardBorder: 'border-white/20',
         bannerGradient: 'from-white/[0.14] via-zinc-800/25 to-[#0C0D12]',
@@ -419,7 +419,6 @@ const getPopupTheme = (role: MemberRole) => {
         button: 'border-white/25 hover:border-white/60 bg-white/[0.06] hover:bg-white/15 text-white',
       };
     case 'Leader':
-      // Crimson Noir / Blood Ruby
       return {
         cardBorder: 'border-red-500/30',
         bannerGradient: 'from-red-950/70 via-red-950/25 to-[#0C0D12]',
@@ -430,7 +429,6 @@ const getPopupTheme = (role: MemberRole) => {
         button: 'border-red-500/40 hover:border-red-500/80 bg-red-500/[0.06] hover:bg-red-500/15 text-red-400 hover:text-red-300',
       };
     case 'Support':
-      // Steel Ice Blue / Tactical Cobalt
       return {
         cardBorder: 'border-sky-400/30',
         bannerGradient: 'from-sky-950/70 via-blue-950/25 to-[#0C0D12]',
@@ -441,7 +439,6 @@ const getPopupTheme = (role: MemberRole) => {
         button: 'border-sky-400/40 hover:border-sky-400/80 bg-sky-400/[0.06] hover:bg-sky-400/15 text-sky-400 hover:text-sky-300',
       };
     case 'Member':
-      // Smoked Titanium Charcoal
       return {
         cardBorder: 'border-zinc-500/30',
         bannerGradient: 'from-zinc-800/40 via-zinc-900/20 to-[#0C0D12]',
@@ -454,7 +451,6 @@ const getPopupTheme = (role: MemberRole) => {
   }
 };
 
-// Render clean monochromatic SVG role icon
 const renderRoleIcon = (icon: string) => {
   switch (icon) {
     case 'crown':
@@ -487,111 +483,200 @@ const renderRoleIcon = (icon: string) => {
   }
 };
 
-// Clean Typographic Member Card with Role Gradient Border
-function MemberCard({ 
-  member, 
-}: { 
-  member: Member; 
+// Facebook button with the smooth bouncy hover profile popup card
+function FacebookPopupButton({
+  member,
+  popup,
+  size = 'normal',
+}: {
+  member: Member;
+  popup: ReturnType<typeof getPopupTheme>;
+  size?: 'normal' | 'compact';
 }) {
-  const theme = getRoleTheme(member.role);
-  const popup = getPopupTheme(member.role);
+  const btnClasses = size === 'compact'
+    ? 'w-7 h-7 rounded-lg'
+    : 'w-8 h-8 sm:w-8 sm:h-8 rounded-xl';
+  const iconClasses = size === 'compact' ? 'w-3.5 h-3.5' : 'w-4 h-4';
 
   return (
-    <div 
-      className={`p-[1.5px] rounded-2xl bg-gradient-to-br ${theme.borderGradient} ${theme.glow} transition-all duration-300 hover:-translate-y-0.5`}
-    >
-      <div className="p-3.5 sm:p-4 rounded-[14.5px] bg-[#0C0D12]/95 backdrop-blur-md flex items-center justify-between gap-3.5 relative">
-        <div className="min-w-0 flex-1">
-          <span className={`text-[11px] font-mono block mb-0.5 font-bold ${theme.idColor}`}>
-            {member.memberId}
-          </span>
-          <h3 
-            style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-            className="text-base sm:text-lg font-anton tracking-wide text-white uppercase truncate leading-tight"
-          >
-            {member.name}
-          </h3>
-        </div>
+    <div className="relative group/fb flex-shrink-0">
+      <a
+        href={member.facebook}
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Facebook Profile"
+        aria-label="Facebook Profile"
+        className={`${btnClasses} bg-white/[0.04] border border-white/15 hover:border-white/50 text-zinc-400 hover:text-white hover:bg-white/[0.08] flex items-center justify-center transition-all duration-200 cursor-pointer shadow-sm`}
+      >
+        <svg className={`${iconClasses} fill-current`} viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+        </svg>
+      </a>
 
-        {member.facebook && (
-          <div className="relative group/fb flex-shrink-0">
-            {/* Facebook Icon Button Trigger */}
+      {/* Bouncy Hover Profile Card Popup */}
+      <div className="invisible group-hover/fb:visible opacity-0 scale-90 -translate-y-2 group-hover/fb:opacity-100 group-hover/fb:scale-100 group-hover/fb:translate-y-0 group-hover/fb:animate-popup-bounce transition-all duration-200 origin-bottom-right absolute bottom-full right-0 mb-3 z-50 pointer-events-auto">
+        {/* Invisible Hover Bridge to prevent premature closing */}
+        <div className="absolute -bottom-3 left-0 right-0 h-4" />
+
+        {/* The Profile Mini Card */}
+        <div className={`w-64 rounded-2xl bg-[#0C0D12] border ${popup.cardBorder} shadow-[0_20px_50px_rgba(0,0,0,0.95),0_0_30px_rgba(0,0,0,0.85)] overflow-hidden text-left`}>
+          {/* Header Banner Area */}
+          <div className={`h-16 bg-gradient-to-b ${popup.bannerGradient} relative p-3 flex items-start justify-between`}>
+            {/* Avatar with Metallic Glowing Ring */}
+            <div className={`w-14 h-14 rounded-full p-[2px] bg-gradient-to-b ${popup.avatarRing} relative -mb-7 mt-0.5`}>
+              <div className="w-full h-full rounded-full bg-[#0C0D12] flex items-center justify-center overflow-hidden border border-black/40">
+                {member.avatar ? (
+                  <img src={member.avatar} alt={member.name} className="w-full h-full object-cover" />
+                ) : (
+                  <span className={`font-anton text-2xl uppercase ${popup.avatarText}`}>
+                    {member.name.charAt(0)}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Facebook Watermark Icon in Top Right */}
+            <div className="w-8 h-8 rounded-full bg-white/[0.05] border border-white/[0.08] flex items-center justify-center text-zinc-500">
+              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Card Body Info */}
+          <div className="px-4 pb-4 pt-5 flex flex-col gap-2.5">
+            <div>
+              <h4 className="text-base font-bold text-white font-sans tracking-wide leading-tight truncate">
+                {member.name}
+              </h4>
+              <p className="text-xs text-zinc-400 font-sans truncate mt-0.5">
+                {getFacebookHandle(member.facebook, member.name)}
+              </p>
+            </div>
+
+            {/* Role Badge */}
+            <div>
+              <div className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg border ${popup.badgeBorder} text-[10px] font-mono font-bold tracking-wider uppercase`}>
+                {renderRoleIcon(popup.badgeIcon)}
+                <span>{member.role}</span>
+              </div>
+            </div>
+
+            {/* View Profile Action Button */}
             <a
               href={member.facebook}
               target="_blank"
               rel="noopener noreferrer"
-              title="Facebook Profile"
-              aria-label="Facebook Profile"
-              className="w-9 h-9 rounded-xl bg-white/[0.04] border border-white/15 hover:border-white/50 text-zinc-400 hover:text-white hover:bg-white/[0.08] flex items-center justify-center transition-all duration-200 cursor-pointer shadow-sm"
+              className={`mt-1 w-full py-2.5 px-3 rounded-xl border ${popup.button} text-xs font-sans font-bold flex items-center justify-center gap-2 transition-all duration-200 group/btn shadow-sm`}
             >
-              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+              <svg className="w-3.5 h-3.5 fill-none stroke-current group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" strokeWidth="2.2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
               </svg>
+              <span>View Profile</span>
             </a>
-
-            {/* Bouncy Hover Profile Card Popup (100% Matching Role Theme) */}
-            <div className="invisible group-hover/fb:visible opacity-0 scale-90 -translate-y-2 group-hover/fb:opacity-100 group-hover/fb:scale-100 group-hover/fb:translate-y-0 group-hover/fb:animate-popup-bounce transition-all duration-200 origin-bottom-right absolute bottom-full right-0 mb-3 z-50 pointer-events-auto">
-              {/* Invisible Hover Bridge */}
-              <div className="absolute -bottom-3 left-0 right-0 h-4" />
-
-              {/* The Profile Mini Card */}
-              <div className={`w-64 rounded-2xl bg-[#0C0D12] border ${popup.cardBorder} shadow-[0_20px_50px_rgba(0,0,0,0.95),0_0_30px_rgba(0,0,0,0.85)] overflow-hidden text-left`}>
-                {/* Header Banner Area */}
-                <div className={`h-16 bg-gradient-to-b ${popup.bannerGradient} relative p-3 flex items-start justify-between`}>
-                  {/* Avatar with Metallic Glowing Ring */}
-                  <div className={`w-14 h-14 rounded-full p-[2px] bg-gradient-to-b ${popup.avatarRing} relative -mb-7 mt-0.5`}>
-                    <div className="w-full h-full rounded-full bg-[#0C0D12] flex items-center justify-center overflow-hidden border border-black/40">
-                      <span className={`font-anton text-2xl uppercase ${popup.avatarText}`}>
-                        {member.name.charAt(0)}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Facebook Watermark Icon in Top Right */}
-                  <div className="w-8 h-8 rounded-full bg-white/[0.05] border border-white/[0.08] flex items-center justify-center text-zinc-500">
-                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                    </svg>
-                  </div>
-                </div>
-
-                {/* Card Body Info */}
-                <div className="px-4 pb-4 pt-5 flex flex-col gap-2.5">
-                  <div>
-                    <h4 className="text-base font-bold text-white font-sans tracking-wide leading-tight truncate">
-                      {member.name}
-                    </h4>
-                    <p className="text-xs text-zinc-400 font-sans truncate mt-0.5">
-                      {getFacebookHandle(member.facebook, member.name)}
-                    </p>
-                  </div>
-
-                  {/* Role Badge */}
-                  <div>
-                    <div className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg border ${popup.badgeBorder} text-[10px] font-mono font-bold tracking-wider uppercase`}>
-                      {renderRoleIcon(popup.badgeIcon)}
-                      <span>{member.role}</span>
-                    </div>
-                  </div>
-
-                  {/* View Profile Action Button */}
-                  <a
-                    href={member.facebook}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`mt-1 w-full py-2.5 px-3 rounded-xl border ${popup.button} text-xs font-sans font-bold flex items-center justify-center gap-2 transition-all duration-200 group/btn shadow-sm`}
-                  >
-                    <svg className="w-3.5 h-3.5 fill-none stroke-current group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" strokeWidth="2.2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                      <polyline points="15 3 21 3 21 9" />
-                      <line x1="10" y1="14" x2="21" y2="3" />
-                    </svg>
-                    <span>View Profile</span>
-                  </a>
-                </div>
-              </div>
-            </div>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Member Card with Wide (Founder/Leader) and Compact (Support/Member 5-column) variants
+function MemberCard({ 
+  member, 
+  variant = 'wide',
+}: { 
+  member: Member; 
+  variant?: 'wide' | 'compact';
+}) {
+  const theme = getRoleTheme(member.role);
+  const popup = getPopupTheme(member.role);
+
+  const roleLabel = member.role === 'Founder' 
+    ? 'FOUNDER' 
+    : member.role === 'Leader' 
+    ? 'LEADER' 
+    : member.role === 'Support' 
+    ? 'SUPPORT' 
+    : 'MEMBERS';
+
+  if (variant === 'wide') {
+    return (
+      <div 
+        className={`rounded-2xl border ${theme.cardBorder} ${theme.cardBg} ${theme.glow} p-3 sm:p-4 flex items-center justify-between gap-3 sm:gap-4 transition-all duration-300 hover:-translate-y-0.5 relative group/card`}
+      >
+        {/* Left: Square avatar with rounded corners */}
+        <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border ${theme.avatarBorder} ${theme.avatarBg} flex-shrink-0 flex items-center justify-center relative shadow-inner`}>
+          {member.avatar ? (
+            <img src={member.avatar} alt={member.name} className="w-full h-full object-cover" />
+          ) : (
+            <span className={`text-xl sm:text-2xl font-rajdhani font-bold ${theme.avatarText}`}>
+              {member.name.charAt(0)}
+            </span>
+          )}
+        </div>
+
+        {/* Middle: Member Name & ID */}
+        <div className="flex-1 min-w-0 pr-1">
+          <h3 className="text-base sm:text-lg font-bold text-white uppercase tracking-wide truncate group-hover/card:text-zinc-100 transition-colors">
+            {member.name}
+          </h3>
+          <p className={`text-[11px] font-mono mt-0.5 ${theme.idColor}`}>
+            {member.memberId}
+          </p>
+        </div>
+
+        {/* Right: Role text + Facebook Button */}
+        <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
+          <span className={`font-rajdhani font-bold text-xs sm:text-sm tracking-[0.2em] uppercase ${theme.roleText}`}>
+            {roleLabel}
+          </span>
+          {member.facebook && (
+            <FacebookPopupButton member={member} popup={popup} size="normal" />
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // Compact variant for 5-column grid (Support & Member)
+  return (
+    <div 
+      className={`rounded-xl border ${theme.cardBorder} ${theme.cardBg} ${theme.glow} p-2.5 sm:p-3 flex items-center gap-2.5 transition-all duration-300 hover:-translate-y-0.5 relative group/card`}
+    >
+      {/* Left: Square avatar with rounded corners */}
+      <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-lg overflow-hidden border ${theme.avatarBorder} ${theme.avatarBg} flex-shrink-0 flex items-center justify-center relative shadow-inner`}>
+        {member.avatar ? (
+          <img src={member.avatar} alt={member.name} className="w-full h-full object-cover" />
+        ) : (
+          <span className={`text-base sm:text-lg font-rajdhani font-bold ${theme.avatarText}`}>
+            {member.name.charAt(0)}
+          </span>
+        )}
+      </div>
+
+      {/* Middle: Member Name & ID */}
+      <div className="flex-1 min-w-0">
+        <h3 
+          className="text-xs sm:text-sm font-bold text-white uppercase tracking-wide truncate group-hover/card:text-zinc-100 transition-colors"
+          title={member.name}
+        >
+          {member.name}
+        </h3>
+        <p className={`text-[10px] font-mono ${theme.idColor} truncate`}>
+          {member.memberId}
+        </p>
+      </div>
+
+      {/* Right: Role text + Facebook Button */}
+      <div className="flex flex-col items-end justify-center gap-1 flex-shrink-0">
+        <span className={`font-rajdhani font-bold text-[10px] sm:text-[11px] tracking-wider uppercase ${theme.roleText}`}>
+          {roleLabel}
+        </span>
+        {member.facebook && (
+          <FacebookPopupButton member={member} popup={popup} size="compact" />
         )}
       </div>
     </div>
