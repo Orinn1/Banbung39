@@ -86,8 +86,8 @@ export default function MembersPage() {
         </nav>
       </header>
 
-      {/* MAIN CONTAINER */}
-      <main className="relative z-20 flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 md:px-12 py-8 sm:py-12">
+      {/* MAIN CONTAINER (Expanded width for generous 5-column and 2-column cards) */}
+      <main className="relative z-20 flex-1 max-w-[1440px] w-full mx-auto px-4 sm:px-8 md:px-12 py-8 sm:py-12">
         {/* Clean Hero Title */}
         <div className="mb-8 sm:mb-10 text-center sm:text-left">
           <h1 
@@ -219,7 +219,7 @@ export default function MembersPage() {
             {(selectedRole === 'All' || selectedRole === 'Founder') && founderList.length > 0 && (
               <section>
                 <SectionHeader title="FOUNDER" role="Founder" />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-6xl mx-auto">
                   {founderList.map((m) => (
                     <MemberCard 
                       key={m.id} 
@@ -235,7 +235,7 @@ export default function MembersPage() {
             {(selectedRole === 'All' || selectedRole === 'Leader') && leaderList.length > 0 && (
               <section>
                 <SectionHeader title="LEADER" role="Leader" />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-6xl mx-auto">
                   {leaderList.map((m) => (
                     <MemberCard 
                       key={m.id} 
@@ -251,7 +251,7 @@ export default function MembersPage() {
             {(selectedRole === 'All' || selectedRole === 'Support') && supportList.length > 0 && (
               <section>
                 <SectionHeader title="SUPPORT" role="Support" />
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                   {supportList.map((m) => (
                     <MemberCard 
                       key={m.id} 
@@ -267,7 +267,7 @@ export default function MembersPage() {
             {(selectedRole === 'All' || selectedRole === 'Member') && regularMemberList.length > 0 && (
               <section>
                 <SectionHeader title="MEMBERS" role="Member" />
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                   {regularMemberList.map((m) => (
                     <MemberCard 
                       key={m.id} 
@@ -312,14 +312,14 @@ function SectionHeader({
 }) {
   const theme = getRoleTheme(role);
   return (
-    <div className="flex items-center justify-center gap-3 sm:gap-6 my-6 sm:my-8">
-      <div className={`h-[1px] flex-1 max-w-[120px] sm:max-w-xs md:max-w-md ${theme.headingLineLeft}`} />
+    <div className="flex items-center justify-center gap-4 sm:gap-8 my-8 sm:my-10">
+      <div className={`h-[2px] flex-1 max-w-[140px] sm:max-w-sm md:max-w-md ${theme.headingLineLeft}`} />
       <h2 
-        className={`font-rajdhani text-lg sm:text-xl md:text-2xl font-bold tracking-[0.28em] uppercase text-center ${theme.headingText}`}
+        className={`font-rajdhani text-2xl sm:text-3xl md:text-4xl font-bold tracking-[0.3em] uppercase text-center ${theme.headingText}`}
       >
         {title}
       </h2>
-      <div className={`h-[1px] flex-1 max-w-[120px] sm:max-w-xs md:max-w-md ${theme.headingLineRight}`} />
+      <div className={`h-[2px] flex-1 max-w-[140px] sm:max-w-sm md:max-w-md ${theme.headingLineRight}`} />
     </div>
   );
 }
@@ -333,13 +333,13 @@ const getRoleTheme = (role: MemberRole) => {
         cardBorder: 'border-white/30 hover:border-white/90',
         cardBg: 'bg-gradient-to-r from-white/[0.06] via-[#0C0D12]/95 to-[#08090C]/95',
         glow: 'shadow-[0_4px_25px_rgba(255,255,255,0.06)] hover:shadow-[0_4px_35px_rgba(255,255,255,0.18)]',
-        avatarBorder: 'border-white/20',
+        avatarBorder: 'border-white/30',
         avatarBg: 'bg-gradient-to-br from-white/10 via-zinc-800/40 to-black',
         avatarText: 'text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]',
         roleText: 'text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]',
-        headingText: 'text-white drop-shadow-[0_0_12px_rgba(255,255,255,0.45)]',
-        headingLineLeft: 'bg-gradient-to-r from-transparent via-white/40 to-white/70',
-        headingLineRight: 'bg-gradient-to-l from-transparent via-white/40 to-white/70',
+        headingText: 'text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]',
+        headingLineLeft: 'bg-gradient-to-r from-transparent via-white/50 to-white/90 shadow-[0_0_12px_rgba(255,255,255,0.4)]',
+        headingLineRight: 'bg-gradient-to-l from-transparent via-white/50 to-white/90 shadow-[0_0_12px_rgba(255,255,255,0.4)]',
         idColor: 'text-zinc-400',
       };
     case 'Leader':
@@ -348,13 +348,13 @@ const getRoleTheme = (role: MemberRole) => {
         cardBorder: 'border-red-500/40 hover:border-red-400',
         cardBg: 'bg-gradient-to-r from-red-950/30 via-[#0C0D12]/95 to-[#08090C]/95',
         glow: 'shadow-[0_4px_25px_rgba(239,68,68,0.12)] hover:shadow-[0_4px_35px_rgba(239,68,68,0.25)]',
-        avatarBorder: 'border-red-500/30',
+        avatarBorder: 'border-red-500/40',
         avatarBg: 'bg-gradient-to-br from-red-950/60 via-zinc-900/40 to-black',
         avatarText: 'text-red-400 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]',
         roleText: 'text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.4)]',
-        headingText: 'text-red-500 drop-shadow-[0_0_12px_rgba(239,68,68,0.55)]',
-        headingLineLeft: 'bg-gradient-to-r from-transparent via-red-500/40 to-red-500/80',
-        headingLineRight: 'bg-gradient-to-l from-transparent via-red-500/40 to-red-500/80',
+        headingText: 'text-red-500 drop-shadow-[0_0_16px_rgba(239,68,68,0.6)]',
+        headingLineLeft: 'bg-gradient-to-r from-transparent via-red-500/50 to-red-500 shadow-[0_0_12px_rgba(239,68,68,0.5)]',
+        headingLineRight: 'bg-gradient-to-l from-transparent via-red-500/50 to-red-500 shadow-[0_0_12px_rgba(239,68,68,0.5)]',
         idColor: 'text-red-400/80',
       };
     case 'Support':
@@ -363,13 +363,13 @@ const getRoleTheme = (role: MemberRole) => {
         cardBorder: 'border-sky-400/40 hover:border-sky-300',
         cardBg: 'bg-gradient-to-r from-sky-950/30 via-[#0C0D12]/95 to-[#08090C]/95',
         glow: 'shadow-[0_4px_25px_rgba(56,189,248,0.12)] hover:shadow-[0_4px_35px_rgba(56,189,248,0.25)]',
-        avatarBorder: 'border-sky-400/30',
+        avatarBorder: 'border-sky-400/40',
         avatarBg: 'bg-gradient-to-br from-sky-950/60 via-zinc-900/40 to-black',
         avatarText: 'text-sky-300 drop-shadow-[0_0_8px_rgba(56,189,248,0.5)]',
         roleText: 'text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.4)]',
-        headingText: 'text-sky-400 drop-shadow-[0_0_12px_rgba(56,189,248,0.55)]',
-        headingLineLeft: 'bg-gradient-to-r from-transparent via-sky-400/40 to-sky-400/80',
-        headingLineRight: 'bg-gradient-to-l from-transparent via-sky-400/40 to-sky-400/80',
+        headingText: 'text-sky-400 drop-shadow-[0_0_16px_rgba(56,189,248,0.6)]',
+        headingLineLeft: 'bg-gradient-to-r from-transparent via-sky-400/50 to-sky-400 shadow-[0_0_12px_rgba(56,189,248,0.5)]',
+        headingLineRight: 'bg-gradient-to-l from-transparent via-sky-400/50 to-sky-400 shadow-[0_0_12px_rgba(56,189,248,0.5)]',
         idColor: 'text-sky-400/80',
       };
     case 'Member':
@@ -378,13 +378,13 @@ const getRoleTheme = (role: MemberRole) => {
         cardBorder: 'border-zinc-700/50 hover:border-zinc-500',
         cardBg: 'bg-gradient-to-r from-zinc-900/40 via-[#0C0D12]/95 to-[#08090C]/95',
         glow: 'shadow-[0_4px_20px_rgba(0,0,0,0.6)] hover:shadow-[0_4px_25px_rgba(255,255,255,0.06)]',
-        avatarBorder: 'border-zinc-700/40',
+        avatarBorder: 'border-zinc-600/40',
         avatarBg: 'bg-gradient-to-br from-zinc-800/40 via-zinc-900/40 to-black',
         avatarText: 'text-zinc-300',
         roleText: 'text-zinc-400',
-        headingText: 'text-zinc-400 drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]',
-        headingLineLeft: 'bg-gradient-to-r from-transparent via-zinc-600/40 to-zinc-500/70',
-        headingLineRight: 'bg-gradient-to-l from-transparent via-zinc-600/40 to-zinc-500/70',
+        headingText: 'text-zinc-300 drop-shadow-[0_0_12px_rgba(255,255,255,0.25)]',
+        headingLineLeft: 'bg-gradient-to-r from-transparent via-zinc-500/50 to-zinc-400 shadow-[0_0_8px_rgba(255,255,255,0.15)]',
+        headingLineRight: 'bg-gradient-to-l from-transparent via-zinc-500/50 to-zinc-400 shadow-[0_0_8px_rgba(255,255,255,0.15)]',
         idColor: 'text-zinc-500',
       };
   }
@@ -608,10 +608,10 @@ function MemberCard({
   if (variant === 'wide') {
     return (
       <div 
-        className={`rounded-2xl border ${theme.cardBorder} ${theme.cardBg} ${theme.glow} p-3 sm:p-4 flex items-center justify-between gap-3 sm:gap-4 transition-all duration-300 hover:-translate-y-0.5 relative group/card`}
+        className={`rounded-2xl border ${theme.cardBorder} ${theme.cardBg} ${theme.glow} p-4 sm:p-5 min-h-[96px] sm:min-h-[104px] flex items-center justify-between gap-4 transition-all duration-300 hover:-translate-y-0.5 relative group/card`}
       >
         {/* Left: Square avatar with rounded corners */}
-        <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border ${theme.avatarBorder} ${theme.avatarBg} flex-shrink-0 flex items-center justify-center relative shadow-inner bg-black`}>
+        <div className={`w-18 h-18 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border-2 ${theme.avatarBorder} ${theme.avatarBg} flex-shrink-0 flex items-center justify-center relative shadow-md bg-black`}>
           <img 
             src={avatarSrc} 
             alt={member.name} 
@@ -621,18 +621,18 @@ function MemberCard({
         </div>
 
         {/* Middle: Member Name & ID */}
-        <div className="flex-1 min-w-0 pr-1">
-          <h3 className="text-base sm:text-lg font-bold text-white uppercase tracking-wide truncate group-hover/card:text-zinc-100 transition-colors">
+        <div className="flex-1 min-w-0 pr-2">
+          <h3 className="text-base sm:text-xl font-bold text-white uppercase tracking-wide leading-tight group-hover:text-zinc-100 transition-colors">
             {member.name}
           </h3>
-          <p className={`text-[11px] font-mono mt-0.5 ${theme.idColor}`}>
+          <p className={`text-xs font-mono mt-1 font-semibold ${theme.idColor}`}>
             {member.memberId}
           </p>
         </div>
 
         {/* Right: Role text + Facebook Button */}
         <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
-          <span className={`font-rajdhani font-bold text-xs sm:text-sm tracking-[0.2em] uppercase ${theme.roleText}`}>
+          <span className={`font-rajdhani font-bold text-sm sm:text-base tracking-[0.22em] uppercase ${theme.roleText}`}>
             {roleLabel}
           </span>
           {member.facebook && (
@@ -643,13 +643,13 @@ function MemberCard({
     );
   }
 
-  // Compact variant for 5-column grid (Support & Member)
+  // Compact variant for 5-column grid (Support & Member) - Noticeably larger and no truncation
   return (
     <div 
-      className={`rounded-xl border ${theme.cardBorder} ${theme.cardBg} ${theme.glow} p-2.5 sm:p-3 flex items-center gap-2.5 transition-all duration-300 hover:-translate-y-0.5 relative group/card`}
+      className={`rounded-2xl border ${theme.cardBorder} ${theme.cardBg} ${theme.glow} p-3.5 sm:p-4 min-h-[88px] sm:min-h-[94px] flex items-center gap-3.5 sm:gap-4 transition-all duration-300 hover:-translate-y-0.5 relative group/card`}
     >
-      {/* Left: Square avatar with rounded corners */}
-      <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-lg overflow-hidden border ${theme.avatarBorder} ${theme.avatarBg} flex-shrink-0 flex items-center justify-center relative shadow-inner bg-black`}>
+      {/* Left: Square avatar with rounded corners - Enlarged */}
+      <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 ${theme.avatarBorder} ${theme.avatarBg} flex-shrink-0 flex items-center justify-center relative shadow-md bg-black`}>
         <img 
           src={avatarSrc} 
           alt={member.name} 
@@ -658,22 +658,22 @@ function MemberCard({
         />
       </div>
 
-      {/* Middle: Member Name & ID */}
-      <div className="flex-1 min-w-0">
+      {/* Middle: Member Name & ID - Clean line-clamp-2 preventing awkward cutoffs */}
+      <div className="flex-1 min-w-0 pr-1">
         <h3 
-          className="text-xs sm:text-sm font-bold text-white uppercase tracking-wide truncate group-hover/card:text-zinc-100 transition-colors"
+          className="text-sm sm:text-base font-bold text-white uppercase tracking-wide leading-snug line-clamp-2 group-hover:text-zinc-100 transition-colors"
           title={member.name}
         >
           {member.name}
         </h3>
-        <p className={`text-[10px] font-mono ${theme.idColor} truncate`}>
+        <p className={`text-[11px] font-mono mt-0.5 font-semibold ${theme.idColor}`}>
           {member.memberId}
         </p>
       </div>
 
       {/* Right: Role text + Facebook Button */}
-      <div className="flex flex-col items-end justify-center gap-1 flex-shrink-0">
-        <span className={`font-rajdhani font-bold text-[10px] sm:text-[11px] tracking-wider uppercase ${theme.roleText}`}>
+      <div className="flex flex-col items-end justify-between self-stretch py-0.5 flex-shrink-0 gap-1.5">
+        <span className={`font-rajdhani font-bold text-[11px] sm:text-xs tracking-wider uppercase ${theme.roleText}`}>
           {roleLabel}
         </span>
         {member.facebook && (
