@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import SnowEffect from '@/components/SnowEffect';
 import MusicPlayer from '@/components/MusicPlayer';
@@ -9,18 +9,6 @@ import { MEMBERS_DATA, Member, MemberRole } from '@/data/members';
 export default function MembersPage() {
   const [selectedRole, setSelectedRole] = useState<'All' | MemberRole>('All');
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeModalMember, setActiveModalMember] = useState<Member | null>(null);
-
-  // Close modal on ESC key
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setActiveModalMember(null);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
 
   // Counts by role
   const counts = useMemo(() => {
@@ -236,7 +224,6 @@ export default function MembersPage() {
                       key={m.id} 
                       member={m} 
                       isFeatured 
-                      onSelectMember={() => setActiveModalMember(m)}
                     />
                   ))}
                 </div>
@@ -268,7 +255,6 @@ export default function MembersPage() {
                     <MemberCard 
                       key={m.id} 
                       member={m} 
-                      onSelectMember={() => setActiveModalMember(m)}
                     />
                   ))}
                 </div>
@@ -300,7 +286,6 @@ export default function MembersPage() {
                     <MemberCard 
                       key={m.id} 
                       member={m} 
-                      onSelectMember={() => setActiveModalMember(m)}
                     />
                   ))}
                 </div>
@@ -332,7 +317,6 @@ export default function MembersPage() {
                     <MemberCard 
                       key={m.id} 
                       member={m} 
-                      onSelectMember={() => setActiveModalMember(m)}
                     />
                   ))}
                 </div>
@@ -346,7 +330,6 @@ export default function MembersPage() {
               <MemberCard 
                 key={m.id} 
                 member={m} 
-                onSelectMember={() => setActiveModalMember(m)}
               />
             ))}
           </div>
@@ -369,122 +352,6 @@ export default function MembersPage() {
 
       {/* PERSISTENT MUSIC PLAYER */}
       <MusicPlayer />
-
-      {/* PROFILE POPUP MODAL */}
-      {activeModalMember && (
-        <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
-          onClick={() => setActiveModalMember(null)}
-        >
-          <div 
-            className="relative w-full max-w-2xl rounded-3xl bg-gradient-to-b from-[#101522] to-[#080B12] border border-white/15 shadow-[0_35px_90px_rgba(0,0,0,0.85)] overflow-hidden grid grid-cols-1 sm:grid-cols-[220px_1fr]"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Close Button */}
-            <button
-              onClick={() => setActiveModalMember(null)}
-              className="absolute right-3.5 top-3.5 z-20 w-8 h-8 rounded-xl bg-white/[0.05] hover:bg-white/15 border border-white/10 text-zinc-400 hover:text-white flex items-center justify-center text-sm font-mono transition-colors"
-            >
-              &times;
-            </button>
-
-            {/* Left Side: Avatar Symbol & Role Badge */}
-            <div className="p-6 sm:p-7 border-b sm:border-b-0 sm:border-r border-white/10 bg-[#0C101A] flex flex-col items-center justify-center gap-4 text-center">
-              <span className={`px-3 py-1 rounded-full text-[10px] font-mono tracking-widest uppercase border ${
-                activeModalMember.role === 'Founder'
-                  ? 'border-white/30 bg-white/10 text-white'
-                  : activeModalMember.role === 'Leader'
-                  ? 'border-red-500/30 bg-red-500/10 text-red-300'
-                  : 'border-sky-400/30 bg-sky-400/10 text-sky-300'
-              }`}>
-                {activeModalMember.role}
-              </span>
-
-              {/* Symbol Avatar */}
-              <div className="w-24 h-24 rounded-full border border-white/20 bg-gradient-to-br from-white/10 to-transparent flex items-center justify-center relative shadow-[0_0_30px_rgba(255,255,255,0.05)]">
-                <span 
-                  style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-                  className="text-4xl font-anton text-white"
-                >
-                  {activeModalMember.name.charAt(0)}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-1.5 text-[10px] font-mono tracking-wider text-emerald-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399] animate-pulse" />
-                <span>ONLINE</span>
-              </div>
-            </div>
-
-            {/* Right Side: Details & Actions */}
-            <div className="p-6 sm:p-8 flex flex-col justify-between gap-6">
-              <div>
-                <span className="text-[10px] font-mono tracking-[0.2em] text-zinc-400 uppercase block mb-1">
-                  BANBUNG39 / MEMBER PROFILE
-                </span>
-                <h2 
-                  style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-                  className="text-3xl sm:text-4xl font-anton tracking-wide text-white uppercase"
-                >
-                  {activeModalMember.name}
-                </h2>
-                <p className="text-xs font-mono text-zinc-400 uppercase mt-0.5 tracking-wider">
-                  {activeModalMember.role === 'Founder' 
-                    ? 'FOUNDER • SUPREME LEADERSHIP'
-                    : activeModalMember.role === 'Leader'
-                    ? 'LEADER • COMMAND OPS'
-                    : 'SUPPORT • LOGISTICS'}
-                </p>
-
-                {/* 3-Column Meta Info Grid */}
-                <div className="grid grid-cols-3 gap-2 mt-6 pt-5 border-t border-white/10">
-                  <div>
-                    <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest block">
-                      JOINED
-                    </span>
-                    <strong className="text-xs font-mono text-white block mt-0.5">
-                      2026
-                    </strong>
-                  </div>
-                  <div>
-                    <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest block">
-                      ID
-                    </span>
-                    <strong className="text-xs font-mono text-white block mt-0.5">
-                      {activeModalMember.memberId}
-                    </strong>
-                  </div>
-                  <div>
-                    <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest block">
-                      HOUSE
-                    </span>
-                    <strong className="text-xs font-mono text-white block mt-0.5">
-                      BB39
-                    </strong>
-                  </div>
-                </div>
-              </div>
-
-              {/* Action: Facebook Link Button */}
-              {activeModalMember.facebook && (
-                <div>
-                  <a
-                    href={activeModalMember.facebook}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-2.5 px-4 rounded-xl bg-white/[0.06] hover:bg-white/15 border border-white/15 hover:border-white/40 text-xs font-mono text-white flex items-center justify-center gap-2.5 transition-all uppercase tracking-wider group"
-                  >
-                    <svg className="w-4 h-4 fill-current text-sky-400 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                    </svg>
-                    <span>OPEN FACEBOOK PROFILE &rarr;</span>
-                  </a>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
@@ -523,22 +390,26 @@ const getRoleTheme = (role: MemberRole) => {
   }
 };
 
-// Clean Typographic Member Card with Role Gradient Border (No role badge text)
+// Clean Typographic Member Card with Role Gradient Border
 function MemberCard({ 
   member, 
   isFeatured = false,
-  onSelectMember,
 }: { 
   member: Member; 
   isFeatured?: boolean;
-  onSelectMember: () => void;
 }) {
   const theme = getRoleTheme(member.role);
 
   return (
     <div 
-      onClick={onSelectMember}
-      className={`p-[1.5px] rounded-2xl bg-gradient-to-br ${theme.borderGradient} ${theme.glow} transition-all duration-300 hover:-translate-y-0.5 cursor-pointer`}
+      onClick={() => {
+        if (member.facebook) {
+          window.open(member.facebook, '_blank');
+        }
+      }}
+      className={`p-[1.5px] rounded-2xl bg-gradient-to-br ${theme.borderGradient} ${theme.glow} transition-all duration-300 hover:-translate-y-0.5 ${
+        member.facebook ? 'cursor-pointer' : ''
+      }`}
     >
       <div className="p-4 sm:p-5 rounded-[14.5px] bg-[#0C0D12]/95 backdrop-blur-md flex items-center justify-between gap-4">
         <div className="min-w-0 flex-1">
