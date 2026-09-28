@@ -67,17 +67,27 @@ export default function MembersModal({ isOpen, onClose }: MembersModalProps) {
               key={member.id}
               className="flex items-center justify-between p-3.5 rounded-xl bg-[#14161F]/80 border border-white/[0.06] hover:border-white/[0.15] transition-colors"
             >
-              <div>
-                <div className="flex items-center gap-2.5">
-                  <span className="text-xs font-mono font-bold text-zinc-400">
-                    {member.memberId || member.id}
-                  </span>
-                  <span 
-                    style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-                    className="text-base font-normal text-white font-anton uppercase tracking-wide"
-                  >
-                    {member.name}
-                  </span>
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg overflow-hidden border border-white/10 flex-shrink-0 bg-black">
+                  <img 
+                    src={member.avatar || '/Logo.jpg'} 
+                    alt={member.name} 
+                    onError={(e) => { e.currentTarget.src = '/Logo.jpg'; }}
+                    className="w-full h-full object-cover" 
+                  />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-mono font-bold text-zinc-400">
+                      {member.memberId || member.id}
+                    </span>
+                    <span 
+                      style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
+                      className="text-base font-normal text-white font-anton uppercase tracking-wide"
+                    >
+                      {member.name}
+                    </span>
+                  </div>
                 </div>
               </div>
 

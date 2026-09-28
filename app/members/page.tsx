@@ -483,6 +483,8 @@ const renderRoleIcon = (icon: string) => {
   }
 };
 
+const DEFAULT_AVATAR = '/Logo.jpg';
+
 // Facebook button with the smooth bouncy hover profile popup card
 function FacebookPopupButton({
   member,
@@ -525,13 +527,12 @@ function FacebookPopupButton({
             {/* Avatar with Metallic Glowing Ring */}
             <div className={`w-14 h-14 rounded-full p-[2px] bg-gradient-to-b ${popup.avatarRing} relative -mb-7 mt-0.5`}>
               <div className="w-full h-full rounded-full bg-[#0C0D12] flex items-center justify-center overflow-hidden border border-black/40">
-                {member.avatar ? (
-                  <img src={member.avatar} alt={member.name} className="w-full h-full object-cover" />
-                ) : (
-                  <span className={`font-anton text-2xl uppercase ${popup.avatarText}`}>
-                    {member.name.charAt(0)}
-                  </span>
-                )}
+                <img 
+                  src={member.avatar || DEFAULT_AVATAR} 
+                  alt={member.name} 
+                  onError={(e) => { e.currentTarget.src = DEFAULT_AVATAR; }}
+                  className="w-full h-full object-cover" 
+                />
               </div>
             </div>
 
@@ -602,20 +603,21 @@ function MemberCard({
     ? 'SUPPORT' 
     : 'MEMBERS';
 
+  const avatarSrc = member.avatar || DEFAULT_AVATAR;
+
   if (variant === 'wide') {
     return (
       <div 
         className={`rounded-2xl border ${theme.cardBorder} ${theme.cardBg} ${theme.glow} p-3 sm:p-4 flex items-center justify-between gap-3 sm:gap-4 transition-all duration-300 hover:-translate-y-0.5 relative group/card`}
       >
         {/* Left: Square avatar with rounded corners */}
-        <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border ${theme.avatarBorder} ${theme.avatarBg} flex-shrink-0 flex items-center justify-center relative shadow-inner`}>
-          {member.avatar ? (
-            <img src={member.avatar} alt={member.name} className="w-full h-full object-cover" />
-          ) : (
-            <span className={`text-xl sm:text-2xl font-rajdhani font-bold ${theme.avatarText}`}>
-              {member.name.charAt(0)}
-            </span>
-          )}
+        <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border ${theme.avatarBorder} ${theme.avatarBg} flex-shrink-0 flex items-center justify-center relative shadow-inner bg-black`}>
+          <img 
+            src={avatarSrc} 
+            alt={member.name} 
+            onError={(e) => { e.currentTarget.src = DEFAULT_AVATAR; }}
+            className="w-full h-full object-cover" 
+          />
         </div>
 
         {/* Middle: Member Name & ID */}
@@ -647,14 +649,13 @@ function MemberCard({
       className={`rounded-xl border ${theme.cardBorder} ${theme.cardBg} ${theme.glow} p-2.5 sm:p-3 flex items-center gap-2.5 transition-all duration-300 hover:-translate-y-0.5 relative group/card`}
     >
       {/* Left: Square avatar with rounded corners */}
-      <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-lg overflow-hidden border ${theme.avatarBorder} ${theme.avatarBg} flex-shrink-0 flex items-center justify-center relative shadow-inner`}>
-        {member.avatar ? (
-          <img src={member.avatar} alt={member.name} className="w-full h-full object-cover" />
-        ) : (
-          <span className={`text-base sm:text-lg font-rajdhani font-bold ${theme.avatarText}`}>
-            {member.name.charAt(0)}
-          </span>
-        )}
+      <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-lg overflow-hidden border ${theme.avatarBorder} ${theme.avatarBg} flex-shrink-0 flex items-center justify-center relative shadow-inner bg-black`}>
+        <img 
+          src={avatarSrc} 
+          alt={member.name} 
+          onError={(e) => { e.currentTarget.src = DEFAULT_AVATAR; }}
+          className="w-full h-full object-cover" 
+        />
       </div>
 
       {/* Middle: Member Name & ID */}
