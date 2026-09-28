@@ -218,12 +218,11 @@ export default function MembersPage() {
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
                   {founderList.map((m) => (
                     <MemberCard 
                       key={m.id} 
                       member={m} 
-                      isFeatured 
                     />
                   ))}
                 </div>
@@ -491,10 +490,8 @@ const renderRoleIcon = (icon: string) => {
 // Clean Typographic Member Card with Role Gradient Border
 function MemberCard({ 
   member, 
-  isFeatured = false,
 }: { 
   member: Member; 
-  isFeatured?: boolean;
 }) {
   const theme = getRoleTheme(member.role);
   const popup = getPopupTheme(member.role);
@@ -503,16 +500,14 @@ function MemberCard({
     <div 
       className={`p-[1.5px] rounded-2xl bg-gradient-to-br ${theme.borderGradient} ${theme.glow} transition-all duration-300 hover:-translate-y-0.5`}
     >
-      <div className="p-4 sm:p-5 rounded-[14.5px] bg-[#0C0D12]/95 backdrop-blur-md flex items-center justify-between gap-4 relative">
+      <div className="p-3.5 sm:p-4 rounded-[14.5px] bg-[#0C0D12]/95 backdrop-blur-md flex items-center justify-between gap-3.5 relative">
         <div className="min-w-0 flex-1">
-          <span className={`text-xs font-mono block mb-1 font-bold ${theme.idColor}`}>
+          <span className={`text-[11px] font-mono block mb-0.5 font-bold ${theme.idColor}`}>
             {member.memberId}
           </span>
           <h3 
             style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-            className={`${
-              isFeatured ? 'text-2xl sm:text-3xl' : 'text-xl'
-            } font-anton tracking-wide text-white uppercase truncate`}
+            className="text-base sm:text-lg font-anton tracking-wide text-white uppercase truncate leading-tight"
           >
             {member.name}
           </h3>
