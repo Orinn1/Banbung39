@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import Link from 'next/link';
 import {
   ShieldCheck,
@@ -20,20 +20,21 @@ import {
   Swords,
   Shield,
   Zap,
+  Music,
+  Upload,
+  Play,
+  Pause,
+  Volume2,
 } from 'lucide-react';
 import { Member, MemberRole, MEMBERS_DATA } from '@/data/members';
 
 const DEFAULT_AVATAR = '/Logo.jpg';
-const DEFAULT_PIN = '3939';
 
 export default function BackofficePage() {
-  // Auth state
+  // Auth state - Password is BB39 (case-insensitive)
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [pinInput, setPinInput] = useState<string>('');
-  const [pinError, setPinError] = useState<string>('');
-  const [currentPin, setCurrentPin] = useState<string>(DEFAULT_PIN);
-  const [isChangingPin, setIsChangingPin] = useState<boolean>(false);
-  const [newPinInput, setNewPinInput] = useState<string>('');
+  const [passwordInput, setPasswordInput] = useState<string>('');
+  const [passwordError, setPasswordError] = useState<string>('');
 
   // Members data state
   const [members, setMembers] = useState<Member[]>([]);
@@ -41,12 +42,12 @@ export default function BackofficePage() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedRoleFilter, setSelectedRoleFilter] = useState<'All' | MemberRole>('All');
 
-  // Modal states
+  // Member Modal states
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [editingMember, setEditingMember] = useState<Member | null>(null);
   const [deleteCandidate, setDeleteCandidate] = useState<Member | null>(null);
 
-  // Form states
+  // Member Form states
   const [formName, setFormName] = useState<string>('');
   const [formRole, setFormRole] = useState<MemberRole>('Member');
   const [formMemberId, setFormMemberId] = useState<string>('');
@@ -55,8 +56,20 @@ export default function BackofficePage() {
   const [formError, setFormError] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
+  // Music Manager states
+  const [isMusicModalOpen, setIsMusicModalOpen] = useState<boolean>(false);
+  const [musicTitle, setMusicTitle] = useState<string>('BANBUNG39');
+  const [musicArtist, setMusicArtist] = useState<string>('By.Mike Winterfell');
+  const [musicUrl, setMusicUrl] = useState<string>('/music.mp3');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [filePreviewUrl, setFilePreviewUrl] = useState<string | null>(null);
+  const [isUploadingMusic, setIsUploadingMusic] = useState<boolean>(false);
+  const [musicError, setMusicError] = useState<string>('');
+
   // Toast notification state
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
     setToast({ message, type });
@@ -65,15 +78,13 @@ export default function BackofficePage() {
     }, 3500);
   };
 
-  // Check saved session and stored PIN on client mount
+  // Check saved session on client mount
   useEffect(() => {
-    const savedPin = localStorage.getItem('bb39_admin_pin') || DEFAULT_PIN;
-    setCurrentPin(savedPin);
-
     const sessionAuth = sessionStorage.getItem('bb39_admin_auth');
     if (sessionAuth === 'true') {
       setIsAuthenticated(true);
       fetchMembers();
+      fetchMusic();
     } else {
       setLoading(false);
     }
@@ -97,16 +108,31 @@ export default function BackofficePage() {
     }
   };
 
-  // Handle Login
+  // Fetch music config
+  const fetchMusic = async () => {
+    try {
+      const res = await fetch('/api/music');
+      const data = await res.json();
+      if (data.success && data.data) {
+        setMusicTitle(data.data.title || 'BANBUNG39');
+        setMusicArtist(data.data.artist || 'By.Mike Winterfell');
+        setMusicUrl(data.data.url || '/music.mp3');
+      }
+    } catch {}
+  };
+
+  // Handle Login: Password is BB39 or bb39
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (pinInput.trim() === currentPin || pinInput.trim() === 'bb39' || pinInput.trim() === '3939') {
+    const clean = passwordInput.trim().toUpperCase();
+    if (clean === 'BB39') {
       setIsAuthenticated(true);
       sessionStorage.setItem('bb39_admin_auth', 'true');
-      setPinError('');
+      setPasswordError('');
       fetchMembers();
+      fetchMusic();
     } else {
-      setPinError('รหัสผ่านไม่ถูกต้อง (PIN Incorrect)');
+      setPasswordError('รหัสผ่านไม่ถูกต้อง (กรุณากรอก BB39 หรือ bb39)');
     }
   };
 
@@ -114,44 +140,34 @@ export default function BackofficePage() {
   const handleLogout = () => {
     setIsAuthenticated(false);
     sessionStorage.removeItem('bb39_admin_auth');
-    setPinInput('');
+    setPasswordInput('');
   };
 
-  // Handle PIN Change
-  const handleChangePin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newPinInput.trim().length < 4) {
-      showToast('PIN ต้องมีความยาวอย่างน้อย 4 ตัวอักษร', 'error');
-      return;
-    }
-    localStorage.setItem('bb39_admin_pin', newPinInput.trim());
-    setCurrentPin(newPinInput.trim());
-    setIsChangingPin(false);
-    setNewPinInput('');
-    showToast('เปลี่ยนรหัสผ่าน PIN สำเร็จเรียบร้อย');
+  // Calculate next sequential ID automatically continuing from existing numbers (#0001 -> #0023 -> #0024)
+  const getNextSequentialId = () => {
+    const numericIds = members
+      .map((m) => parseInt(m.id.replace(/\D/g, ''), 10))
+      .filter((n) => !isNaN(n));
+    const maxId = numericIds.length > 0 ? Math.max(...numericIds) : 0;
+    const nextNum = maxId + 1;
+    return `#${String(nextNum).padStart(4, '0')}`;
   };
 
-  // Open modal for Adding
+  // Open modal for Adding Member
   const openAddModal = () => {
     setEditingMember(null);
     setFormName('');
     setFormRole('Member');
-
-    // Auto suggest next member ID
-    const numericIds = members
-      .map((m) => parseInt(m.id.replace(/\D/g, ''), 10))
-      .filter((n) => !isNaN(n));
-    const nextNum = numericIds.length > 0 ? Math.max(...numericIds) + 1 : 1;
-    const nextIdStr = `#${String(nextNum).padStart(4, '0')}`;
-
-    setFormMemberId(nextIdStr);
+    // Auto sequence from the latest old member ID
+    const nextId = getNextSequentialId();
+    setFormMemberId(nextId);
     setFormFacebook('');
     setFormAvatar('');
     setFormError('');
     setIsModalOpen(true);
   };
 
-  // Open modal for Editing
+  // Open modal for Editing Member
   const openEditModal = (member: Member) => {
     setEditingMember(member);
     setFormName(member.name);
@@ -205,14 +221,14 @@ export default function BackofficePage() {
           body: JSON.stringify({
             name: formName.trim().toUpperCase(),
             role: formRole,
-            memberId: formMemberId.trim(),
+            memberId: formMemberId.trim() || getNextSequentialId(),
             facebook: formFacebook.trim() || undefined,
             avatar: formAvatar.trim() || undefined,
           }),
         });
         const data = await res.json();
         if (data.success) {
-          showToast(`เพิ่มสมาชิก ${formName.toUpperCase()} สำเร็จ`);
+          showToast(`เพิ่มสมาชิก ${formName.toUpperCase()} เรียบร้อยแล้ว`);
           setIsModalOpen(false);
           fetchMembers();
         } else {
@@ -247,9 +263,61 @@ export default function BackofficePage() {
     }
   };
 
-  // Filtered members list
+  // Handle MP3 File Selection
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (!file.name.toLowerCase().endsWith('.mp3')) {
+        setMusicError('กรุณาเลือกไฟล์นามสกุล .mp3 เท่านั้น');
+        return;
+      }
+      setSelectedFile(file);
+      setMusicError('');
+      // Create local object URL for preview
+      const preview = URL.createObjectURL(file);
+      setFilePreviewUrl(preview);
+    }
+  };
+
+  // Handle Upload Music
+  const handleSaveMusic = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsUploadingMusic(true);
+    setMusicError('');
+
+    try {
+      const formData = new FormData();
+      formData.append('title', musicTitle.trim());
+      formData.append('artist', musicArtist.trim());
+      if (selectedFile) {
+        formData.append('file', selectedFile);
+      }
+
+      const res = await fetch('/api/music', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        showToast('อัปโหลดและบันทึกเพลงสำเร็จเรียบร้อยแล้ว!');
+        setMusicUrl(data.data.url);
+        setIsMusicModalOpen(false);
+        setSelectedFile(null);
+        setFilePreviewUrl(null);
+      } else {
+        setMusicError(data.error || 'Failed to upload music');
+      }
+    } catch (err: any) {
+      setMusicError(err.message || 'Error uploading file');
+    } finally {
+      setIsUploadingMusic(false);
+    }
+  };
+
+  // Filtered and Sorted members list: Sorted chronologically by ID (#0001 -> #0002 -> #0024)
   const filteredMembers = useMemo(() => {
-    return members.filter((m) => {
+    const list = members.filter((m) => {
       const matchesRole = selectedRoleFilter === 'All' || m.role === selectedRoleFilter;
       const q = searchQuery.toLowerCase().trim();
       const matchesSearch =
@@ -259,6 +327,13 @@ export default function BackofficePage() {
         m.id.toLowerCase().includes(q) ||
         m.role.toLowerCase().includes(q);
       return matchesRole && matchesSearch;
+    });
+
+    // เรียงรหัสประจำตัวจากเก่าไปใหม่ (#0001 -> #0024)
+    return list.sort((a, b) => {
+      const numA = parseInt(a.id.replace(/\D/g, ''), 10) || 0;
+      const numB = parseInt(b.id.replace(/\D/g, ''), 10) || 0;
+      return numA - numB;
     });
   }, [members, selectedRoleFilter, searchQuery]);
 
@@ -299,7 +374,7 @@ export default function BackofficePage() {
     }
   };
 
-  // 1. PIN LOCK SCREEN
+  // 1. PASSWORD LOCK SCREEN
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen w-full bg-[#08090C] text-[#F3F4F6] flex flex-col items-center justify-center p-4 relative overflow-hidden select-none">
@@ -329,18 +404,18 @@ export default function BackofficePage() {
             <div>
               <input
                 type="password"
-                value={pinInput}
+                value={passwordInput}
                 onChange={(e) => {
-                  setPinInput(e.target.value);
-                  setPinError('');
+                  setPasswordInput(e.target.value);
+                  setPasswordError('');
                 }}
-                placeholder="ENTER PIN (DEFAULT: 3939)..."
+                placeholder="ENTER PASSWORD (BB39)..."
                 autoFocus
-                className="w-full px-4 py-3 bg-[#151822] border border-white/15 focus:border-white/40 rounded-xl text-center text-sm font-mono tracking-widest text-white placeholder-zinc-500 focus:outline-none transition-all shadow-inner"
+                className="w-full px-4 py-3 bg-[#151822] border border-white/15 focus:border-white/40 rounded-xl text-center text-sm font-mono tracking-widest text-white placeholder-zinc-500 focus:outline-none transition-all shadow-inner uppercase"
               />
-              {pinError && (
+              {passwordError && (
                 <p className="text-xs text-red-400 font-mono mt-2 animate-bounce">
-                  {pinError}
+                  {passwordError}
                 </p>
               )}
             </div>
@@ -354,7 +429,7 @@ export default function BackofficePage() {
           </form>
 
           <div className="mt-6 pt-5 border-t border-white/[0.08] flex items-center justify-between text-[11px] font-mono text-zinc-500">
-            <span>DEFAULT PIN: 3939</span>
+            <span>PASSWORD: BB39 / bb39</span>
             <Link href="/" className="hover:text-white transition-colors">
               &larr; BACK TO HOME
             </Link>
@@ -402,14 +477,14 @@ export default function BackofficePage() {
 
         {/* Right: Actions */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Change PIN toggle */}
+          {/* Music Manager Button */}
           <button
-            onClick={() => setIsChangingPin(!isChangingPin)}
-            className="px-3 py-1.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-xs font-mono text-zinc-300 hover:text-white transition-all flex items-center gap-1.5"
-            title="Change Security PIN"
+            onClick={() => setIsMusicModalOpen(true)}
+            className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600/30 to-teal-600/30 hover:from-emerald-600/40 hover:to-teal-600/40 border border-emerald-500/40 text-xs font-mono text-emerald-300 hover:text-white transition-all flex items-center gap-1.5 active:scale-95 shadow-sm"
+            title="Upload and Manage Music"
           >
-            <KeyRound className="w-3.5 h-3.5 text-amber-400" />
-            <span className="hidden sm:inline">CHANGE PIN</span>
+            <Music className="w-3.5 h-3.5 text-emerald-400" />
+            <span>จัดการเพลง (MUSIC)</span>
           </button>
 
           {/* View Live Public Site */}
@@ -426,7 +501,7 @@ export default function BackofficePage() {
           {/* Logout */}
           <button
             onClick={handleLogout}
-            className="px-3 py-1.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-xs font-mono text-red-300 hover:text-red-200 transition-all flex items-center gap-1.5"
+            className="px-3 py-1.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-xs font-mono text-red-300 hover:text-red-200 transition-all flex items-center gap-1.5 active:scale-95"
             title="Log out from Backoffice"
           >
             <LogOut className="w-3.5 h-3.5" />
@@ -434,36 +509,6 @@ export default function BackofficePage() {
           </button>
         </div>
       </header>
-
-      {/* CHANGE PIN COLLAPSIBLE DRAWER */}
-      {isChangingPin && (
-        <div className="bg-[#12151F] border-b border-amber-400/20 px-4 sm:px-10 py-3.5 flex items-center justify-between gap-4 animate-in slide-in-from-top duration-200">
-          <form onSubmit={handleChangePin} className="flex flex-wrap items-center gap-3">
-            <span className="text-xs font-mono text-amber-300 uppercase tracking-wider">
-              ตั้งค่า PIN ใหม่ (NEW PIN):
-            </span>
-            <input
-              type="text"
-              value={newPinInput}
-              onChange={(e) => setNewPinInput(e.target.value)}
-              placeholder="e.g. 8888"
-              className="px-3 py-1.5 bg-black/60 border border-white/20 rounded-xl text-xs font-mono text-white focus:outline-none w-32"
-            />
-            <button
-              type="submit"
-              className="px-3.5 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-black text-xs font-mono font-bold tracking-wider uppercase transition-colors"
-            >
-              SAVE PIN
-            </button>
-          </form>
-          <button
-            onClick={() => setIsChangingPin(false)}
-            className="text-zinc-400 hover:text-white p-1 text-xs"
-          >
-            ✕
-          </button>
-        </div>
-      )}
 
       {/* MAIN ADMIN CONTENT */}
       <main className="flex-1 max-w-[1440px] w-full mx-auto px-4 sm:px-8 md:px-10 py-6 sm:py-8 space-y-6">
@@ -626,7 +671,7 @@ export default function BackofficePage() {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="border-b border-white/[0.08] bg-[#11131C] text-[11px] font-mono uppercase tracking-widest text-zinc-400">
-                    <th className="py-3.5 px-4 sm:px-6">MEMBER</th>
+                    <th className="py-3.5 px-4 sm:px-6">MEMBER (เรียงรหัส)</th>
                     <th className="py-3.5 px-3">ROLE</th>
                     <th className="py-3.5 px-3">#ID</th>
                     <th className="py-3.5 px-3">FACEBOOK</th>
@@ -672,7 +717,7 @@ export default function BackofficePage() {
                         </td>
 
                         {/* Member #ID */}
-                        <td className="py-3 px-3 font-bold text-zinc-300">
+                        <td className="py-3 px-3 font-bold text-zinc-200">
                           {member.memberId}
                         </td>
 
@@ -698,7 +743,7 @@ export default function BackofficePage() {
                           <div className="flex items-center justify-end gap-2">
                             <button
                               onClick={() => openEditModal(member)}
-                              className="px-2.5 py-1.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.12] border border-white/10 text-zinc-300 hover:text-white transition-all flex items-center gap-1 text-[11px]"
+                              className="px-2.5 py-1.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.12] border border-white/10 text-zinc-300 hover:text-white transition-all flex items-center gap-1 text-[11px] active:scale-95"
                               title="Edit Member"
                             >
                               <Edit2 className="w-3 h-3 text-amber-400" />
@@ -706,7 +751,7 @@ export default function BackofficePage() {
                             </button>
                             <button
                               onClick={() => setDeleteCandidate(member)}
-                              className="px-2.5 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 hover:text-red-300 transition-all flex items-center gap-1 text-[11px]"
+                              className="px-2.5 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 hover:text-red-300 transition-all flex items-center gap-1 text-[11px] active:scale-95"
                               title="Delete Member"
                             >
                               <Trash2 className="w-3 h-3" />
@@ -727,10 +772,10 @@ export default function BackofficePage() {
       {/* FOOTER */}
       <footer className="w-full px-4 sm:px-10 py-5 border-t border-white/[0.08] bg-[#0A0B10] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono text-zinc-500 text-center sm:text-left">
         <div>BANBUNG39 • MANAGEMENT BACKOFFICE • 2K26</div>
-        <div>AUTHORIZED ADMIN SESSION</div>
+        <div>AUTHORIZED ADMIN: BB39</div>
       </footer>
 
-      {/* 3. ADD / EDIT MODAL */}
+      {/* 3. ADD / EDIT MEMBER MODAL */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
           <div className="w-full max-w-lg bg-[#0E1119] border border-white/15 rounded-3xl p-6 sm:p-7 shadow-2xl relative">
@@ -738,7 +783,7 @@ export default function BackofficePage() {
             <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
               <div>
                 <span className="text-[10px] font-mono tracking-widest text-zinc-400 uppercase">
-                  {editingMember ? 'UPDATE RECORD' : 'CREATE NEW RECORD'}
+                  {editingMember ? 'UPDATE RECORD' : 'CREATE NEW RECORD (เรียงรหัสอัตโนมัติ)'}
                 </span>
                 <h3 
                   style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
@@ -807,18 +852,37 @@ export default function BackofficePage() {
                 </div>
               </div>
 
-              {/* Member #ID */}
+              {/* Member #ID (Auto sequenced from old ones) */}
               <div>
-                <label className="block text-[11px] font-mono text-zinc-400 uppercase tracking-wider mb-1.5">
-                  รหัสประจำตัว / MEMBER #ID
-                </label>
-                <input
-                  type="text"
-                  value={formMemberId}
-                  onChange={(e) => setFormMemberId(e.target.value)}
-                  placeholder="e.g. #0024"
-                  className="w-full px-4 py-2.5 bg-[#161924] border border-white/15 focus:border-white/40 rounded-xl text-xs font-mono text-white placeholder-zinc-500 focus:outline-none uppercase transition-colors"
-                />
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider">
+                    รหัสประจำตัว / MEMBER #ID
+                  </label>
+                  {!editingMember && (
+                    <span className="text-[10px] font-mono text-emerald-400">
+                      ✓ เรียงต่อจากเดิมอัตโนมัติ
+                    </span>
+                  )}
+                </div>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={formMemberId}
+                    onChange={(e) => setFormMemberId(e.target.value)}
+                    placeholder="e.g. #0024"
+                    className="w-full px-4 py-2.5 bg-[#161924] border border-white/15 focus:border-white/40 rounded-xl text-xs font-mono text-white placeholder-zinc-500 focus:outline-none uppercase transition-colors"
+                  />
+                  {!editingMember && (
+                    <button
+                      type="button"
+                      onClick={() => setFormMemberId(getNextSequentialId())}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 px-2 py-1 rounded bg-white/[0.08] hover:bg-white/15 text-[10px] font-mono text-zinc-300 uppercase transition-colors"
+                      title="Reset to Next Sequential ID"
+                    >
+                      AUTO NEXT
+                    </button>
+                  )}
+                </div>
               </div>
 
               {/* Facebook Profile URL */}
@@ -912,6 +976,147 @@ export default function BackofficePage() {
                 CONFIRM DELETE
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* 5. MUSIC MANAGEMENT MODAL (MP3 UPLOAD FROM COMPUTER) */}
+      {isMusicModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="w-full max-w-md bg-[#0E1119] border border-emerald-500/30 rounded-3xl p-6 sm:p-7 shadow-2xl relative">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                  <Music className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 
+                    style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
+                    className="text-xl font-anton text-white tracking-wider uppercase"
+                  >
+                    MUSIC SETTINGS
+                  </h3>
+                  <span className="text-[10px] font-mono tracking-widest text-zinc-400 uppercase">
+                    อัปโหลดไฟล์ MP3 จากคอมพิวเตอร์
+                  </span>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setIsMusicModalOpen(false);
+                  setSelectedFile(null);
+                  setFilePreviewUrl(null);
+                }}
+                className="w-8 h-8 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-zinc-400 hover:text-white flex items-center justify-center transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Music Form */}
+            <form onSubmit={handleSaveMusic} className="mt-5 space-y-4">
+              {musicError && (
+                <div className="p-3 rounded-xl bg-red-950/60 border border-red-500/40 text-xs font-mono text-red-200">
+                  {musicError}
+                </div>
+              )}
+
+              {/* File Upload Box */}
+              <div>
+                <label className="block text-[11px] font-mono text-zinc-400 uppercase tracking-wider mb-2">
+                  เลือกไฟล์เพลง (.MP3) จากเครื่องคอมพิวเตอร์
+                </label>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  accept=".mp3,audio/mpeg,audio/mp3"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  className="border-2 border-dashed border-white/20 hover:border-emerald-400/50 bg-[#141723] rounded-2xl p-5 text-center cursor-pointer transition-all hover:bg-[#181C2B] group"
+                >
+                  <Upload className="w-8 h-8 text-zinc-400 group-hover:text-emerald-400 mx-auto mb-2 transition-colors" />
+                  <p className="text-xs font-mono font-bold text-white uppercase tracking-wider">
+                    {selectedFile ? selectedFile.name : 'คลิกเพื่อเลือกไฟล์ MP3 จากเครื่อง'}
+                  </p>
+                  <p className="text-[10px] font-mono text-zinc-500 mt-1">
+                    {selectedFile
+                      ? `ขนาดไฟล์: ${(selectedFile.size / (1024 * 1024)).toFixed(2)} MB`
+                      : 'รองรับไฟล์นามสกุล .mp3 เท่านั้น'}
+                  </p>
+                </div>
+              </div>
+
+              {/* Audio Preview if selected or existing */}
+              {(filePreviewUrl || musicUrl) && (
+                <div className="p-3 rounded-xl bg-[#141723] border border-white/10">
+                  <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider block mb-1.5 flex items-center gap-1.5">
+                    <Volume2 className="w-3.5 h-3.5 text-emerald-400" /> ตัวอย่างเสียง (PREVIEW):
+                  </span>
+                  <audio
+                    controls
+                    src={filePreviewUrl || musicUrl}
+                    className="w-full h-8"
+                  />
+                </div>
+              )}
+
+              {/* Song Title */}
+              <div>
+                <label className="block text-[11px] font-mono text-zinc-400 uppercase tracking-wider mb-1.5">
+                  ชื่อเพลง (SONG TITLE)
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={musicTitle}
+                  onChange={(e) => setMusicTitle(e.target.value)}
+                  placeholder="e.g. BANBUNG39"
+                  className="w-full px-4 py-2.5 bg-[#161924] border border-white/15 focus:border-white/40 rounded-xl text-xs font-mono text-white placeholder-zinc-500 focus:outline-none uppercase transition-colors"
+                />
+              </div>
+
+              {/* Artist Name */}
+              <div>
+                <label className="block text-[11px] font-mono text-zinc-400 uppercase tracking-wider mb-1.5">
+                  ศิลปิน / ผู้จัดทำ (ARTIST / BY)
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={musicArtist}
+                  onChange={(e) => setMusicArtist(e.target.value)}
+                  placeholder="e.g. By.Mike Winterfell"
+                  className="w-full px-4 py-2.5 bg-[#161924] border border-white/15 focus:border-white/40 rounded-xl text-xs font-mono text-white placeholder-zinc-500 focus:outline-none transition-colors"
+                />
+              </div>
+
+              {/* Modal Buttons */}
+              <div className="pt-3 border-t border-white/[0.08] flex items-center justify-end gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMusicModalOpen(false);
+                    setSelectedFile(null);
+                    setFilePreviewUrl(null);
+                  }}
+                  className="px-4 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-xs font-mono text-zinc-300 hover:text-white uppercase transition-colors"
+                >
+                  CANCEL
+                </button>
+                <button
+                  type="submit"
+                  disabled={isUploadingMusic}
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white text-xs font-mono font-bold tracking-wider uppercase transition-all shadow-md active:scale-95 disabled:opacity-50 flex items-center gap-1.5"
+                >
+                  <Upload className="w-3.5 h-3.5" />
+                  <span>{isUploadingMusic ? 'UPLOADING...' : 'UPLOAD & SAVE'}</span>
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
