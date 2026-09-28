@@ -135,6 +135,19 @@ body {
   }
 }
 
+@keyframes shimmerBar {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer-bar {
+  animation: shimmerBar 1.6s infinite ease-in-out;
+}
+
 /* Hide Next.js devtools indicator button ("N" icon at bottom-left) */
 nextjs-portal,
 [data-nextjs-toast],
