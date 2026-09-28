@@ -63,9 +63,12 @@ export default function LandingPage() {
           {/* Signature Bold Display Title */}
           <h1 
             style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-anton tracking-wide text-white uppercase leading-[0.98] drop-shadow-md"
+            className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-anton tracking-wide uppercase leading-[0.88] drop-shadow-md flex flex-col"
           >
-            BANBUNG39
+            <span className="text-white">BANBUNG</span>
+            <span className="bg-gradient-to-r from-red-500 via-rose-500 to-red-700 bg-clip-text text-transparent drop-shadow-[0_0_35px_rgba(239,68,68,0.35)]">
+              39
+            </span>
           </h1>
 
           {/* Call to Action Button: VIEW MEMBERS */}
