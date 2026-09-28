@@ -334,26 +334,26 @@ function SectionHeader({
   );
 }
 
-// Role-specific metallic gradient border, background, and glow themes (BANBUNG39 Authentic Noir Colors)
+// Role-specific metallic gradient border, background, and glow themes
 const getRoleTheme = (role: MemberRole) => {
   switch (role) {
     case 'Founder':
-      // Platinum White / Polished Silver Chrome
+      // Luxurious Champagne Gold / Warm Imperial Amber
       return {
-        cardBorder: 'border-white/30 hover:border-white/90',
-        cardBg: 'bg-gradient-to-r from-white/[0.06] via-[#0C0D12]/95 to-[#08090C]/95',
-        glow: 'shadow-[0_4px_25px_rgba(255,255,255,0.06)] hover:shadow-[0_4px_35px_rgba(255,255,255,0.18)]',
-        avatarBorder: 'border-white/30',
-        avatarBg: 'bg-gradient-to-br from-white/10 via-zinc-800/40 to-black',
-        avatarText: 'text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]',
-        roleText: 'text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]',
-        headingText: 'text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]',
-        headingLineLeft: 'bg-gradient-to-r from-transparent via-white/50 to-white/90 shadow-[0_0_12px_rgba(255,255,255,0.4)]',
-        headingLineRight: 'bg-gradient-to-l from-transparent via-white/50 to-white/90 shadow-[0_0_12px_rgba(255,255,255,0.4)]',
-        idColor: 'text-zinc-400',
+        cardBorder: 'border-amber-400/40 hover:border-amber-300',
+        cardBg: 'bg-gradient-to-r from-amber-950/25 via-[#0C0D12]/95 to-[#08090C]/95',
+        glow: 'shadow-[0_4px_25px_rgba(245,158,11,0.12)] hover:shadow-[0_4px_35px_rgba(245,158,11,0.22)]',
+        avatarBorder: 'border-amber-400/40',
+        avatarBg: 'bg-gradient-to-br from-amber-950/50 via-zinc-900/40 to-black',
+        avatarText: 'text-amber-300 drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]',
+        roleText: 'text-amber-400 drop-shadow-[0_0_8px_rgba(245,158,11,0.45)]',
+        headingText: 'text-amber-400 drop-shadow-[0_0_16px_rgba(245,158,11,0.55)]',
+        headingLineLeft: 'bg-gradient-to-r from-transparent via-amber-400/50 to-amber-400 shadow-[0_0_12px_rgba(245,158,11,0.4)]',
+        headingLineRight: 'bg-gradient-to-l from-transparent via-amber-400/50 to-amber-400 shadow-[0_0_12px_rgba(245,158,11,0.4)]',
+        idColor: 'text-amber-400/80',
       };
     case 'Leader':
-      // Crimson Noir / Blood Ruby
+      // Crimson Noir / Blood Ruby Red
       return {
         cardBorder: 'border-red-500/40 hover:border-red-400',
         cardBg: 'bg-gradient-to-r from-red-950/30 via-[#0C0D12]/95 to-[#08090C]/95',
@@ -368,19 +368,19 @@ const getRoleTheme = (role: MemberRole) => {
         idColor: 'text-red-400/80',
       };
     case 'Support':
-      // Steel Ice Blue / Tactical Cobalt
+      // Soft Frost Ice Cyan (Gentle, soothing pastel tone - zero eye strain)
       return {
-        cardBorder: 'border-sky-400/40 hover:border-sky-300',
-        cardBg: 'bg-gradient-to-r from-sky-950/30 via-[#0C0D12]/95 to-[#08090C]/95',
-        glow: 'shadow-[0_4px_25px_rgba(56,189,248,0.12)] hover:shadow-[0_4px_35px_rgba(56,189,248,0.25)]',
-        avatarBorder: 'border-sky-400/40',
-        avatarBg: 'bg-gradient-to-br from-sky-950/60 via-zinc-900/40 to-black',
-        avatarText: 'text-sky-300 drop-shadow-[0_0_8px_rgba(56,189,248,0.5)]',
-        roleText: 'text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.4)]',
-        headingText: 'text-sky-400 drop-shadow-[0_0_16px_rgba(56,189,248,0.6)]',
-        headingLineLeft: 'bg-gradient-to-r from-transparent via-sky-400/50 to-sky-400 shadow-[0_0_12px_rgba(56,189,248,0.5)]',
-        headingLineRight: 'bg-gradient-to-l from-transparent via-sky-400/50 to-sky-400 shadow-[0_0_12px_rgba(56,189,248,0.5)]',
-        idColor: 'text-sky-400/80',
+        cardBorder: 'border-sky-400/35 hover:border-sky-300/80',
+        cardBg: 'bg-gradient-to-r from-sky-950/20 via-[#0C0D12]/95 to-[#08090C]/95',
+        glow: 'shadow-[0_4px_25px_rgba(56,189,248,0.1)] hover:shadow-[0_4px_35px_rgba(56,189,248,0.2)]',
+        avatarBorder: 'border-sky-400/35',
+        avatarBg: 'bg-gradient-to-br from-sky-950/40 via-zinc-900/40 to-black',
+        avatarText: 'text-sky-200 drop-shadow-[0_0_8px_rgba(56,189,248,0.35)]',
+        roleText: 'text-sky-300 drop-shadow-[0_0_8px_rgba(56,189,248,0.3)]',
+        headingText: 'text-sky-300 drop-shadow-[0_0_14px_rgba(56,189,248,0.4)]',
+        headingLineLeft: 'bg-gradient-to-r from-transparent via-sky-400/40 to-sky-300/80 shadow-[0_0_10px_rgba(56,189,248,0.3)]',
+        headingLineRight: 'bg-gradient-to-l from-transparent via-sky-400/40 to-sky-300/80 shadow-[0_0_10px_rgba(56,189,248,0.3)]',
+        idColor: 'text-sky-300/75',
       };
     case 'Member':
       // Smoked Titanium Charcoal
@@ -419,16 +419,18 @@ const getFacebookHandle = (url?: string, name?: string) => {
 const getPopupTheme = (role: MemberRole) => {
   switch (role) {
     case 'Founder':
+      // Champagne Gold
       return {
-        cardBorder: 'border-white/20',
-        bannerGradient: 'from-white/[0.14] via-zinc-800/25 to-[#0C0D12]',
-        avatarRing: 'from-white via-slate-200 to-zinc-600 shadow-[0_0_20px_rgba(255,255,255,0.22)]',
-        avatarText: 'text-white',
-        badgeBorder: 'border-white/30 bg-white/10 text-white',
+        cardBorder: 'border-amber-400/30',
+        bannerGradient: 'from-amber-950/70 via-amber-950/25 to-[#0C0D12]',
+        avatarRing: 'from-amber-400 via-amber-600 to-amber-950 shadow-[0_0_20px_rgba(245,158,11,0.35)]',
+        avatarText: 'text-amber-300',
+        badgeBorder: 'border-amber-400/40 bg-amber-400/10 text-amber-400',
         badgeIcon: 'crown',
-        button: 'border-white/25 hover:border-white/60 bg-white/[0.06] hover:bg-white/15 text-white',
+        button: 'border-amber-400/40 hover:border-amber-400/80 bg-amber-400/[0.06] hover:bg-amber-400/15 text-amber-400 hover:text-amber-300',
       };
     case 'Leader':
+      // Crimson Ruby Red
       return {
         cardBorder: 'border-red-500/30',
         bannerGradient: 'from-red-950/70 via-red-950/25 to-[#0C0D12]',
@@ -439,14 +441,15 @@ const getPopupTheme = (role: MemberRole) => {
         button: 'border-red-500/40 hover:border-red-500/80 bg-red-500/[0.06] hover:bg-red-500/15 text-red-400 hover:text-red-300',
       };
     case 'Support':
+      // Soft Frost Ice Cyan (Gentle & soft on the eyes)
       return {
         cardBorder: 'border-sky-400/30',
-        bannerGradient: 'from-sky-950/70 via-blue-950/25 to-[#0C0D12]',
-        avatarRing: 'from-sky-400 via-blue-700 to-sky-950 shadow-[0_0_20px_rgba(56,189,248,0.35)]',
-        avatarText: 'text-sky-300',
-        badgeBorder: 'border-sky-400/40 bg-sky-400/10 text-sky-400',
+        bannerGradient: 'from-sky-950/60 via-sky-950/20 to-[#0C0D12]',
+        avatarRing: 'from-sky-400 via-sky-600 to-sky-950 shadow-[0_0_20px_rgba(56,189,248,0.25)]',
+        avatarText: 'text-sky-200',
+        badgeBorder: 'border-sky-400/35 bg-sky-400/10 text-sky-300',
         badgeIcon: 'shield',
-        button: 'border-sky-400/40 hover:border-sky-400/80 bg-sky-400/[0.06] hover:bg-sky-400/15 text-sky-400 hover:text-sky-300',
+        button: 'border-sky-400/35 hover:border-sky-400/70 bg-sky-400/[0.06] hover:bg-sky-400/15 text-sky-300 hover:text-sky-200',
       };
     case 'Member':
       return {
