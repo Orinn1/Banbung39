@@ -21,11 +21,11 @@ export default function LandingPage() {
         <img
           src="/Back.jpg"
           alt="BANBUNG39 Official Background"
-          className="w-full h-full object-cover object-center filter brightness-[0.38] contrast-[1.08] saturate-[0.9]"
+          className="w-full h-full object-cover object-center filter brightness-[0.72] contrast-[1.05]"
         />
-        {/* Deep noir gradient overlays & vignette to ensure high contrast */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#060709]/75 via-[#060709]/60 to-[#060709]/90" />
-        <div className="absolute inset-0 cinematic-vignette" />
+        {/* Soft atmospheric gradient & vignette */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#060709]/45 via-black/25 to-[#060709]/70" />
+        <div className="absolute inset-0 cinematic-vignette opacity-80" />
       </div>
 
       {/* TOP NAVBAR (Clean Original Navbar) */}

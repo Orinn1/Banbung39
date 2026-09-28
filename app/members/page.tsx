@@ -52,11 +52,11 @@ export default function MembersPage() {
         <img
           src="/Back.jpg"
           alt="BANBUNG39 Official Background"
-          className="w-full h-full object-cover object-center filter brightness-[0.3] contrast-[1.08] saturate-[0.85]"
+          className="w-full h-full object-cover object-center filter brightness-[0.65] contrast-[1.05]"
         />
-        {/* Deep noir gradient overlays & vignette to ensure high contrast */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#060709]/85 via-[#060709]/75 to-[#060709]/95" />
-        <div className="absolute inset-0 cinematic-vignette" />
+        {/* Soft atmospheric gradient & vignette */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#060709]/55 via-black/35 to-[#060709]/75" />
+        <div className="absolute inset-0 cinematic-vignette opacity-80" />
       </div>
 
       {/* TOP NAVBAR (Exact Same as Home Page) */}
