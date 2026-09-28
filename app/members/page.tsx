@@ -47,15 +47,15 @@ export default function MembersPage() {
       {/* Falling Snowflakes Particle Effect */}
       <SnowEffect />
 
-      {/* Atmospheric Dark Cinematic Background (Matching Home Page) */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0F1117]/80 via-[#08090C]/95 to-[#040507]" />
-        
-        {/* Soft atmospheric radial glow */}
-        <div className="absolute top-1/6 left-1/3 w-[36rem] h-[36rem] bg-white/[0.02] rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/4 w-[32rem] h-[32rem] bg-zinc-800/[0.05] rounded-full blur-3xl pointer-events-none" />
-
-        {/* Cinematic Vignette */}
+      {/* Atmospheric Cinematic Background Image (Back.jpg) */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <img
+          src="/Back.jpg"
+          alt="BANBUNG39 Official Background"
+          className="w-full h-full object-cover object-center filter brightness-[0.3] contrast-[1.08] saturate-[0.85]"
+        />
+        {/* Deep noir gradient overlays & vignette to ensure high contrast */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#060709]/85 via-[#060709]/75 to-[#060709]/95" />
         <div className="absolute inset-0 cinematic-vignette" />
       </div>
 
