@@ -21,6 +21,14 @@ const nextConfig = {
       }
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/bb39',
+        destination: '/BB39',
+      },
+    ];
+  },
 };
 
 export default nextConfig;

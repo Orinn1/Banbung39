@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { Search, X } from 'lucide-react';
 import SnowEffect from '@/components/SnowEffect';
@@ -10,21 +10,34 @@ import { MEMBERS_DATA, Member, MemberRole } from '@/data/members';
 export default function MembersPage() {
   const [selectedRole, setSelectedRole] = useState<'All' | MemberRole>('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [membersList, setMembersList] = useState<Member[]>(MEMBERS_DATA);
+
+  // Fetch latest members dynamically on mount
+  useEffect(() => {
+    fetch('/api/members')
+      .then((res) => res.json())
+      .then((resData) => {
+        if (resData.success && Array.isArray(resData.data)) {
+          setMembersList(resData.data);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Counts by role
   const counts = useMemo(() => {
     return {
-      all: MEMBERS_DATA.length,
-      founder: MEMBERS_DATA.filter((m) => m.role === 'Founder').length,
-      leader: MEMBERS_DATA.filter((m) => m.role === 'Leader').length,
-      support: MEMBERS_DATA.filter((m) => m.role === 'Support').length,
-      member: MEMBERS_DATA.filter((m) => m.role === 'Member').length,
+      all: membersList.length,
+      founder: membersList.filter((m) => m.role === 'Founder').length,
+      leader: membersList.filter((m) => m.role === 'Leader').length,
+      support: membersList.filter((m) => m.role === 'Support').length,
+      member: membersList.filter((m) => m.role === 'Member').length,
     };
-  }, []);
+  }, [membersList]);
 
   // Filtered members based on role and search query
   const filteredMembers = useMemo(() => {
-    return MEMBERS_DATA.filter((m) => {
+    return membersList.filter((m) => {
       const matchesRole = selectedRole === 'All' || m.role === selectedRole;
       const q = searchQuery.toLowerCase().trim();
       const matchesSearch =
@@ -35,7 +48,7 @@ export default function MembersPage() {
         m.role.toLowerCase().includes(q);
       return matchesRole && matchesSearch;
     });
-  }, [selectedRole, searchQuery]);
+  }, [selectedRole, searchQuery, membersList]);
 
   // Group by role
   const founderList = filteredMembers.filter((m) => m.role === 'Founder');
@@ -99,7 +112,7 @@ export default function MembersPage() {
         <div className="mb-6 sm:mb-10 text-center sm:text-left">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-[10px] font-mono tracking-widest text-zinc-400 uppercase mb-2.5 shadow-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            BB39 ROSTER • 23 MEMBERS
+            BB39 ROSTER • {membersList.length} MEMBERS
           </div>
           <h1 
             style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
