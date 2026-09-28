@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
-import SnowEffect from '@/components/SnowEffect';
 import MusicPlayer from '@/components/MusicPlayer';
 import { MEMBERS_DATA, Member, MemberRole } from '@/data/members';
 
@@ -41,234 +40,168 @@ export default function MembersPage() {
   const supportList = filteredMembers.filter((m) => m.role === 'Support');
   const regularMemberList = filteredMembers.filter((m) => m.role === 'Member');
 
-
-
   return (
-    <div className="relative min-h-screen w-full bg-[#060709] text-[#F3F4F6] flex flex-col justify-between overflow-x-hidden select-none">
-      {/* Falling Snowflakes Particle Effect */}
-      <SnowEffect />
-
-      {/* Atmospheric Dark Cinematic Background */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0F1117]/80 via-[#08090C]/95 to-[#040507]" />
-        
-        {/* Soft atmospheric radial glow */}
-        <div className="absolute top-1/6 left-1/3 w-[36rem] h-[36rem] bg-white/[0.02] rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/4 w-[32rem] h-[32rem] bg-zinc-800/[0.05] rounded-full blur-3xl pointer-events-none" />
-
-        {/* Cinematic Vignette */}
-        <div className="absolute inset-0 cinematic-vignette" />
-      </div>
-
-      {/* TOP NAVBAR */}
-      <header className="relative z-30 w-full px-6 sm:px-12 md:px-16 pt-7 sm:pt-9 flex items-center justify-between">
-        {/* Left: Brand Name with Link back home */}
-        <Link href="/" className="flex flex-col group cursor-pointer">
-          <span 
-            style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-            className="text-lg sm:text-xl font-anton tracking-wider text-white uppercase leading-tight group-hover:text-zinc-300 transition-colors"
-          >
-            BANBUNG39
-          </span>
-          <span className="text-[10px] font-mono tracking-widest text-zinc-400 uppercase -mt-0.5">
-            BY.MIKE WINTERFELL
-          </span>
-        </Link>
-
-        {/* Right: Navigation Pill Menu */}
-        <nav className="flex items-center gap-2.5">
-          <Link
-            href="/"
-            className="px-4 py-1.5 rounded-full text-zinc-400 hover:text-white hover:bg-white/[0.04] text-xs font-mono tracking-widest uppercase transition-colors"
-          >
-            HOME
+    <div className="min-h-screen w-full bg-[#090A0D] text-[#ECECF0] flex flex-col justify-between selection:bg-zinc-800 selection:text-white">
+      {/* MINIMAL TOP NAVBAR */}
+      <header className="w-full border-b border-zinc-900 bg-[#090A0D]">
+        <div className="max-w-6xl mx-auto px-6 sm:px-10 h-16 flex items-center justify-between">
+          {/* Left: Brand Identity */}
+          <Link href="/" className="group flex items-baseline gap-2.5">
+            <span
+              style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
+              className="text-lg font-anton tracking-wide text-zinc-100 group-hover:text-white transition-colors"
+            >
+              BANBUNG39
+            </span>
+            <span className="text-[11px] font-mono text-zinc-500 uppercase">
+              / COMMUNITY DIRECTORY
+            </span>
           </Link>
 
-          <div className="px-5 py-1.5 rounded-full bg-white/[0.08] border border-white/20 text-white text-xs font-mono tracking-widest uppercase shadow-[0_0_15px_rgba(255,255,255,0.05)] backdrop-blur-md">
-            MEMBERS
-          </div>
-        </nav>
+          {/* Right: Navigation Links */}
+          <nav className="flex items-center gap-6 text-xs font-mono">
+            <Link
+              href="/"
+              className="text-zinc-500 hover:text-zinc-200 transition-colors uppercase"
+            >
+              Home
+            </Link>
+            <span className="text-zinc-300 font-medium uppercase border-b border-zinc-400 pb-0.5">
+              Members
+            </span>
+          </nav>
+        </div>
       </header>
 
-      {/* MAIN CONTAINER */}
-      <main className="relative z-20 flex-1 max-w-7xl w-full mx-auto px-6 sm:px-12 md:px-16 py-8 sm:py-12">
-        {/* Back Button & Top Meta */}
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+      {/* MAIN CONTENT AREA */}
+      <main className="flex-1 max-w-6xl w-full mx-auto px-6 sm:px-10 py-10 sm:py-14">
+        {/* Back Link & Meta Stamp */}
+        <div className="flex items-center justify-between mb-8 pb-4 border-b border-zinc-900 text-xs font-mono text-zinc-500">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-xl bg-white/[0.04] border border-white/[0.08] hover:border-white/30 text-xs font-mono text-zinc-400 hover:text-white transition-all"
+            className="hover:text-zinc-300 transition-colors inline-flex items-center gap-1.5"
           >
-            <span>&larr; BACK TO HOME</span>
+            <span>&larr;</span>
+            <span>Index</span>
           </Link>
-
-          <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
-            <span className="w-1.5 h-1.5 rounded-full bg-white/70" />
-            <span>ROSTER • 2K26 OFFICIAL</span>
+          <div className="flex items-center gap-3">
+            <span>BB39 • ROSTER 2K26</span>
+            <span className="text-zinc-700">|</span>
+            <span className="text-zinc-400">{MEMBERS_DATA.length} ENLISTED</span>
           </div>
         </div>
 
-        {/* Hero Title Section */}
+        {/* Editorial Page Headline */}
         <div className="mb-10 sm:mb-12">
-          <div className="flex items-center gap-2.5 mb-2">
-            <span className="text-[11px] font-mono tracking-[0.25em] text-zinc-400 uppercase">
-              BANBUNG39
-            </span>
-            <span className="text-zinc-600">/</span>
-            <span className="text-[11px] font-mono tracking-widest text-zinc-400 uppercase">
-              CREW DIRECTORY
-            </span>
+          <div className="flex items-center gap-2 text-xs font-mono text-zinc-500 uppercase tracking-wider mb-2">
+            <span>BANBUNG39</span>
+            <span className="text-zinc-700">/</span>
+            <span>GANGSTER</span>
           </div>
 
-          <h1 
+          <h1
             style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-            className="text-4xl sm:text-6xl md:text-7xl font-anton tracking-wide text-white uppercase leading-[0.95] drop-shadow-md"
+            className="text-4xl sm:text-6xl md:text-7xl font-anton tracking-wide text-zinc-100 uppercase leading-[0.96]"
           >
-            ROSTER & MEMBERS
+            BB39 & MEMBERS
           </h1>
-          <p className="mt-3 text-xs sm:text-sm text-zinc-400 font-mono uppercase tracking-wider max-w-xl">
-            รายชื่อสมาชิกและทำเนียบผู้บริหาร BANBUNG39 • BY.MIKE WINTERFELL
+
+          <p className="mt-3 text-xs sm:text-sm text-zinc-500 font-mono uppercase tracking-wider">
+            • BY.MIKE WINTERFELL
           </p>
         </div>
 
-        {/* Filter Tabs & Search Bar */}
-        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 p-2 bg-[#0C0D12]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl mb-10 shadow-2xl">
+        {/* Filter Controls & Search */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pb-6 mb-10 border-b border-zinc-900">
           {/* Role Filter Tabs */}
-          <div className="flex flex-wrap items-center gap-1.5 p-1">
-            <button
-              onClick={() => setSelectedRole('All')}
-              className={`px-4 py-2 rounded-xl text-xs font-mono tracking-wider uppercase transition-all duration-200 flex items-center gap-2 ${
-                selectedRole === 'All'
-                  ? 'bg-white text-black font-bold shadow-md'
-                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.05]'
-              }`}
-            >
-              <span>ALL</span>
-              <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
-                selectedRole === 'All' ? 'bg-black/10 text-black' : 'bg-white/[0.08] text-zinc-400'
-              }`}>
-                {counts.all}
-              </span>
-            </button>
-
-            <button
-              onClick={() => setSelectedRole('Founder')}
-              className={`px-4 py-2 rounded-xl text-xs font-mono tracking-wider uppercase transition-all duration-200 flex items-center gap-2 ${
-                selectedRole === 'Founder'
-                  ? 'bg-white text-black font-bold shadow-md'
-                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.05]'
-              }`}
-            >
-              <span>FOUNDER</span>
-              <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
-                selectedRole === 'Founder' ? 'bg-black/10 text-black' : 'bg-white/[0.08] text-zinc-400'
-              }`}>
-                {counts.founder}
-              </span>
-            </button>
-
-            <button
-              onClick={() => setSelectedRole('Leader')}
-              className={`px-4 py-2 rounded-xl text-xs font-mono tracking-wider uppercase transition-all duration-200 flex items-center gap-2 ${
-                selectedRole === 'Leader'
-                  ? 'bg-white text-black font-bold shadow-md'
-                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.05]'
-              }`}
-            >
-              <span>LEADER</span>
-              <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
-                selectedRole === 'Leader' ? 'bg-black/10 text-black' : 'bg-white/[0.08] text-zinc-400'
-              }`}>
-                {counts.leader}
-              </span>
-            </button>
-
-            <button
-              onClick={() => setSelectedRole('Support')}
-              className={`px-4 py-2 rounded-xl text-xs font-mono tracking-wider uppercase transition-all duration-200 flex items-center gap-2 ${
-                selectedRole === 'Support'
-                  ? 'bg-white text-black font-bold shadow-md'
-                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.05]'
-              }`}
-            >
-              <span>SUPPORT</span>
-              <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
-                selectedRole === 'Support' ? 'bg-black/10 text-black' : 'bg-white/[0.08] text-zinc-400'
-              }`}>
-                {counts.support}
-              </span>
-            </button>
-
-            <button
-              onClick={() => setSelectedRole('Member')}
-              className={`px-4 py-2 rounded-xl text-xs font-mono tracking-wider uppercase transition-all duration-200 flex items-center gap-2 ${
-                selectedRole === 'Member'
-                  ? 'bg-white text-black font-bold shadow-md'
-                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.05]'
-              }`}
-            >
-              <span>MEMBER</span>
-              <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
-                selectedRole === 'Member' ? 'bg-black/10 text-black' : 'bg-white/[0.08] text-zinc-400'
-              }`}>
-                {counts.member}
-              </span>
-            </button>
+          <div className="flex flex-wrap items-center gap-1">
+            {(
+              [
+                { label: 'All', value: 'All', count: counts.all },
+                { label: 'Founder', value: 'Founder', count: counts.founder },
+                { label: 'Leader', value: 'Leader', count: counts.leader },
+                { label: 'Support', value: 'Support', count: counts.support },
+                { label: 'Member', value: 'Member', count: counts.member },
+              ] as const
+            ).map((tab) => {
+              const isActive = selectedRole === tab.value;
+              return (
+                <button
+                  key={tab.value}
+                  onClick={() => setSelectedRole(tab.value)}
+                  className={`px-3 py-1.5 rounded-md text-xs font-mono transition-colors flex items-center gap-1.5 ${
+                    isActive
+                      ? 'bg-zinc-800 text-zinc-100 font-medium'
+                      : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900/60'
+                  }`}
+                >
+                  <span className="uppercase">{tab.label}</span>
+                  <span
+                    className={`text-[10px] ${
+                      isActive ? 'text-zinc-400' : 'text-zinc-600'
+                    }`}
+                  >
+                    {tab.count}
+                  </span>
+                </button>
+              );
+            })}
           </div>
 
           {/* Search Box */}
-          <div className="relative min-w-[240px] sm:min-w-[280px] px-2 py-1">
+          <div className="relative w-full sm:w-64">
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="SEARCH BY NAME OR #ID..."
-              className="w-full px-4 py-2 bg-[#12141C] border border-white/[0.08] rounded-xl text-xs font-mono text-white placeholder-zinc-500 focus:outline-none focus:border-white/40 uppercase transition-colors"
+              placeholder="Search member or #id..."
+              className="w-full px-3.5 py-1.5 bg-[#101115] border border-zinc-800/80 rounded-md text-xs text-zinc-200 placeholder-zinc-600 font-mono focus:outline-none focus:border-zinc-700 transition-colors"
             />
           </div>
         </div>
 
         {/* MEMBERS CONTENT */}
         {filteredMembers.length === 0 ? (
-          <div className="py-20 text-center flex flex-col items-center justify-center">
-            <p className="text-zinc-500 font-mono text-xs uppercase tracking-widest">
-              [ NO MEMBERS FOUND ]
+          <div className="py-24 text-center">
+            <p className="text-zinc-600 font-mono text-xs uppercase tracking-widest">
+              [ NO MATCHING MEMBERS FOUND ]
             </p>
             <button
               onClick={() => {
                 setSelectedRole('All');
                 setSearchQuery('');
               }}
-              className="mt-4 px-4 py-1.5 rounded-xl bg-white/[0.06] text-xs font-mono text-white hover:bg-white/15 transition-colors uppercase"
+              className="mt-4 px-3.5 py-1.5 rounded-md bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-400 hover:text-zinc-200 hover:border-zinc-700 transition-colors"
             >
-              RESET FILTER
+              Reset filter
             </button>
           </div>
         ) : selectedRole === 'All' && !searchQuery ? (
-          /* SECTIONED VIEW WHEN 'ALL' IS SELECTED */
-          <div className="space-y-12">
+          /* SECTIONED DIRECTORY VIEW */
+          <div className="space-y-14 sm:space-y-16">
             {/* 1. FOUNDER SECTION */}
             {founderList.length > 0 && (
               <section>
-                <div className="flex items-baseline justify-between mb-4 pb-2 border-b border-white/[0.08]">
-                  <div className="flex items-baseline gap-3">
-                    <h2 
-                      style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-                      className="text-2xl sm:text-3xl font-anton tracking-wider text-white uppercase"
+                <div className="flex items-center justify-between pb-3 mb-5 border-b border-zinc-800/70">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-zinc-300" />
+                    <h2
+                      style={{
+                        fontFamily: 'var(--font-anton), "Anton", sans-serif',
+                      }}
+                      className="text-2xl sm:text-3xl font-anton tracking-wide text-zinc-100 uppercase"
                     >
                       FOUNDER
                     </h2>
-                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
-                      SUPREME LEADERSHIP
-                    </span>
                   </div>
-                  <span className="text-xs font-mono text-zinc-400">
-                    {founderList.length}
+                  <span className="text-xs font-mono text-zinc-600">
+                    0{founderList.length} / REGISTERED
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                   {founderList.map((m) => (
-                    <MemberCard key={m.id} member={m} isFeatured />
+                    <EditorialMemberCard key={m.id} member={m} isFeatured />
                   ))}
                 </div>
               </section>
@@ -277,26 +210,26 @@ export default function MembersPage() {
             {/* 2. LEADER SECTION */}
             {leaderList.length > 0 && (
               <section>
-                <div className="flex items-baseline justify-between mb-4 pb-2 border-b border-white/[0.08]">
-                  <div className="flex items-baseline gap-3">
-                    <h2 
-                      style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-                      className="text-2xl sm:text-3xl font-anton tracking-wider text-white uppercase"
+                <div className="flex items-center justify-between pb-3 mb-5 border-b border-zinc-800/70">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-rose-500/80" />
+                    <h2
+                      style={{
+                        fontFamily: 'var(--font-anton), "Anton", sans-serif',
+                      }}
+                      className="text-2xl sm:text-3xl font-anton tracking-wide text-zinc-100 uppercase"
                     >
                       LEADER
                     </h2>
-                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
-                      COMMAND & TACTICAL OPS
-                    </span>
                   </div>
-                  <span className="text-xs font-mono text-zinc-400">
-                    {leaderList.length}
+                  <span className="text-xs font-mono text-zinc-600">
+                    0{leaderList.length} / REGISTERED
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                   {leaderList.map((m) => (
-                    <MemberCard key={m.id} member={m} />
+                    <EditorialMemberCard key={m.id} member={m} />
                   ))}
                 </div>
               </section>
@@ -305,26 +238,26 @@ export default function MembersPage() {
             {/* 3. SUPPORT SECTION */}
             {supportList.length > 0 && (
               <section>
-                <div className="flex items-baseline justify-between mb-4 pb-2 border-b border-white/[0.08]">
-                  <div className="flex items-baseline gap-3">
-                    <h2 
-                      style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-                      className="text-2xl sm:text-3xl font-anton tracking-wider text-white uppercase"
+                <div className="flex items-center justify-between pb-3 mb-5 border-b border-zinc-800/70">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-sky-500/80" />
+                    <h2
+                      style={{
+                        fontFamily: 'var(--font-anton), "Anton", sans-serif',
+                      }}
+                      className="text-2xl sm:text-3xl font-anton tracking-wide text-zinc-100 uppercase"
                     >
                       SUPPORT
                     </h2>
-                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
-                      LOGISTICS & COMMUNITY
-                    </span>
                   </div>
-                  <span className="text-xs font-mono text-zinc-400">
-                    {supportList.length}
+                  <span className="text-xs font-mono text-zinc-600">
+                    0{supportList.length} / REGISTERED
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                   {supportList.map((m) => (
-                    <MemberCard key={m.id} member={m} />
+                    <EditorialMemberCard key={m.id} member={m} />
                   ))}
                 </div>
               </section>
@@ -333,137 +266,139 @@ export default function MembersPage() {
             {/* 4. MEMBER SECTION */}
             {regularMemberList.length > 0 && (
               <section>
-                <div className="flex items-baseline justify-between mb-4 pb-2 border-b border-white/[0.08]">
-                  <div className="flex items-baseline gap-3">
-                    <h2 
-                      style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-                      className="text-2xl sm:text-3xl font-anton tracking-wider text-white uppercase"
+                <div className="flex items-center justify-between pb-3 mb-5 border-b border-zinc-800/70">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-zinc-600" />
+                    <h2
+                      style={{
+                        fontFamily: 'var(--font-anton), "Anton", sans-serif',
+                      }}
+                      className="text-2xl sm:text-3xl font-anton tracking-wide text-zinc-100 uppercase"
                     >
                       MEMBER
                     </h2>
-                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
-                      CORE OPERATIVES
-                    </span>
                   </div>
-                  <span className="text-xs font-mono text-zinc-400">
-                    {regularMemberList.length}
+                  <span className="text-xs font-mono text-zinc-600">
+                    {regularMemberList.length < 10
+                      ? `0${regularMemberList.length}`
+                      : regularMemberList.length}{' '}
+                    / REGISTERED
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                   {regularMemberList.map((m) => (
-                    <MemberCard key={m.id} member={m} />
+                    <EditorialMemberCard key={m.id} member={m} />
                   ))}
                 </div>
               </section>
             )}
           </div>
         ) : (
-          /* UNIFIED GRID VIEW WHEN FILTERED */
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+          /* FILTERED UNIFIED GRID */
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {filteredMembers.map((m) => (
-              <MemberCard key={m.id} member={m} />
+              <EditorialMemberCard key={m.id} member={m} />
             ))}
           </div>
         )}
       </main>
 
-      {/* FOOTER */}
-      <footer className="relative z-20 w-full px-6 sm:px-12 md:px-16 py-6 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-zinc-500">
-        <div>
-          BANBUNG39 • BY.MIKE WINTERFELL • 2K26
-        </div>
-        <div className="flex items-center gap-4">
-          <Link href="/" className="hover:text-white transition-colors">
-            HOME
-          </Link>
-          <span>/</span>
-          <span className="text-zinc-400">MEMBERS</span>
+      {/* RESTRAINED EDITORIAL FOOTER */}
+      <footer className="w-full border-t border-zinc-900 py-8 mt-16 text-xs font-mono text-zinc-600">
+        <div className="max-w-6xl mx-auto px-6 sm:px-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>BANBUNG39 • OFFICIAL DIRECTORY 2K26</div>
+          <div className="flex items-center gap-4">
+            <Link href="/" className="hover:text-zinc-400 transition-colors">
+              Home
+            </Link>
+            <span className="text-zinc-800">/</span>
+            <span className="text-zinc-400">Members</span>
+          </div>
         </div>
       </footer>
 
-      {/* PERSISTENT MUSIC PLAYER */}
+      {/* AUDIO PLAYER */}
       <MusicPlayer />
     </div>
   );
 }
 
-// Role-specific metallic gradient border and glow themes (Authentic, dark, non-AI)
-const getRoleTheme = (role: MemberRole) => {
+// Subtle role styling accents (IDs, subtle hover)
+const getRoleAccent = (role: MemberRole) => {
   switch (role) {
     case 'Founder':
-      // Platinum White / Polished Silver Chrome
       return {
-        borderGradient: 'from-white/90 via-slate-300/40 to-white/10 hover:from-white hover:via-slate-200 hover:to-white/30',
-        glow: 'shadow-[0_4px_30px_rgba(255,255,255,0.08)] hover:shadow-[0_6px_40px_rgba(255,255,255,0.15)]',
         idColor: 'text-zinc-400',
+        hoverBorder: 'hover:border-zinc-700',
       };
     case 'Leader':
-      // Crimson Noir / Blood Ruby
       return {
-        borderGradient: 'from-red-500/90 via-red-800/45 to-red-950/20 hover:from-red-400 hover:via-red-700 hover:to-red-900/40',
-        glow: 'shadow-[0_4px_30px_rgba(239,68,68,0.12)] hover:shadow-[0_6px_40px_rgba(239,68,68,0.22)]',
-        idColor: 'text-red-400/80',
+        idColor: 'text-rose-400/90',
+        hoverBorder: 'hover:border-rose-950/60',
       };
     case 'Support':
-      // Steel Ice Blue / Tactical Cobalt
       return {
-        borderGradient: 'from-sky-400/90 via-blue-800/45 to-sky-950/20 hover:from-sky-300 hover:via-blue-700 hover:to-sky-900/40',
-        glow: 'shadow-[0_4px_30px_rgba(56,189,248,0.12)] hover:shadow-[0_6px_40px_rgba(56,189,248,0.22)]',
-        idColor: 'text-sky-400/80',
+        idColor: 'text-sky-400/90',
+        hoverBorder: 'hover:border-sky-950/60',
       };
     case 'Member':
-      // Smoked Titanium Charcoal
       return {
-        borderGradient: 'from-zinc-500/50 via-zinc-700/25 to-zinc-900/10 hover:from-zinc-400 hover:via-zinc-600 hover:to-zinc-800/30',
-        glow: 'shadow-[0_4px_20px_rgba(0,0,0,0.6)]',
         idColor: 'text-zinc-500',
+        hoverBorder: 'hover:border-zinc-700',
       };
   }
 };
 
-// Clean Typographic Member Card with Role Gradient Border (No role badge text)
-function MemberCard({ 
-  member, 
+// Flatter, editorial member card with thin dark-gray border and clean typography
+function EditorialMemberCard({
+  member,
   isFeatured = false,
-}: { 
-  member: Member; 
+}: {
+  member: Member;
   isFeatured?: boolean;
 }) {
-  const theme = getRoleTheme(member.role);
+  const accent = getRoleAccent(member.role);
 
   return (
-    <div className={`p-[1.5px] rounded-2xl bg-gradient-to-br ${theme.borderGradient} ${theme.glow} transition-all duration-300 hover:-translate-y-0.5`}>
-      <div className="p-4 sm:p-5 rounded-[14.5px] bg-[#0C0D12]/95 backdrop-blur-md flex items-center justify-between gap-4">
-        <div className="min-w-0 flex-1">
-          <span className={`text-xs font-mono block mb-1 font-bold ${theme.idColor}`}>
-            {member.memberId}
-          </span>
-          <h3 
-            style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-            className={`${
-              isFeatured ? 'text-2xl sm:text-3xl' : 'text-xl'
-            } font-anton tracking-wide text-white uppercase truncate`}
-          >
-            {member.name}
-          </h3>
-        </div>
-
-        {member.facebook && (
-          <a
-            href={member.facebook}
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Facebook Profile"
-            aria-label="Facebook Profile"
-            className="w-9 h-9 rounded-xl bg-white/[0.04] border border-white/15 hover:border-white/50 text-zinc-400 hover:text-white hover:bg-white/[0.08] flex items-center justify-center transition-all duration-200 flex-shrink-0"
-          >
-            <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-            </svg>
-          </a>
-        )}
+    <div
+      className={`group bg-[#101115] border border-zinc-800/80 ${accent.hoverBorder} hover:bg-[#131419] rounded-lg transition-colors duration-150 flex items-center justify-between gap-4 ${
+        isFeatured ? 'p-4 sm:p-5' : 'p-3.5 sm:p-4'
+      }`}
+    >
+      <div className="min-w-0 flex-1">
+        <span
+          className={`text-[11px] font-mono block mb-1 tracking-wider ${accent.idColor}`}
+        >
+          {member.memberId}
+        </span>
+        <h3
+          className={`font-sans font-medium text-zinc-100 tracking-tight truncate ${
+            isFeatured ? 'text-base sm:text-lg' : 'text-sm sm:text-base'
+          }`}
+        >
+          {member.name}
+        </h3>
       </div>
+
+      {member.facebook && (
+        <a
+          href={member.facebook}
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Facebook Profile"
+          aria-label={`${member.name}'s Facebook Profile`}
+          className="w-7 h-7 sm:w-8 sm:h-8 rounded-md border border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800 hover:border-zinc-700 text-zinc-500 hover:text-zinc-200 flex items-center justify-center transition-colors flex-shrink-0"
+        >
+          <svg
+            className="w-3.5 h-3.5 fill-current"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+          </svg>
+        </a>
+      )}
     </div>
   );
 }
