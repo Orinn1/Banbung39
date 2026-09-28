@@ -47,16 +47,22 @@ export default function MembersPage() {
       {/* Falling Snowflakes Particle Effect */}
       <SnowEffect />
 
-      {/* Atmospheric Dark Cinematic Background */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0F1117]/80 via-[#08090C]/95 to-[#040507]" />
+      {/* Background Image Layer (Fixed Cover Wallpaper) */}
+      <div 
+        className="fixed inset-0 bg-cover bg-center bg-no-repeat pointer-events-none z-0 opacity-85"
+        style={{ backgroundImage: "url('/3EDBFB46-0BD2-4891-9782-DE1F7C45A983.png')" }}
+      />
+
+      {/* Atmospheric Dark Cinematic Overlay */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0F1117]/65 via-[#08090C]/45 to-[#040507]/85" />
         
         {/* Soft atmospheric radial glow */}
         <div className="absolute top-1/6 left-1/3 w-[36rem] h-[36rem] bg-white/[0.02] rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-1/4 right-1/4 w-[32rem] h-[32rem] bg-zinc-800/[0.05] rounded-full blur-3xl pointer-events-none" />
 
         {/* Cinematic Vignette */}
-        <div className="absolute inset-0 cinematic-vignette" />
+        <div className="absolute inset-0 cinematic-vignette opacity-80" />
       </div>
 
       {/* TOP NAVBAR (Exact Same as Home Page) */}

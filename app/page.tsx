@@ -16,16 +16,22 @@ export default function LandingPage() {
       {/* Falling Snowflakes Particle Effect */}
       <SnowEffect />
 
+      {/* Background Image Layer */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat pointer-events-none z-0 opacity-85"
+        style={{ backgroundImage: "url('/3EDBFB46-0BD2-4891-9782-DE1F7C45A983.png')" }}
+      />
+
       {/* Atmospheric Dark Cinematic Background (Deep Gradients & Ambient Vignette) */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0F1117]/80 via-[#08090C]/95 to-[#040507]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0F1117]/65 via-[#08090C]/45 to-[#040507]/85" />
         
         {/* Soft atmospheric radial glow behind the hero */}
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/[0.025] rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-1/3 right-1/4 w-[32rem] h-[32rem] bg-zinc-800/[0.06] rounded-full blur-3xl pointer-events-none" />
 
         {/* Cinematic Vignette */}
-        <div className="absolute inset-0 cinematic-vignette" />
+        <div className="absolute inset-0 cinematic-vignette opacity-80" />
       </div>
 
       {/* TOP NAVBAR (Clean Original Navbar) */}
