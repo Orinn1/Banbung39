@@ -159,5 +159,45 @@
     "facebook": "https://www.facebook.com/profile.php?id=61594384915415",
     "name": "DEXZEE LYFESTYLE",
     "id": "0023"
+  },
+  {
+    "name": "YUU HEISENBERG",
+    "avatar": "/Logo.jpg",
+    "memberId": "#0024",
+    "facebook": "https://www.facebook.com/yuuxwin",
+    "id": "0024",
+    "role": "Member"
+  },
+  {
+    "role": "Member",
+    "id": "0025",
+    "avatar": "/Logo.jpg",
+    "facebook": "https://www.facebook.com/share/1F3CSduft4/?mibextid=wwXIfr",
+    "name": "ŇXNGNAMI DEKTOXICLADÝ",
+    "memberId": "#0025"
+  },
+  {
+    "id": "0026",
+    "name": "UNO WINTERFELL FITZROY",
+    "avatar": "/Logo.jpg",
+    "memberId": "#0026",
+    "role": "Member",
+    "facebook": "https://www.facebook.com/Uno.winterfell.fitzroy?locale=th_TH"
+  },
+  {
+    "role": "Member",
+    "id": "0027",
+    "avatar": "/Logo.jpg",
+    "memberId": "#0027",
+    "facebook": "https://www.facebook.com/mon.a.squad.655120?mibextid=wwXIfr&mibextid=wwXIfr",
+    "name": "MON KINGTACHI"
+  },
+  {
+    "role": "Member",
+    "id": "0028",
+    "avatar": "/Logo.jpg",
+    "memberId": "#0028",
+    "facebook": "https://www.facebook.com/MidasGoatrealtime",
+    "name": "MIDAS WWINTERFELL VEGA"
   }
 ]

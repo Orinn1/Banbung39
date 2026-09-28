@@ -60,8 +60,13 @@ export default function MusicPlayer() {
       .catch(() => {});
   }, []);
 
-  // 2. Setup Audio Source ONLY if the actual file changes
+  // 2. Setup Audio Source & Ensure fresh visit always starts at 0:00
   useEffect(() => {
+    // Clear any previously saved timestamps so fresh entries always start from 0:00
+    try {
+      localStorage.removeItem(STORAGE_KEY_TIME);
+    } catch {}
+
     const audio = audioRef.current;
     if (!audio || !musicInfo.url) return;
 
@@ -73,22 +78,9 @@ export default function MusicPlayer() {
 
     // Only set and load if it's genuinely a new audio file
     audio.src = musicInfo.url;
+    audio.currentTime = 0;
+    setProgress(0);
     audio.load();
-
-    // Restore saved time only once on initial mount
-    if (!hasRestoredTimeRef.current) {
-      hasRestoredTimeRef.current = true;
-      try {
-        const savedTime = localStorage.getItem(STORAGE_KEY_TIME);
-        if (savedTime) {
-          const t = parseFloat(savedTime);
-          if (!isNaN(t) && t > 0) {
-            audio.currentTime = t;
-            setProgress(t);
-          }
-        }
-      } catch {}
-    }
   }, [musicInfo.url]);
 
   // 3. Register MediaSession API (Lock screen, background playback, Control Center on iOS & Android)
@@ -298,11 +290,7 @@ export default function MusicPlayer() {
         }}
         onTimeUpdate={() => {
           if (audioRef.current) {
-            const cur = audioRef.current.currentTime;
-            setProgress(cur);
-            try {
-              localStorage.setItem(STORAGE_KEY_TIME, String(cur));
-            } catch {}
+            setProgress(audioRef.current.currentTime);
           }
         }}
         onLoadedMetadata={() => {
