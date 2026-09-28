@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Bodoni+Moda:ital,opsz,wght@0,6..96,700;0,6..96,900;1,6..96,700&family=Cinzel:wght@400;600;700;800;900&family=Outfit:wght@700;800;900&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Rajdhani:wght@700&family=Syne:wght@700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #090A0D;
+  --foreground: #EAE6DF;
+}
+
+body {
+  color: var(--foreground);
+  background-color: var(--background);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Font classes */
+.font-anton {
+  font-family: var(--font-anton), 'Anton', sans-serif !important;
+}
+
+.font-playfair {
+  font-family: 'Playfair Display', serif;
+}
+
+.font-bodoni {
+  font-family: 'Bodoni Moda', serif;
+}
+
+.font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
+.font-syne {
+  font-family: 'Syne', sans-serif;
+}
+
+.font-outfit {
+  font-family: 'Outfit', sans-serif;
+}
+
+.font-rajdhani {
+  font-family: 'Rajdhani', sans-serif;
+}
+
+/* Subtle cinematic grain/vignette */
+.cinematic-vignette {
+  background: radial-gradient(circle at center, transparent 40%, rgba(5, 6, 8, 0.85) 90%, rgba(2, 3, 4, 0.98) 100%);
+}
+
+/* Keyframes for falling snowflakes */
+@keyframes snowfall {
+  0% {
+    transform: translateY(-20px) translateX(0px) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.85;
+  }
+  85% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(105vh) translateX(45px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.snowflake {
+  position: absolute;
+  top: -20px;
+  pointer-events: none;
+  animation-name: snowfall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* Hide Next.js devtools indicator button ("N" icon at bottom-left) */
+nextjs-portal,
+[data-nextjs-toast],
+[data-nextjs-dev-overlay],
+[data-nextjs-dialog] {
+  display: none !important;
+}
