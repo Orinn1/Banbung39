@@ -86,13 +86,16 @@ body {
   mask-image: linear-gradient(to bottom, black 30%, transparent 95%);
 }
 
-/* Swyft 171 Hero 39 Shimmer Effect (No outer glow, crisp letter sweep) */
+/* Swyft 171 Hero 39 Shimmer Effect (Crisp letter sweep, zero outer glow) */
 .hero-brand-39 {
   position: relative;
   display: block;
   width: max-content;
-  color: #DC2626;
-  -webkit-text-fill-color: #DC2626;
+  background: linear-gradient(180deg, #FF4554 0%, #DC2626 50%, #7F1D1D 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
   isolation: isolate;
 }
 
@@ -108,11 +111,9 @@ body {
     112deg,
     transparent 0%,
     transparent 36%,
-    rgba(255, 68, 68, 0.45) 43%,
-    #ff334b 47%,
-    #ffffff 50%,
-    #ff334b 53%,
-    rgba(255, 68, 68, 0.45) 57%,
+    rgba(255, 255, 255, 0.25) 43%,
+    rgba(255, 255, 255, 0.95) 50%,
+    rgba(255, 255, 255, 0.25) 57%,
     transparent 64%,
     transparent 100%
   );
@@ -120,7 +121,7 @@ body {
   background-position: 135% 0;
   -webkit-background-clip: text;
   background-clip: text;
-  animation: hero39Sweep 3.2s linear infinite;
+  animation: hero39Sweep 3s linear infinite;
   will-change: background-position;
 }
 

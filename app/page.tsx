@@ -69,7 +69,8 @@ export default function LandingPage() {
               BANBUNG
             </span>
             <span 
-              className="bg-gradient-to-b from-[#FF4554] via-[#DC2626] to-[#3B070B] bg-clip-text text-transparent select-none"
+              className="hero-brand-39 select-none"
+              data-shine-text="39"
             >
               39
             </span>
