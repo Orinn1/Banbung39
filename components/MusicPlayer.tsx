@@ -30,7 +30,7 @@ export default function MusicPlayer() {
     return (
       <div
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 left-6 z-30 flex items-center gap-3 px-3.5 py-2.5 bg-[#0C0D12]/95 backdrop-blur-md border border-white/[0.1] hover:border-white/30 rounded-xl shadow-2xl cursor-pointer group transition-all duration-200 select-none hover:scale-105"
+        className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-40 flex items-center gap-2.5 sm:gap-3 px-3 py-2 sm:px-3.5 sm:py-2.5 bg-[#0C0D12]/95 backdrop-blur-md border border-white/[0.1] hover:border-white/30 rounded-xl shadow-2xl cursor-pointer group transition-all duration-200 select-none hover:scale-105 active:scale-95"
         title="คลิกเพื่อเปิดเครื่องเล่นเพลง"
       >
         <div className="flex items-center gap-2">
@@ -38,7 +38,7 @@ export default function MusicPlayer() {
           <Music className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white transition-colors" />
         </div>
 
-        <div className="flex flex-col min-w-[72px]">
+        <div className="flex flex-col min-w-[68px] sm:min-w-[72px]">
           <span className="text-xs font-mono font-bold text-white tracking-wider leading-none">
             BANBUNG39
           </span>
@@ -53,7 +53,7 @@ export default function MusicPlayer() {
             e.stopPropagation();
             setIsPlaying(!isPlaying);
           }}
-          className="w-6 h-6 rounded-full bg-white/[0.08] hover:bg-white hover:text-black text-zinc-300 flex items-center justify-center transition-all ml-1"
+          className="w-6 h-6 rounded-full bg-white/[0.08] hover:bg-white hover:text-black text-zinc-300 flex items-center justify-center transition-all ml-0.5 sm:ml-1 active:scale-90"
           title={isPlaying ? "Pause" : "Play"}
         >
           {isPlaying ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3 ml-0.5" />}
@@ -65,7 +65,7 @@ export default function MusicPlayer() {
   }
 
   return (
-    <div className="fixed bottom-6 left-6 z-30 p-3.5 bg-[#0C0D12]/95 backdrop-blur-md border border-white/[0.1] rounded-xl shadow-2xl max-w-xs sm:w-72 select-none transition-all duration-200">
+    <div className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-40 p-3 sm:p-3.5 bg-[#0C0D12]/95 backdrop-blur-md border border-white/[0.1] rounded-2xl shadow-2xl w-[calc(100vw-32px)] sm:w-72 max-w-xs select-none transition-all duration-200">
       {/* Track Information & Controls */}
       <div className="w-full">
         {/* Header with toggle to collapse */}

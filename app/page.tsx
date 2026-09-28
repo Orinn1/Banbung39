@@ -35,26 +35,26 @@ export default function LandingPage() {
       </div>
 
       {/* TOP NAVBAR (Clean Original Navbar) */}
-      <header className="relative z-30 w-full px-6 sm:px-12 md:px-16 pt-7 sm:pt-9 flex items-center justify-between">
+      <header className="relative z-30 w-full px-4 sm:px-12 md:px-16 pt-5 sm:pt-9 flex items-center justify-between">
         {/* Left: Brand Name */}
         <Link href="/" className="flex flex-col group cursor-pointer">
-          <span className="text-sm sm:text-base font-mono font-bold tracking-[0.25em] text-white uppercase leading-tight group-hover:text-zinc-300 transition-colors">
+          <span className="text-xs sm:text-base font-mono font-bold tracking-[0.2em] sm:tracking-[0.25em] text-white uppercase leading-tight group-hover:text-zinc-300 transition-colors">
             BANBUNG39
           </span>
-          <span className="text-[10px] font-mono tracking-widest text-zinc-400 uppercase -mt-0.5">
+          <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-zinc-400 uppercase -mt-0.5">
             BY.MIKE WINTERFELL
           </span>
         </Link>
 
         {/* Right: Navigation Pill Menu */}
-        <nav className="flex items-center gap-2.5">
-          <div className="px-5 py-1.5 rounded-full bg-white/[0.08] border border-white/20 text-white text-xs font-mono tracking-widest uppercase shadow-[0_0_15px_rgba(255,255,255,0.05)] backdrop-blur-md">
+        <nav className="flex items-center gap-1.5 sm:gap-2.5">
+          <div className="px-3.5 sm:px-5 py-1 sm:py-1.5 rounded-full bg-white/[0.08] border border-white/20 text-white text-[11px] sm:text-xs font-mono tracking-widest uppercase shadow-[0_0_15px_rgba(255,255,255,0.05)] backdrop-blur-md">
             HOME
           </div>
 
           <Link
             href="/members"
-            className="px-4 py-1.5 rounded-full text-zinc-400 hover:text-white hover:bg-white/[0.04] text-xs font-mono tracking-widest uppercase transition-colors"
+            className="px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-zinc-400 hover:text-white hover:bg-white/[0.04] text-[11px] sm:text-xs font-mono tracking-widest uppercase transition-colors"
           >
             MEMBERS
           </Link>
@@ -62,14 +62,14 @@ export default function LandingPage() {
       </header>
 
       {/* MAIN HERO CONTENT (Split Left Hero & Right Dossier Card) */}
-      <main className="relative z-20 flex-1 max-w-7xl w-full mx-auto px-6 sm:px-12 md:px-16 py-8 sm:py-12 flex flex-col lg:flex-row items-center justify-between gap-10">
+      <main className="relative z-20 flex-1 max-w-7xl w-full mx-auto px-4 sm:px-12 md:px-16 py-6 sm:py-12 flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-10 pb-20 sm:pb-12">
         {/* LEFT COLUMN: HERO TYPOGRAPHY */}
-        <div className="flex-1 flex flex-col items-start justify-center max-w-xl lg:max-w-2xl">
+        <div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left justify-center max-w-xl lg:max-w-2xl w-full">
 
           {/* Signature Bold Display Title: BANBUNG & 39 on one line */}
           <h1 
             style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-anton tracking-wide uppercase leading-none inline-flex items-baseline gap-2.5 sm:gap-3.5 flex-nowrap"
+            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-anton tracking-wide uppercase leading-none inline-flex items-baseline gap-2 sm:gap-3.5 flex-nowrap"
           >
             <span className="text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]">
               BANBUNG
@@ -83,10 +83,10 @@ export default function LandingPage() {
           </h1>
 
           {/* Call to Action Button: VIEW MEMBERS */}
-          <div className="mt-8 sm:mt-10">
+          <div className="mt-6 sm:mt-10">
             <Link
               href="/members"
-              className="group inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-[#0E1015]/90 backdrop-blur-md border border-white/20 hover:border-white/60 text-xs font-mono tracking-widest text-white uppercase transition-all duration-200 hover:bg-[#151821] hover:shadow-lg hover:shadow-white/[0.06]"
+              className="group inline-flex items-center gap-3 px-5 sm:px-6 py-2.5 rounded-full bg-[#0E1015]/90 backdrop-blur-md border border-white/20 hover:border-white/60 text-xs font-mono tracking-widest text-white uppercase transition-all duration-200 hover:bg-[#151821] hover:shadow-lg hover:shadow-white/[0.06] active:scale-95"
             >
               <span className="font-semibold tracking-wider">VIEW MEMBERS</span>
               <span className="w-5 h-5 rounded-full bg-white/[0.08] flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors">
@@ -97,7 +97,7 @@ export default function LandingPage() {
         </div>
 
         {/* RIGHT COLUMN: FLOATING DOSSIER CARD */}
-        <div className="flex-shrink-0 flex items-center justify-center">
+        <div className="flex-shrink-0 flex items-center justify-center w-full sm:w-auto">
           <RightDossierCard onOpenPartners={() => setIsMembersOpen(true)} />
         </div>
       </main>

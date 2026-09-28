@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
+import { Search, X } from 'lucide-react';
 import SnowEffect from '@/components/SnowEffect';
 import MusicPlayer from '@/components/MusicPlayer';
 import { MEMBERS_DATA, Member, MemberRole } from '@/data/members';
@@ -66,51 +67,55 @@ export default function MembersPage() {
       </div>
 
       {/* TOP NAVBAR (Exact Same as Home Page) */}
-      <header className="relative z-30 w-full px-6 sm:px-12 md:px-16 pt-7 sm:pt-9 flex items-center justify-between">
+      <header className="relative z-30 w-full px-4 sm:px-12 md:px-16 pt-5 sm:pt-9 flex items-center justify-between">
         {/* Left: Brand Name with Link back home */}
         <Link href="/" className="flex flex-col group cursor-pointer">
-          <span className="text-sm sm:text-base font-mono font-bold tracking-[0.25em] text-white uppercase leading-tight group-hover:text-zinc-300 transition-colors">
+          <span className="text-xs sm:text-base font-mono font-bold tracking-[0.2em] sm:tracking-[0.25em] text-white uppercase leading-tight group-hover:text-zinc-300 transition-colors">
             BANBUNG39
           </span>
-          <span className="text-[10px] font-mono tracking-widest text-zinc-400 uppercase -mt-0.5">
+          <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-zinc-400 uppercase -mt-0.5">
             BY.MIKE WINTERFELL
           </span>
         </Link>
 
         {/* Right: Navigation Pill Menu */}
-        <nav className="flex items-center gap-2.5">
+        <nav className="flex items-center gap-1.5 sm:gap-2.5">
           <Link
             href="/"
-            className="px-4 py-1.5 rounded-full text-zinc-400 hover:text-white hover:bg-white/[0.04] text-xs font-mono tracking-widest uppercase transition-colors"
+            className="px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-zinc-400 hover:text-white hover:bg-white/[0.04] text-[11px] sm:text-xs font-mono tracking-widest uppercase transition-colors"
           >
             HOME
           </Link>
 
-          <div className="px-5 py-1.5 rounded-full bg-white/[0.08] border border-white/20 text-white text-xs font-mono tracking-widest uppercase shadow-[0_0_15px_rgba(255,255,255,0.05)] backdrop-blur-md">
+          <div className="px-3.5 sm:px-5 py-1 sm:py-1.5 rounded-full bg-white/[0.08] border border-white/20 text-white text-[11px] sm:text-xs font-mono tracking-widest uppercase shadow-[0_0_15px_rgba(255,255,255,0.05)] backdrop-blur-md">
             MEMBERS
           </div>
         </nav>
       </header>
 
       {/* MAIN CONTAINER (Expanded width for generous 5-column and 2-column cards) */}
-      <main className="relative z-20 flex-1 max-w-[1440px] w-full mx-auto px-4 sm:px-8 md:px-12 py-8 sm:py-12">
+      <main className="relative z-20 flex-1 max-w-[1440px] w-full mx-auto px-3.5 sm:px-8 md:px-12 py-6 sm:py-12">
         {/* Clean Hero Title */}
-        <div className="mb-8 sm:mb-10 text-center sm:text-left">
+        <div className="mb-6 sm:mb-10 text-center sm:text-left">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-[10px] font-mono tracking-widest text-zinc-400 uppercase mb-2.5 shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            BB39 ROSTER • 23 MEMBERS
+          </div>
           <h1 
             style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-            className="text-4xl sm:text-6xl md:text-7xl font-anton tracking-wide text-white uppercase leading-[0.95]"
+            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-anton tracking-wide text-white uppercase leading-[0.95]"
           >
             BB39 & MEMBERS
           </h1>
         </div>
 
         {/* Filter Tabs & Search Bar */}
-        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 p-2 bg-[#0C0D12]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl mb-8 shadow-2xl">
-          {/* Role Filter Tabs */}
-          <div className="flex flex-wrap items-center gap-1.5 p-1">
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 p-2 sm:p-2.5 bg-[#0C0D12]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl mb-6 sm:mb-8 shadow-2xl">
+          {/* Role Filter Tabs - Horizontally scrollable on mobile */}
+          <div className="flex items-center gap-1.5 p-1 overflow-x-auto no-scrollbar scroll-smooth">
             <button
               onClick={() => setSelectedRole('All')}
-              className={`px-4 py-2 rounded-xl text-xs font-mono tracking-wider uppercase transition-all duration-200 flex items-center gap-2 ${
+              className={`flex-shrink-0 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[11px] sm:text-xs font-mono tracking-wider uppercase transition-all duration-200 flex items-center gap-1.5 active:scale-95 ${
                 selectedRole === 'All'
                   ? 'bg-white text-black font-bold shadow-md'
                   : 'text-zinc-400 hover:text-white hover:bg-white/[0.05]'
@@ -126,7 +131,7 @@ export default function MembersPage() {
 
             <button
               onClick={() => setSelectedRole('Founder')}
-              className={`px-4 py-2 rounded-xl text-xs font-mono tracking-wider uppercase transition-all duration-200 flex items-center gap-2 ${
+              className={`flex-shrink-0 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[11px] sm:text-xs font-mono tracking-wider uppercase transition-all duration-200 flex items-center gap-1.5 active:scale-95 ${
                 selectedRole === 'Founder'
                   ? 'bg-white text-black font-bold shadow-md'
                   : 'text-zinc-400 hover:text-white hover:bg-white/[0.05]'
@@ -142,7 +147,7 @@ export default function MembersPage() {
 
             <button
               onClick={() => setSelectedRole('Leader')}
-              className={`px-4 py-2 rounded-xl text-xs font-mono tracking-wider uppercase transition-all duration-200 flex items-center gap-2 ${
+              className={`flex-shrink-0 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[11px] sm:text-xs font-mono tracking-wider uppercase transition-all duration-200 flex items-center gap-1.5 active:scale-95 ${
                 selectedRole === 'Leader'
                   ? 'bg-white text-black font-bold shadow-md'
                   : 'text-zinc-400 hover:text-white hover:bg-white/[0.05]'
@@ -158,7 +163,7 @@ export default function MembersPage() {
 
             <button
               onClick={() => setSelectedRole('Support')}
-              className={`px-4 py-2 rounded-xl text-xs font-mono tracking-wider uppercase transition-all duration-200 flex items-center gap-2 ${
+              className={`flex-shrink-0 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[11px] sm:text-xs font-mono tracking-wider uppercase transition-all duration-200 flex items-center gap-1.5 active:scale-95 ${
                 selectedRole === 'Support'
                   ? 'bg-white text-black font-bold shadow-md'
                   : 'text-zinc-400 hover:text-white hover:bg-white/[0.05]'
@@ -175,7 +180,7 @@ export default function MembersPage() {
             {counts.member > 0 && (
               <button
                 onClick={() => setSelectedRole('Member')}
-                className={`px-4 py-2 rounded-xl text-xs font-mono tracking-wider uppercase transition-all duration-200 flex items-center gap-2 ${
+                className={`flex-shrink-0 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[11px] sm:text-xs font-mono tracking-wider uppercase transition-all duration-200 flex items-center gap-1.5 active:scale-95 ${
                   selectedRole === 'Member'
                     ? 'bg-white text-black font-bold shadow-md'
                     : 'text-zinc-400 hover:text-white hover:bg-white/[0.05]'
@@ -191,21 +196,31 @@ export default function MembersPage() {
             )}
           </div>
 
-          {/* Search Box */}
-          <div className="relative min-w-[240px] sm:min-w-[280px] px-2 py-1">
+          {/* Search Box with Search Icon and Clear button */}
+          <div className="relative min-w-[220px] sm:min-w-[280px] px-1 sm:px-2 py-1">
+            <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="SEARCH BY NAME OR #ID..."
-              className="w-full px-4 py-2 bg-[#12141C] border border-white/[0.08] rounded-xl text-xs font-mono text-white placeholder-zinc-500 focus:outline-none focus:border-white/40 uppercase transition-colors"
+              className="w-full pl-9 sm:pl-10 pr-8 py-2 bg-[#12141C] border border-white/[0.08] rounded-xl text-xs font-mono text-white placeholder-zinc-500 focus:outline-none focus:border-white/40 uppercase transition-colors"
             />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3.5 sm:right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white p-1 text-xs"
+                title="Clear Search"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
         </div>
 
         {/* MEMBERS CONTENT */}
         {filteredMembers.length === 0 ? (
-          <div className="py-20 text-center flex flex-col items-center justify-center">
+          <div className="py-16 sm:py-20 text-center flex flex-col items-center justify-center">
             <p className="text-zinc-500 font-mono text-xs uppercase tracking-widest">
               [ NO MEMBERS FOUND ]
             </p>
@@ -214,18 +229,18 @@ export default function MembersPage() {
                 setSelectedRole('All');
                 setSearchQuery('');
               }}
-              className="mt-4 px-4 py-1.5 rounded-xl bg-white/[0.06] text-xs font-mono text-white hover:bg-white/15 transition-colors uppercase"
+              className="mt-4 px-4 py-1.5 rounded-xl bg-white/[0.06] text-xs font-mono text-white hover:bg-white/15 transition-colors uppercase active:scale-95"
             >
               RESET FILTER
             </button>
           </div>
         ) : (
-          <div className="space-y-12">
+          <div className="space-y-8 sm:space-y-12">
             {/* 1. FOUNDER SECTION (Wide Cards - 2 Columns) */}
             {(selectedRole === 'All' || selectedRole === 'Founder') && founderList.length > 0 && (
               <section>
                 <SectionHeader title="FOUNDER" role="Founder" />
-                <div className="flex flex-wrap justify-center gap-5 max-w-6xl mx-auto">
+                <div className="flex flex-wrap justify-center gap-3.5 sm:gap-5 max-w-6xl mx-auto">
                   {founderList.map((m) => (
                     <div key={m.id} className="w-full md:w-[calc(50%-10px)]">
                       <MemberCard 
@@ -242,7 +257,7 @@ export default function MembersPage() {
             {(selectedRole === 'All' || selectedRole === 'Leader') && leaderList.length > 0 && (
               <section>
                 <SectionHeader title="LEADER" role="Leader" />
-                <div className="flex flex-wrap justify-center gap-5 max-w-6xl mx-auto">
+                <div className="flex flex-wrap justify-center gap-3.5 sm:gap-5 max-w-6xl mx-auto">
                   {leaderList.map((m) => (
                     <div key={m.id} className="w-full md:w-[calc(50%-10px)]">
                       <MemberCard 
@@ -259,7 +274,7 @@ export default function MembersPage() {
             {(selectedRole === 'All' || selectedRole === 'Support') && supportList.length > 0 && (
               <section>
                 <SectionHeader title="SUPPORT" role="Support" />
-                <div className="flex flex-wrap justify-center gap-5 max-w-6xl mx-auto">
+                <div className="flex flex-wrap justify-center gap-3.5 sm:gap-5 max-w-6xl mx-auto">
                   {supportList.map((m) => (
                     <div key={m.id} className="w-full md:w-[calc(50%-10px)]">
                       <MemberCard 
@@ -276,7 +291,7 @@ export default function MembersPage() {
             {(selectedRole === 'All' || selectedRole === 'Member') && regularMemberList.length > 0 && (
               <section>
                 <SectionHeader title="MEMBERS" role="Member" />
-                <div className="flex flex-wrap justify-center gap-4 sm:gap-4.5 max-w-[1500px] mx-auto">
+                <div className="flex flex-wrap justify-center gap-2.5 sm:gap-4.5 max-w-[1500px] mx-auto">
                   {regularMemberList.map((m) => (
                     <div 
                       key={m.id} 
@@ -296,7 +311,7 @@ export default function MembersPage() {
       </main>
 
       {/* FOOTER (Matching Home Page) */}
-      <footer className="relative z-20 w-full px-6 sm:px-12 md:px-16 py-6 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-zinc-500">
+      <footer className="relative z-20 w-full px-4 sm:px-12 md:px-16 py-6 pb-24 sm:pb-6 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] sm:text-xs font-mono text-zinc-500 text-center sm:text-left">
         <div>
           BANBUNG39 • BY.MIKE WINTERFELL • 2K26
         </div>
@@ -325,14 +340,14 @@ function SectionHeader({
 }) {
   const theme = getRoleTheme(role);
   return (
-    <div className="flex items-center justify-center gap-4 sm:gap-8 my-8 sm:my-10">
-      <div className={`h-[2px] flex-1 max-w-[140px] sm:max-w-sm md:max-w-md ${theme.headingLineLeft}`} />
+    <div className="flex items-center justify-center gap-2.5 sm:gap-8 my-6 sm:my-10 px-2">
+      <div className={`h-[2px] flex-1 max-w-[40px] sm:max-w-sm md:max-w-md ${theme.headingLineLeft}`} />
       <h2 
-        className={`font-rajdhani text-2xl sm:text-3xl md:text-4xl font-bold tracking-[0.3em] uppercase text-center ${theme.headingText}`}
+        className={`font-rajdhani text-xl sm:text-3xl md:text-4xl font-bold tracking-[0.2em] sm:tracking-[0.3em] uppercase text-center ${theme.headingText}`}
       >
         {title}
       </h2>
-      <div className={`h-[2px] flex-1 max-w-[140px] sm:max-w-sm md:max-w-md ${theme.headingLineRight}`} />
+      <div className={`h-[2px] flex-1 max-w-[40px] sm:max-w-sm md:max-w-md ${theme.headingLineRight}`} />
     </div>
   );
 }
@@ -512,8 +527,8 @@ function FacebookPopupButton({
   size?: 'normal' | 'compact';
 }) {
   const btnClasses = size === 'compact'
-    ? 'w-7 h-7 rounded-lg'
-    : 'w-8 h-8 sm:w-8 sm:h-8 rounded-xl';
+    ? 'w-8 h-8 rounded-xl sm:w-7 sm:h-7 sm:rounded-lg'
+    : 'w-8 h-8 sm:w-9 sm:h-9 rounded-xl';
   const iconClasses = size === 'compact' ? 'w-3.5 h-3.5' : 'w-4 h-4';
 
   return (
@@ -524,7 +539,7 @@ function FacebookPopupButton({
         rel="noopener noreferrer"
         title="Facebook Profile"
         aria-label="Facebook Profile"
-        className={`${btnClasses} bg-white/[0.04] border border-white/15 hover:border-white/50 text-zinc-400 hover:text-white hover:bg-white/[0.08] flex items-center justify-center transition-all duration-200 cursor-pointer shadow-sm`}
+        className={`${btnClasses} bg-white/[0.04] border border-white/15 hover:border-white/50 active:scale-90 text-zinc-400 hover:text-white hover:bg-white/[0.08] flex items-center justify-center transition-all duration-200 cursor-pointer shadow-sm`}
       >
         <svg className={`${iconClasses} fill-current`} viewBox="0 0 24 24" aria-hidden="true">
           <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
@@ -532,7 +547,7 @@ function FacebookPopupButton({
       </a>
 
       {/* Bouncy Hover Profile Card Popup */}
-      <div className="invisible group-hover/fb:visible opacity-0 scale-90 -translate-y-2 group-hover/fb:opacity-100 group-hover/fb:scale-100 group-hover/fb:translate-y-0 group-hover/fb:animate-popup-bounce transition-all duration-200 origin-bottom-right absolute bottom-full right-0 mb-3 z-50 pointer-events-auto">
+      <div className="invisible group-hover/fb:visible opacity-0 scale-90 -translate-y-2 group-hover/fb:opacity-100 group-hover/fb:scale-100 group-hover/fb:translate-y-0 group-hover/fb:animate-popup-bounce transition-all duration-200 origin-bottom-right absolute bottom-full right-0 mb-3 z-50 pointer-events-auto max-w-[calc(100vw-32px)]">
         {/* Invisible Hover Bridge to prevent premature closing */}
         <div className="absolute -bottom-3 left-0 right-0 h-4" />
 
@@ -600,7 +615,7 @@ function FacebookPopupButton({
   );
 }
 
-// Member Card with Wide (Founder/Leader) and Compact (Support/Member 5-column) variants
+// Member Card with Wide (Founder/Leader/Support) and Compact (Members) variants
 function MemberCard({ 
   member, 
   variant = 'wide',
@@ -615,10 +630,10 @@ function MemberCard({
   if (variant === 'wide') {
     return (
       <div 
-        className={`rounded-2xl border ${theme.cardBorder} ${theme.cardBg} ${theme.glow} p-4 sm:p-5 min-h-[96px] sm:min-h-[104px] flex items-center justify-between gap-4 transition-all duration-300 hover:-translate-y-0.5 relative group/card`}
+        className={`rounded-2xl border ${theme.cardBorder} ${theme.cardBg} ${theme.glow} p-3 sm:p-5 min-h-[82px] sm:min-h-[104px] flex items-center justify-between gap-3 sm:gap-4 transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.99] relative group/card`}
       >
         {/* Left: Square avatar with rounded corners */}
-        <div className={`w-18 h-18 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border-2 ${theme.avatarBorder} ${theme.avatarBg} flex-shrink-0 flex items-center justify-center relative shadow-md bg-black`}>
+        <div className={`w-14 h-14 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl overflow-hidden border-2 ${theme.avatarBorder} ${theme.avatarBg} flex-shrink-0 flex items-center justify-center relative shadow-md bg-black`}>
           <img 
             src={avatarSrc} 
             alt={member.name} 
@@ -628,11 +643,11 @@ function MemberCard({
         </div>
 
         {/* Middle: Member Name & ID */}
-        <div className="flex-1 min-w-0 pr-2">
-          <h3 className="text-base sm:text-xl font-bold text-white uppercase tracking-wide leading-tight group-hover:text-zinc-100 transition-colors">
+        <div className="flex-1 min-w-0 pr-1.5 sm:pr-2">
+          <h3 className="text-sm sm:text-lg md:text-xl font-bold text-white uppercase tracking-wide leading-tight group-hover:text-zinc-100 transition-colors break-words">
             {member.name}
           </h3>
-          <p className={`text-xs font-mono mt-1 font-semibold ${theme.idColor}`}>
+          <p className={`text-[11px] sm:text-xs font-mono mt-0.5 sm:mt-1 font-semibold ${theme.idColor}`}>
             {member.memberId}
           </p>
         </div>
@@ -650,10 +665,10 @@ function MemberCard({
   // Compact variant for 4-column grid (Members) - Spacious, larger avatar, bold names
   return (
     <div 
-      className={`rounded-2xl border ${theme.cardBorder} ${theme.cardBg} ${theme.glow} p-3.5 sm:p-4 min-h-[86px] sm:min-h-[92px] flex items-center gap-3.5 sm:gap-4 transition-all duration-300 hover:-translate-y-0.5 relative group/card`}
+      className={`rounded-2xl border ${theme.cardBorder} ${theme.cardBg} ${theme.glow} p-2.5 sm:p-4 min-h-[76px] sm:min-h-[92px] flex items-center gap-3 sm:gap-4 transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.99] relative group/card`}
     >
-      {/* Left: Square avatar with rounded corners - Enlarged */}
-      <div className={`w-14 h-14 sm:w-15 sm:h-15 rounded-xl overflow-hidden border-2 ${theme.avatarBorder} ${theme.avatarBg} flex-shrink-0 flex items-center justify-center relative shadow-md bg-black`}>
+      {/* Left: Square avatar with rounded corners */}
+      <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden border-2 ${theme.avatarBorder} ${theme.avatarBg} flex-shrink-0 flex items-center justify-center relative shadow-md bg-black`}>
         <img 
           src={avatarSrc} 
           alt={member.name} 
@@ -662,15 +677,15 @@ function MemberCard({
         />
       </div>
 
-      {/* Middle: Member Name on ONE single line (never drops down) & ID */}
+      {/* Middle: Member Name on ONE single line & ID */}
       <div className="flex-1 min-w-0 pr-1">
         <h3 
-          className="text-sm sm:text-base font-bold text-white uppercase tracking-wide whitespace-nowrap truncate group-hover:text-zinc-100 transition-colors"
+          className="text-xs sm:text-sm md:text-base font-bold text-white uppercase tracking-wide whitespace-nowrap truncate group-hover:text-zinc-100 transition-colors"
           title={member.name}
         >
           {member.name}
         </h3>
-        <p className={`text-[11px] font-mono mt-0.5 font-semibold ${theme.idColor} truncate`}>
+        <p className={`text-[10px] sm:text-[11px] font-mono mt-0.5 font-semibold ${theme.idColor} truncate`}>
           {member.memberId}
         </p>
       </div>
