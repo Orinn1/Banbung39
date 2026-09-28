@@ -55,145 +55,79 @@ export default function MembersPage() {
   const regularMemberList = filteredMembers.filter((m) => m.role === 'Member');
 
   return (
-    <div className="relative min-h-screen w-full bg-[#05070D] text-[#F3F4F6] flex flex-col justify-between overflow-x-hidden select-none">
+    <div className="relative min-h-screen w-full bg-[#060709] text-[#F3F4F6] flex flex-col justify-between overflow-x-hidden select-none">
       {/* Falling Snowflakes Particle Effect */}
       <SnowEffect />
 
-      {/* Atmospheric Background Layers (Grid + Vignette + Radial Glows) */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        {/* Swyft 171 Tactical Background Grid */}
-        <div className="absolute inset-0 tactical-grid opacity-80" />
+      {/* Atmospheric Dark Cinematic Background (Matching Home Page) */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0F1117]/80 via-[#08090C]/95 to-[#040507]" />
         
-        {/* Deep Dark Linear Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#060912]/80 via-[#04060A]/95 to-[#020306]" />
-
-        {/* Ambient Radial Glows */}
-        <div className="absolute top-12 -left-28 w-[32rem] h-[32rem] bg-sky-500/[0.04] rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-1/4 -right-28 w-[34rem] h-[34rem] bg-indigo-600/[0.05] rounded-full blur-3xl pointer-events-none" />
+        {/* Soft atmospheric radial glow */}
+        <div className="absolute top-1/6 left-1/3 w-[36rem] h-[36rem] bg-white/[0.02] rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-1/4 right-1/4 w-[32rem] h-[32rem] bg-zinc-800/[0.05] rounded-full blur-3xl pointer-events-none" />
 
         {/* Cinematic Vignette */}
         <div className="absolute inset-0 cinematic-vignette" />
       </div>
 
-      {/* TOPBAR (Swyft 171 Glass Shell) */}
-      <header className="relative z-30 w-full max-w-6xl mx-auto px-4 sm:px-8 pt-5 sm:pt-7">
-        <div className="w-full min-h-[62px] px-4 sm:px-6 rounded-2xl bg-[#080D16]/85 backdrop-blur-xl border border-white/[0.08] shadow-[0_18px_40px_rgba(0,0,0,0.4)] flex items-center justify-between gap-4">
-          {/* Left: Brand with Logo Badge */}
-          <Link href="/" className="flex items-center gap-3 group cursor-pointer">
-            <span className="w-8 h-8 rounded-lg border border-sky-400/30 bg-gradient-to-br from-sky-400/20 to-white/[0.02] flex items-center justify-center font-anton text-sm text-sky-200 shadow-[0_0_15px_rgba(56,189,248,0.15)] group-hover:scale-105 transition-transform">
-              39
-            </span>
-            <div className="flex flex-col">
-              <span 
-                style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-                className="text-base sm:text-lg font-anton tracking-wider text-white uppercase leading-tight group-hover:text-zinc-200 transition-colors"
-              >
-                BANBUNG39
-              </span>
-              <span className="text-[9px] font-mono tracking-widest text-zinc-500 uppercase -mt-0.5">
-                BY.MIKE WINTERFELL
-              </span>
-            </div>
+      {/* TOP NAVBAR (Exact Same as Home Page) */}
+      <header className="relative z-30 w-full px-6 sm:px-12 md:px-16 pt-7 sm:pt-9 flex items-center justify-between">
+        {/* Left: Brand Name with Link back home */}
+        <Link href="/" className="flex flex-col group cursor-pointer">
+          <span 
+            style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
+            className="text-lg sm:text-xl font-anton tracking-wider text-white uppercase leading-tight group-hover:text-zinc-300 transition-colors"
+          >
+            BANBUNG39
+          </span>
+          <span className="text-[10px] font-mono tracking-widest text-zinc-400 uppercase -mt-0.5">
+            BY.MIKE WINTERFELL
+          </span>
+        </Link>
+
+        {/* Right: Navigation Pill Menu */}
+        <nav className="flex items-center gap-2.5">
+          <Link
+            href="/"
+            className="px-4 py-1.5 rounded-full text-zinc-400 hover:text-white hover:bg-white/[0.04] text-xs font-mono tracking-widest uppercase transition-colors"
+          >
+            HOME
           </Link>
 
-          {/* Right: Nav Links & Swyft Pulse Online Indicator */}
-          <nav className="flex items-center gap-2 sm:gap-3">
-            <Link
-              href="/"
-              className="px-3.5 py-1.5 rounded-xl text-zinc-400 hover:text-white hover:bg-white/[0.05] text-xs font-mono tracking-widest uppercase transition-colors"
-            >
-              HOME
-            </Link>
-
-            <div className="px-4 py-1.5 rounded-xl bg-white/[0.1] border border-white/20 text-white text-xs font-mono tracking-widest uppercase shadow-[0_0_15px_rgba(255,255,255,0.06)]">
-              MEMBERS
-            </div>
-
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] text-emerald-300 text-[10px] font-mono tracking-wider">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)] animate-pulse" />
-              <span>ONLINE</span>
-            </div>
-          </nav>
-        </div>
+          <div className="px-5 py-1.5 rounded-full bg-white/[0.08] border border-white/20 text-white text-xs font-mono tracking-widest uppercase shadow-[0_0_15px_rgba(255,255,255,0.05)] backdrop-blur-md">
+            MEMBERS
+          </div>
+        </nav>
       </header>
 
-      {/* MAIN CONTAINER */}
-      <main className="relative z-20 flex-1 max-w-6xl w-full mx-auto px-4 sm:px-8 py-8 sm:py-12">
-        {/* TACTICAL HERO (Swyft 171 Layout: Eyebrow + Huge Title + Stat Count Box) */}
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 items-end mb-8 sm:mb-10">
-          {/* Left: Eyebrow & Hero Title */}
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-sky-400/20 bg-sky-400/[0.04] text-[10px] font-mono tracking-[0.18em] text-sky-300 uppercase mb-3">
-              <span className="w-4 h-[1px] bg-sky-400" />
-              <span>HOUSE OF <b>BANBUNG39</b> / MEMBERS</span>
-            </div>
-
-            <h1 
-              style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-              className="text-5xl sm:text-7xl lg:text-8xl font-anton tracking-wide text-white uppercase leading-[0.92] drop-shadow-md"
-            >
-              BB39 & MEMBERS
-            </h1>
-            <p className="mt-3 text-xs sm:text-sm text-zinc-400 font-mono uppercase tracking-wider">
-              • BY.MIKE WINTERFELL • 2K26 OFFICIAL DIRECTORY
-            </p>
-          </div>
-
-          {/* Right: Swyft Signature Count Card */}
-          <div className="w-full sm:w-[190px] p-5 rounded-2xl border border-white/10 bg-gradient-to-b from-[#0C121D]/90 to-[#070B12]/95 backdrop-blur-md shadow-[0_12px_40px_rgba(0,0,0,0.3)] flex flex-col justify-between">
-            <span className="text-[9px] font-mono tracking-[0.2em] text-zinc-400 uppercase">
-              TOTAL MEMBERS
-            </span>
-            <span 
-              style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-              className="text-4xl sm:text-5xl font-anton tracking-wider text-white my-1"
-            >
-              {String(counts.all).padStart(2, '0')}
-            </span>
-            <span className="text-[10px] font-mono tracking-wider text-emerald-400 flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399] animate-pulse" />
-              HOUSE IS ONLINE
-            </span>
-          </div>
+      {/* MAIN CONTAINER (Matching Home Page Max Width & Padding) */}
+      <main className="relative z-20 flex-1 max-w-7xl w-full mx-auto px-6 sm:px-12 md:px-16 py-8 sm:py-12">
+        {/* Clean Hero Title (Matching Home Page Style) */}
+        <div className="mb-10 sm:mb-12">
+          <h1 
+            style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
+            className="text-4xl sm:text-6xl md:text-7xl font-anton tracking-wide text-white uppercase leading-[0.95]"
+          >
+            BB39 & MEMBERS
+          </h1>
         </div>
 
-        {/* TACTICAL TOOLBAR (Search Box + Pill Filters) */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-2 bg-[#090D18]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl mb-10 shadow-2xl">
-          {/* Search Box with ⌕ Symbol */}
-          <div className="relative flex-1 sm:max-w-sm">
-            <div className="w-full h-10 px-3.5 flex items-center gap-2.5 rounded-xl bg-white/[0.02] border border-white/[0.08] focus-within:border-sky-400/40 transition-colors">
-              <span className="text-zinc-500 font-mono text-sm">⌕</span>
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="SEARCH MEMBER..."
-                className="w-full bg-transparent border-0 outline-none text-xs font-mono text-white placeholder-zinc-500 uppercase tracking-wide"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="text-xs text-zinc-500 hover:text-white"
-                >
-                  &times;
-                </button>
-              )}
-            </div>
-          </div>
-
+        {/* Filter Tabs & Search Bar */}
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 p-2 bg-[#0C0D12]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl mb-10 shadow-2xl">
           {/* Role Filter Tabs */}
-          <div className="flex flex-wrap items-center gap-1.5 p-0.5">
+          <div className="flex flex-wrap items-center gap-1.5 p-1">
             <button
               onClick={() => setSelectedRole('All')}
-              className={`h-9 px-3.5 rounded-xl text-xs font-mono tracking-wider uppercase transition-all flex items-center gap-2 ${
+              className={`px-4 py-2 rounded-xl text-xs font-mono tracking-wider uppercase transition-all duration-200 flex items-center gap-2 ${
                 selectedRole === 'All'
-                  ? 'bg-sky-400/15 border border-sky-400/30 text-sky-200 shadow-sm'
-                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.05] border border-transparent'
+                  ? 'bg-white text-black font-bold shadow-md'
+                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.05]'
               }`}
             >
               <span>ALL</span>
               <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
-                selectedRole === 'All' ? 'bg-sky-400/20 text-sky-200' : 'bg-white/[0.06] text-zinc-500'
+                selectedRole === 'All' ? 'bg-black/10 text-black' : 'bg-white/[0.08] text-zinc-400'
               }`}>
                 {counts.all}
               </span>
@@ -201,15 +135,15 @@ export default function MembersPage() {
 
             <button
               onClick={() => setSelectedRole('Founder')}
-              className={`h-9 px-3.5 rounded-xl text-xs font-mono tracking-wider uppercase transition-all flex items-center gap-2 ${
+              className={`px-4 py-2 rounded-xl text-xs font-mono tracking-wider uppercase transition-all duration-200 flex items-center gap-2 ${
                 selectedRole === 'Founder'
-                  ? 'bg-white/15 border border-white/30 text-white shadow-sm'
-                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.05] border border-transparent'
+                  ? 'bg-white text-black font-bold shadow-md'
+                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.05]'
               }`}
             >
               <span>FOUNDER</span>
               <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
-                selectedRole === 'Founder' ? 'bg-white/20 text-white' : 'bg-white/[0.06] text-zinc-500'
+                selectedRole === 'Founder' ? 'bg-black/10 text-black' : 'bg-white/[0.08] text-zinc-400'
               }`}>
                 {counts.founder}
               </span>
@@ -217,15 +151,15 @@ export default function MembersPage() {
 
             <button
               onClick={() => setSelectedRole('Leader')}
-              className={`h-9 px-3.5 rounded-xl text-xs font-mono tracking-wider uppercase transition-all flex items-center gap-2 ${
+              className={`px-4 py-2 rounded-xl text-xs font-mono tracking-wider uppercase transition-all duration-200 flex items-center gap-2 ${
                 selectedRole === 'Leader'
-                  ? 'bg-red-500/15 border border-red-500/30 text-red-200 shadow-sm'
-                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.05] border border-transparent'
+                  ? 'bg-white text-black font-bold shadow-md'
+                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.05]'
               }`}
             >
               <span>LEADER</span>
               <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
-                selectedRole === 'Leader' ? 'bg-red-500/20 text-red-200' : 'bg-white/[0.06] text-zinc-500'
+                selectedRole === 'Leader' ? 'bg-black/10 text-black' : 'bg-white/[0.08] text-zinc-400'
               }`}>
                 {counts.leader}
               </span>
@@ -233,50 +167,55 @@ export default function MembersPage() {
 
             <button
               onClick={() => setSelectedRole('Support')}
-              className={`h-9 px-3.5 rounded-xl text-xs font-mono tracking-wider uppercase transition-all flex items-center gap-2 ${
+              className={`px-4 py-2 rounded-xl text-xs font-mono tracking-wider uppercase transition-all duration-200 flex items-center gap-2 ${
                 selectedRole === 'Support'
-                  ? 'bg-sky-400/15 border border-sky-400/30 text-sky-200 shadow-sm'
-                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.05] border border-transparent'
+                  ? 'bg-white text-black font-bold shadow-md'
+                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.05]'
               }`}
             >
               <span>SUPPORT</span>
               <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
-                selectedRole === 'Support' ? 'bg-sky-400/20 text-sky-200' : 'bg-white/[0.06] text-zinc-500'
+                selectedRole === 'Support' ? 'bg-black/10 text-black' : 'bg-white/[0.08] text-zinc-400'
               }`}>
                 {counts.support}
               </span>
             </button>
           </div>
+
+          {/* Search Box */}
+          <div className="relative min-w-[240px] sm:min-w-[280px] px-2 py-1">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="SEARCH BY NAME OR #ID..."
+              className="w-full px-4 py-2 bg-[#12141C] border border-white/[0.08] rounded-xl text-xs font-mono text-white placeholder-zinc-500 focus:outline-none focus:border-white/40 uppercase transition-colors"
+            />
+          </div>
         </div>
 
         {/* MEMBERS CONTENT */}
         {filteredMembers.length === 0 ? (
-          <div className="py-20 text-center flex flex-col items-center justify-center border border-dashed border-white/10 rounded-2xl bg-white/[0.01]">
-            <strong 
-              style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-              className="text-2xl font-anton text-zinc-300 uppercase tracking-wide"
-            >
-              NO MEMBER FOUND
-            </strong>
-            <span className="text-zinc-500 font-mono text-xs mt-1 uppercase">
-              ไม่พบสมาชิกที่ค้นหา
-            </span>
+          <div className="py-20 text-center flex flex-col items-center justify-center">
+            <p className="text-zinc-500 font-mono text-xs uppercase tracking-widest">
+              [ NO MEMBERS FOUND ]
+            </p>
             <button
               onClick={() => {
                 setSelectedRole('All');
                 setSearchQuery('');
               }}
-              className="mt-5 px-4 py-2 rounded-xl bg-white/[0.08] hover:bg-white/20 border border-white/10 text-xs font-mono text-white transition-colors uppercase"
+              className="mt-4 px-4 py-1.5 rounded-xl bg-white/[0.06] text-xs font-mono text-white hover:bg-white/15 transition-colors uppercase"
             >
               RESET FILTER
             </button>
           </div>
         ) : selectedRole === 'All' && !searchQuery ? (
-          /* SECTIONED VIEW (Founder Featured -> Leader Core -> Support Members) */
+          /* SECTIONED VIEW WHEN 'ALL' IS SELECTED */
           <div className="space-y-12">
-            {/* 1. FOUNDER BLOCK */}
+            {/* 1. FOUNDER SECTION */}
             {founderList.length > 0 && (
-              <section className="rank-block">
+              <section>
                 <div className="flex items-baseline justify-between mb-4 pb-2 border-b border-white/[0.08]">
                   <div className="flex items-baseline gap-3">
                     <h2 
@@ -285,21 +224,21 @@ export default function MembersPage() {
                     >
                       FOUNDER
                     </h2>
-                    <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">
+                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
                       SUPREME LEADERSHIP
                     </span>
                   </div>
-                  <span className="text-xs font-mono text-zinc-500">
-                    0{founderList.length} / REGISTERED
+                  <span className="text-xs font-mono text-zinc-400">
+                    {founderList.length}
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {founderList.map((m) => (
-                    <TacticalMemberCard 
+                    <MemberCard 
                       key={m.id} 
                       member={m} 
-                      isFeatured={true}
+                      isFeatured 
                       onSelectMember={() => setActiveModalMember(m)}
                     />
                   ))}
@@ -307,93 +246,93 @@ export default function MembersPage() {
               </section>
             )}
 
-            {/* 2. LEADER BLOCK */}
+            {/* 2. LEADER SECTION */}
             {leaderList.length > 0 && (
-              <section className="rank-block">
-                <div className="flex items-baseline justify-between mb-4 pb-2 border-b border-red-500/20">
-                  <div className="flex items-baseline gap-3">
-                    <h2 
-                      style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-                      className="text-2xl sm:text-3xl font-anton tracking-wider text-red-400 uppercase"
-                    >
-                      LEADER
-                    </h2>
-                    <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">
-                      COMMAND & TACTICAL OPS
-                    </span>
-                  </div>
-                  <span className="text-xs font-mono text-zinc-500">
-                    0{leaderList.length} / REGISTERED
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-                  {leaderList.map((m) => (
-                    <TacticalMemberCard 
-                      key={m.id} 
-                      member={m} 
-                      onSelectMember={() => setActiveModalMember(m)}
-                    />
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {/* 3. SUPPORT BLOCK */}
-            {supportList.length > 0 && (
-              <section className="rank-block">
-                <div className="flex items-baseline justify-between mb-4 pb-2 border-b border-sky-400/20">
-                  <div className="flex items-baseline gap-3">
-                    <h2 
-                      style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-                      className="text-2xl sm:text-3xl font-anton tracking-wider text-sky-300 uppercase"
-                    >
-                      SUPPORT
-                    </h2>
-                    <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">
-                      LOGISTICS & COMMUNITY
-                    </span>
-                  </div>
-                  <span className="text-xs font-mono text-zinc-500">
-                    0{supportList.length} / REGISTERED
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-                  {supportList.map((m) => (
-                    <TacticalMemberCard 
-                      key={m.id} 
-                      member={m} 
-                      onSelectMember={() => setActiveModalMember(m)}
-                    />
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {/* 4. MEMBER BLOCK (IF ANY) */}
-            {regularMemberList.length > 0 && (
-              <section className="rank-block">
+              <section>
                 <div className="flex items-baseline justify-between mb-4 pb-2 border-b border-white/[0.08]">
                   <div className="flex items-baseline gap-3">
                     <h2 
                       style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
                       className="text-2xl sm:text-3xl font-anton tracking-wider text-white uppercase"
                     >
-                      MEMBERS
+                      LEADER
                     </h2>
-                    <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">
+                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
+                      COMMAND & TACTICAL OPS
+                    </span>
+                  </div>
+                  <span className="text-xs font-mono text-zinc-400">
+                    {leaderList.length}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                  {leaderList.map((m) => (
+                    <MemberCard 
+                      key={m.id} 
+                      member={m} 
+                      onSelectMember={() => setActiveModalMember(m)}
+                    />
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* 3. SUPPORT SECTION */}
+            {supportList.length > 0 && (
+              <section>
+                <div className="flex items-baseline justify-between mb-4 pb-2 border-b border-white/[0.08]">
+                  <div className="flex items-baseline gap-3">
+                    <h2 
+                      style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
+                      className="text-2xl sm:text-3xl font-anton tracking-wider text-white uppercase"
+                    >
+                      SUPPORT
+                    </h2>
+                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
+                      LOGISTICS & COMMUNITY
+                    </span>
+                  </div>
+                  <span className="text-xs font-mono text-zinc-400">
+                    {supportList.length}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                  {supportList.map((m) => (
+                    <MemberCard 
+                      key={m.id} 
+                      member={m} 
+                      onSelectMember={() => setActiveModalMember(m)}
+                    />
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* 4. MEMBER SECTION */}
+            {regularMemberList.length > 0 && (
+              <section>
+                <div className="flex items-baseline justify-between mb-4 pb-2 border-b border-white/[0.08]">
+                  <div className="flex items-baseline gap-3">
+                    <h2 
+                      style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
+                      className="text-2xl sm:text-3xl font-anton tracking-wider text-white uppercase"
+                    >
+                      MEMBER
+                    </h2>
+                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
                       CORE OPERATIVES
                     </span>
                   </div>
-                  <span className="text-xs font-mono text-zinc-500">
-                    0{regularMemberList.length} / REGISTERED
+                  <span className="text-xs font-mono text-zinc-400">
+                    {regularMemberList.length}
                   </span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
                   {regularMemberList.map((m) => (
-                    <TacticalMemberCard 
+                    <MemberCard 
                       key={m.id} 
                       member={m} 
                       onSelectMember={() => setActiveModalMember(m)}
@@ -407,7 +346,7 @@ export default function MembersPage() {
           /* UNIFIED GRID VIEW WHEN FILTERED */
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
             {filteredMembers.map((m) => (
-              <TacticalMemberCard 
+              <MemberCard 
                 key={m.id} 
                 member={m} 
                 onSelectMember={() => setActiveModalMember(m)}
@@ -417,7 +356,7 @@ export default function MembersPage() {
         )}
       </main>
 
-      {/* FOOTER */}
+      {/* FOOTER (Matching Home Page) */}
       <footer className="relative z-20 w-full px-6 sm:px-12 md:px-16 py-6 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-zinc-500">
         <div>
           BANBUNG39 • BY.MIKE WINTERFELL • 2K26
@@ -434,7 +373,7 @@ export default function MembersPage() {
       {/* PERSISTENT MUSIC PLAYER */}
       <MusicPlayer />
 
-      {/* SWYFT 171 STYLE PROFILE POPUP MODAL */}
+      {/* PROFILE POPUP MODAL */}
       {activeModalMember && (
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
@@ -476,7 +415,7 @@ export default function MembersPage() {
 
               <div className="flex items-center gap-1.5 text-[10px] font-mono tracking-wider text-emerald-400">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399] animate-pulse" />
-                <span>● ONLINE</span>
+                <span>ONLINE</span>
               </div>
             </div>
 
@@ -553,35 +492,29 @@ export default function MembersPage() {
   );
 }
 
-// Role-specific metallic gradient border and glow themes (Authentic Swyft 171 style)
+// Role-specific metallic gradient border and glow themes (Authentic, dark, non-AI)
 const getRoleTheme = (role: MemberRole) => {
   switch (role) {
     case 'Founder':
       // Platinum White / Polished Silver Chrome
       return {
         borderGradient: 'from-white/90 via-slate-300/40 to-white/10 hover:from-white hover:via-slate-200 hover:to-white/30',
-        glow: 'shadow-[0_4px_30px_rgba(255,255,255,0.08)] hover:shadow-[0_8px_40px_rgba(255,255,255,0.18)]',
+        glow: 'shadow-[0_4px_30px_rgba(255,255,255,0.08)] hover:shadow-[0_6px_40px_rgba(255,255,255,0.15)]',
         idColor: 'text-zinc-400',
-        avatarBg: 'from-white/20 via-slate-300/10 to-transparent border-white/25 text-white',
-        ghostColor: 'text-white/[0.08]',
       };
     case 'Leader':
       // Crimson Noir / Blood Ruby
       return {
         borderGradient: 'from-red-500/90 via-red-800/45 to-red-950/20 hover:from-red-400 hover:via-red-700 hover:to-red-900/40',
-        glow: 'shadow-[0_4px_30px_rgba(239,68,68,0.12)] hover:shadow-[0_8px_40px_rgba(239,68,68,0.24)]',
+        glow: 'shadow-[0_4px_30px_rgba(239,68,68,0.12)] hover:shadow-[0_6px_40px_rgba(239,68,68,0.22)]',
         idColor: 'text-red-400/80',
-        avatarBg: 'from-red-500/25 via-red-900/15 to-transparent border-red-500/30 text-red-200',
-        ghostColor: 'text-red-500/[0.12]',
       };
     case 'Support':
       // Steel Ice Blue / Tactical Cobalt
       return {
         borderGradient: 'from-sky-400/90 via-blue-800/45 to-sky-950/20 hover:from-sky-300 hover:via-blue-700 hover:to-sky-900/40',
-        glow: 'shadow-[0_4px_30px_rgba(56,189,248,0.12)] hover:shadow-[0_8px_40px_rgba(56,189,248,0.24)]',
+        glow: 'shadow-[0_4px_30px_rgba(56,189,248,0.12)] hover:shadow-[0_6px_40px_rgba(56,189,248,0.22)]',
         idColor: 'text-sky-400/80',
-        avatarBg: 'from-sky-400/25 via-blue-900/15 to-transparent border-sky-400/30 text-sky-200',
-        ghostColor: 'text-sky-400/[0.12]',
       };
     case 'Member':
       // Smoked Titanium Charcoal
@@ -589,14 +522,12 @@ const getRoleTheme = (role: MemberRole) => {
         borderGradient: 'from-zinc-500/50 via-zinc-700/25 to-zinc-900/10 hover:from-zinc-400 hover:via-zinc-600 hover:to-zinc-800/30',
         glow: 'shadow-[0_4px_20px_rgba(0,0,0,0.6)]',
         idColor: 'text-zinc-500',
-        avatarBg: 'from-zinc-500/20 via-zinc-700/10 to-transparent border-zinc-500/20 text-zinc-300',
-        ghostColor: 'text-zinc-500/[0.1]',
       };
   }
 };
 
-// Swyft 171 Tactical Member Card with Avatar, Ghost Number, and Metallic Gradient Border
-function TacticalMemberCard({ 
+// Clean Typographic Member Card with Role Gradient Border (No role badge text)
+function MemberCard({ 
   member, 
   isFeatured = false,
   onSelectMember,
@@ -606,75 +537,42 @@ function TacticalMemberCard({
   onSelectMember: () => void;
 }) {
   const theme = getRoleTheme(member.role);
-  // Extract number for ghost watermark e.g. "01", "02", "05"
-  const ghostNo = member.id.slice(-2);
-  const initial = member.name.charAt(0).toUpperCase();
 
   return (
     <div 
       onClick={onSelectMember}
-      className={`group relative p-[1.5px] rounded-2xl bg-gradient-to-br ${theme.borderGradient} ${theme.glow} transition-all duration-300 hover:-translate-y-1 cursor-pointer`}
+      className={`p-[1.5px] rounded-2xl bg-gradient-to-br ${theme.borderGradient} ${theme.glow} transition-all duration-300 hover:-translate-y-0.5 cursor-pointer`}
     >
-      <div className="relative p-3.5 sm:p-4 rounded-[14.5px] bg-gradient-to-b from-[#0D121F]/95 to-[#080B12]/98 backdrop-blur-md flex items-center justify-between gap-3 overflow-hidden">
-        {/* Left: Avatar Emblem Badge */}
-        <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl border bg-gradient-to-br ${theme.avatarBg} flex items-center justify-center flex-shrink-0 shadow-inner group-hover:scale-105 transition-transform`}>
-          <span 
-            style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-            className="text-xl sm:text-2xl font-anton text-white"
-          >
-            {initial}
-          </span>
-        </div>
-
-        {/* Center: Content (ID, Name, Subtitle, Action Links) */}
-        <div className="min-w-0 flex-1 z-10">
-          <span className={`text-[10px] font-mono block leading-none mb-1 font-bold ${theme.idColor}`}>
+      <div className="p-4 sm:p-5 rounded-[14.5px] bg-[#0C0D12]/95 backdrop-blur-md flex items-center justify-between gap-4">
+        <div className="min-w-0 flex-1">
+          <span className={`text-xs font-mono block mb-1 font-bold ${theme.idColor}`}>
             {member.memberId}
           </span>
-
           <h3 
             style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
             className={`${
-              isFeatured ? 'text-xl sm:text-2xl' : 'text-lg sm:text-xl'
-            } font-anton tracking-wide text-white uppercase truncate group-hover:text-zinc-100 transition-colors`}
+              isFeatured ? 'text-2xl sm:text-3xl' : 'text-xl'
+            } font-anton tracking-wide text-white uppercase truncate`}
           >
             {member.name}
           </h3>
-
-          <div className="flex items-center gap-2 mt-1">
-            <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-wider">
-              {member.role === 'Founder' 
-                ? 'FOUNDER' 
-                : member.role === 'Leader' 
-                ? 'LEADER' 
-                : 'SUPPORT'}
-            </span>
-
-            {member.facebook && (
-              <a
-                href={member.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Facebook Profile"
-                aria-label="Facebook Profile"
-                onClick={(e) => e.stopPropagation()}
-                className="w-6 h-6 rounded-lg bg-white/[0.04] border border-white/10 hover:border-white/50 text-zinc-400 hover:text-white hover:bg-white/[0.1] flex items-center justify-center transition-all flex-shrink-0"
-              >
-                <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                </svg>
-              </a>
-            )}
-          </div>
         </div>
 
-        {/* Right: Giant Ghost Number Watermark (Swyft 171 signature visual) */}
-        <div 
-          style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-          className={`select-none pointer-events-none text-5xl sm:text-6xl font-anton font-extrabold ${theme.ghostColor} tracking-tighter pr-1 leading-none group-hover:opacity-80 transition-opacity`}
-        >
-          {ghostNo}
-        </div>
+        {member.facebook && (
+          <a
+            href={member.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Facebook Profile"
+            aria-label="Facebook Profile"
+            onClick={(e) => e.stopPropagation()}
+            className="w-9 h-9 rounded-xl bg-white/[0.04] border border-white/15 hover:border-white/50 text-zinc-400 hover:text-white hover:bg-white/[0.08] flex items-center justify-center transition-all duration-200 flex-shrink-0"
+          >
+            <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+            </svg>
+          </a>
+        )}
       </div>
     </div>
   );
