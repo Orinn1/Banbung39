@@ -63,10 +63,17 @@ export default function LandingPage() {
           {/* Signature Bold Display Title */}
           <h1 
             style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-            className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-anton tracking-wide uppercase leading-[0.88] drop-shadow-md flex flex-col"
+            className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-anton tracking-wide uppercase leading-[0.88] flex flex-col"
           >
-            <span className="text-white">BANBUNG</span>
-            <span className="bg-gradient-to-r from-red-500 via-rose-500 to-red-700 bg-clip-text text-transparent drop-shadow-[0_0_35px_rgba(239,68,68,0.35)]">
+            <span className="text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]">
+              BANBUNG
+            </span>
+            <span 
+              className="bg-gradient-to-b from-[#FF4554] via-[#DC2626] to-[#200305] bg-clip-text text-transparent select-none"
+              style={{
+                filter: 'drop-shadow(0 6px 14px rgba(0, 0, 0, 0.95)) drop-shadow(0 14px 32px rgba(225, 29, 72, 0.7)) drop-shadow(0 0 55px rgba(239, 68, 68, 0.45))',
+              }}
+            >
               39
             </span>
           </h1>
