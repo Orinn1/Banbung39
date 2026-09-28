@@ -31,7 +31,7 @@ export default function RightDossierCard({ onOpenPartners }: RightDossierCardPro
       </div>
 
       {/* Middle Interactive Capsule: HOUSE LINKS / PARTNERS */}
-      <div className="my-6">
+      <div className="mt-4">
         <Link
           href="/members"
           className="group flex items-center justify-between px-4 py-3 rounded-xl bg-[#12141C]/90 border border-white/[0.08] hover:border-white/30 transition-all duration-200 cursor-pointer"
@@ -52,21 +52,6 @@ export default function RightDossierCard({ onOpenPartners }: RightDossierCardPro
             <ArrowRight className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
           </div>
         </Link>
-      </div>
-
-      {/* Bottom Typography Headline */}
-      <div className="pt-4 border-t border-white/[0.06]">
-        <span className="text-[10px] font-mono text-zinc-400 block mb-1 font-bold tracking-wider">
-          39
-        </span>
-        <h2 
-          style={{ fontFamily: 'var(--font-anton), "Anton", sans-serif' }}
-          className="text-xl sm:text-2xl font-anton tracking-wide text-white uppercase leading-[1.15]"
-        >
-          BANBUNG39
-          <br />
-          2K26
-        </h2>
       </div>
     </div>
   );
