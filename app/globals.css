@@ -77,6 +77,15 @@ body {
   animation-iteration-count: infinite;
 }
 
+/* Swyft-style tactical background grid */
+.tactical-grid {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(to bottom, black 30%, transparent 95%);
+}
+
 /* Hide Next.js devtools indicator button ("N" icon at bottom-left) */
 nextjs-portal,
 [data-nextjs-toast],
