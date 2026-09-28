@@ -610,15 +610,6 @@ function MemberCard({
 }) {
   const theme = getRoleTheme(member.role);
   const popup = getPopupTheme(member.role);
-
-  const roleLabel = member.role === 'Founder' 
-    ? 'FOUNDER' 
-    : member.role === 'Leader' 
-    ? 'LEADER' 
-    : member.role === 'Support' 
-    ? 'SUPPORT' 
-    : 'MEMBERS';
-
   const avatarSrc = member.avatar || DEFAULT_AVATAR;
 
   if (variant === 'wide') {
@@ -646,15 +637,12 @@ function MemberCard({
           </p>
         </div>
 
-        {/* Right: Role text + Facebook Button */}
-        <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
-          <span className={`font-rajdhani font-bold text-sm sm:text-base tracking-[0.22em] uppercase ${theme.roleText}`}>
-            {roleLabel}
-          </span>
-          {member.facebook && (
+        {/* Right: Facebook Button */}
+        {member.facebook && (
+          <div className="flex items-center flex-shrink-0">
             <FacebookPopupButton member={member} popup={popup} size="normal" />
-          )}
-        </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -687,15 +675,12 @@ function MemberCard({
         </p>
       </div>
 
-      {/* Right: Role text + Facebook Button */}
-      <div className="flex flex-col items-end justify-between self-stretch py-0.5 flex-shrink-0 gap-1.5">
-        <span className={`font-rajdhani font-bold text-[10px] sm:text-[11px] tracking-wider uppercase ${theme.roleText}`}>
-          {roleLabel}
-        </span>
-        {member.facebook && (
+      {/* Right: Facebook Button */}
+      {member.facebook && (
+        <div className="flex items-center flex-shrink-0">
           <FacebookPopupButton member={member} popup={popup} size="compact" />
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
