@@ -18,7 +18,7 @@ interface MusicConfig {
 const DEFAULT_CONFIG: MusicConfig = {
   title: 'BANBUNG39',
   artist: 'By.Mike Winterfell',
-  url: '/music.mp3',
+  url: '/api/music/audio?t=1790621767268',
 };
 
 async function getMusicConfig(): Promise<MusicConfig> {
@@ -46,10 +46,17 @@ async function getMusicConfig(): Promise<MusicConfig> {
 
 export async function GET() {
   const config = await getMusicConfig();
-  return NextResponse.json({
-    success: true,
-    data: config,
-  });
+  return NextResponse.json(
+    {
+      success: true,
+      data: config,
+    },
+    {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      },
+    }
+  );
 }
 
 export async function POST(request: Request) {

@@ -50,13 +50,17 @@ export async function GET(request: Request) {
               }
             }
 
-            if (slices.length > 0) {
+            if (slices.length === totalChunks && totalChunks > 0) {
               audioBuffer = Buffer.concat(slices);
               memoryCache = {
                 buffer: audioBuffer,
                 mimeType,
                 updatedAt,
               };
+
+              // Keep local file in sync with cloud chunks (safely ignored on serverless)
+              const localPath = path.join(process.cwd(), 'public', 'music.mp3');
+              fs.writeFile(localPath, audioBuffer).catch(() => {});
             }
           }
         }

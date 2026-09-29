@@ -11,6 +11,7 @@ interface MusicInfo {
 
 const STORAGE_KEY_TIME = 'bb39_music_time';
 const STORAGE_KEY_PLAYING = 'bb39_music_playing';
+const STORAGE_KEY_INFO = 'bb39_music_info';
 
 // Helper to compare audio URLs taking origin and query params into account
 function isSameTrack(urlA: string, urlB: string): boolean {
@@ -31,30 +32,49 @@ export default function MusicPlayer() {
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
-  const [musicInfo, setMusicInfo] = useState<MusicInfo>({
-    title: 'BANBUNG39',
-    artist: 'By.Mike Winterfell',
-    url: '/music.mp3',
+  const [musicInfo, setMusicInfo] = useState<MusicInfo>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const cached = localStorage.getItem(STORAGE_KEY_INFO);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (parsed && parsed.url) {
+            return parsed;
+          }
+        }
+      } catch {}
+    }
+    return {
+      title: 'BANBUNG39',
+      artist: 'By.Mike Winterfell',
+      url: '/api/music/audio?t=1790621767268',
+    };
   });
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const hasStartedRef = useRef<boolean>(false);
   const hasRestoredTimeRef = useRef<boolean>(false);
 
-  // 1. Load music metadata from API (without disrupting current playback)
+  // 1. Load music metadata from API and cache in localStorage
   useEffect(() => {
     fetch('/api/music')
       .then((res) => res.json())
       .then((data) => {
-        if (data.success && data.data) {
+        if (data.success && data.data && data.data.url) {
+          const newInfo: MusicInfo = {
+            title: data.data.title || 'BANBUNG39',
+            artist: data.data.artist || 'By.Mike Winterfell',
+            url: data.data.url,
+          };
           setMusicInfo((prev) => {
-            // If the audio URL is basically the same file, keep track title/artist without resetting audio
-            return {
-              title: data.data.title || prev.title,
-              artist: data.data.artist || prev.artist,
-              url: data.data.url || prev.url,
-            };
+            if (prev.url === newInfo.url && prev.title === newInfo.title && prev.artist === newInfo.artist) {
+              return prev;
+            }
+            return newInfo;
           });
+          try {
+            localStorage.setItem(STORAGE_KEY_INFO, JSON.stringify(newInfo));
+          } catch {}
         }
       })
       .catch(() => {});
@@ -62,7 +82,6 @@ export default function MusicPlayer() {
 
   // 2. Setup Audio Source & Ensure fresh visit always starts at 0:00
   useEffect(() => {
-    // Clear any previously saved timestamps so fresh entries always start from 0:00
     try {
       localStorage.removeItem(STORAGE_KEY_TIME);
     } catch {}
@@ -72,15 +91,23 @@ export default function MusicPlayer() {
 
     // Check if the current audio src is actually a different song
     if (audio.src && isSameTrack(audio.src, musicInfo.url)) {
-      // Same song! Do NOT call audio.load() and do NOT reset playback!
       return;
     }
 
-    // Only set and load if it's genuinely a new audio file
+    const wasPlaying = isPlaying || hasStartedRef.current;
+
+    // Set new audio file
     audio.src = musicInfo.url;
     audio.currentTime = 0;
     setProgress(0);
     audio.load();
+
+    if (wasPlaying) {
+      audio.play().then(() => {
+        hasStartedRef.current = true;
+        setIsPlaying(true);
+      }).catch(() => {});
+    }
   }, [musicInfo.url]);
 
   // 3. Register MediaSession API (Lock screen, background playback, Control Center on iOS & Android)
@@ -131,7 +158,7 @@ export default function MusicPlayer() {
     const tryPlayAudio = () => {
       // If already started or playing, never re-trigger
       if (hasStartedRef.current) return;
-      if (!audioRef.current) return;
+      if (!audioRef.current || !audioRef.current.src) return;
 
       const playPromise = audioRef.current.play();
       if (playPromise !== undefined) {
